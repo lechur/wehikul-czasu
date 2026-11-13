@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Wehikuł czasu – miasta powiatu wołomińskiego | Życie PW</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1412;--panel:rgba(16,22,19,.93);--line:rgba(255,255,255,.12);--tx:#eef2ee;--mut:#9fb0a6;--acc:#e8b84a}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:14px/1.4 Inter,system-ui,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent}
+#map{position:fixed;inset:0;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 40%,#1b2420,#0b0f0d)}
+#map.drag{cursor:grabbing}
+header{position:fixed;top:0;left:0;right:0;padding:14px 16px 10px;background:linear-gradient(#0f1412f2,#0f141200);pointer-events:none;z-index:5}
+header *{pointer-events:auto}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h1{font:800 22px/1.1 Fraunces,Georgia,serif;margin:0;letter-spacing:-.01em}h1 span{color:var(--acc)}
+.sub{color:var(--mut);font-size:12.5px}
+.cities{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.cities::-webkit-scrollbar{display:none}
+.pill{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--tx);padding:7px 12px;border-radius:999px;font:600 13px Inter;cursor:pointer}
+.pill:hover{background:rgba(255,255,255,.12)}.pill.on{background:var(--acc);color:#1a1405;border-color:var(--acc)}
+#yearBig{position:fixed;right:18px;top:96px;font:800 64px/1 Fraunces,serif;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.6);pointer-events:none;z-index:4;letter-spacing:-.02em;text-align:right}
+#yearBig small{display:block;font:500 12px Inter;color:#dfe7e1;letter-spacing:0;margin-top:2px}
+#stats{position:fixed;left:16px;top:104px;z-index:4;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px;min-width:210px;backdrop-filter:blur(8px)}
+#stats b{font-size:15px}#stats .d{font-size:11.5px;margin-left:4px}#stats .up{color:#ffd166}#stats .dn{color:#ff6b6b}#stats .gr{color:#6ee787}#stats .r{display:flex;justify-content:space-between;gap:12px;padding:2px 0}
+#stats .t{color:var(--mut);font-size:11px;margin-bottom:4px}
+.panel{position:fixed;left:12px;right:12px;bottom:12px;max-width:820px;margin:0 auto;background:var(--panel);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:12px 14px 10px;z-index:5;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.modes{display:flex;background:rgba(255,255,255,.07);border-radius:10px;padding:3px}
+.modes button{border:0;background:none;color:var(--mut);font:600 12.5px Inter;padding:6px 10px;border-radius:8px;cursor:pointer}.modes button.on{background:#fff;color:#111}
+.play{width:36px;height:36px;border-radius:50%;border:0;background:var(--acc);color:#1a1405;font-size:15px;cursor:pointer;flex:none}
+.timeline{position:relative;flex:1;min-width:200px;height:44px}
+.timeline input{position:absolute;left:0;right:0;top:4px;width:100%;margin:0;-webkit-appearance:none;appearance:none;background:none;height:22px}
+.timeline input::-webkit-slider-runnable-track{height:4px;background:rgba(255,255,255,.18);border-radius:4px}
+.timeline input::-moz-range-track{height:4px;background:rgba(255,255,255,.18);border-radius:4px}
+.timeline input::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;margin-top:-8px;box-shadow:0 0 0 4px rgba(232,184,74,.5);cursor:pointer}
+.timeline input::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 4px rgba(232,184,74,.5)}
+.ticks{position:absolute;left:10px;right:10px;top:26px;height:16px}.ticks span{position:absolute;transform:translateX(-50%);font-size:11px;color:var(--mut);cursor:pointer;white-space:nowrap}.ticks span.on{color:#fff;font-weight:700}
+.cmp{display:none;gap:8px;align-items:center;flex:1}
+.cmp select{background:rgba(255,255,255,.08);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:600 13px Inter}.cmp select option{background:#111}
+.layers{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.lay{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 10px 5px 8px;cursor:pointer;font-size:12.5px;user-select:none;color:var(--mut)}
+.lay i{width:12px;height:12px;border-radius:3px;display:inline-block;opacity:.35}.lay.on{color:var(--tx);background:rgba(255,255,255,.06)}.lay.on i{opacity:1}
+#legend{display:flex;gap:4px;align-items:center;margin-top:7px;font-size:11px;color:var(--mut);flex-wrap:wrap}
+#legend span.sw{display:inline-flex;align-items:center;gap:3px;margin-right:6px}#legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.foot{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:var(--mut);font-size:11px;flex-wrap:wrap}.foot a{color:var(--mut)}
+#zoom{position:fixed;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:5}
+#zoom button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:#fff;font-size:18px;cursor:pointer}
+#load{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--panel);padding:10px 16px;border-radius:12px;border:1px solid var(--line);z-index:6;font-weight:600;display:none}
+#hint{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);background:rgba(0,0,0,.65);padding:8px 14px;border-radius:10px;font-size:13px;z-index:4;pointer-events:none;transition:opacity .6s}
+#about{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9;display:none;align-items:center;justify-content:center;padding:16px}
+#about div{background:#141b17;border:1px solid var(--line);border-radius:14px;padding:18px 20px;max-width:560px;font-size:13.5px;line-height:1.55}
+#about h3{margin:0 0 8px;font:800 19px Fraunces,serif}#about button{margin-top:10px;border:0;background:var(--acc);color:#1a1405;font:700 13px Inter;padding:8px 14px;border-radius:8px;cursor:pointer}
+.link{background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+@media (max-width:640px){h1{font-size:18px}#yearBig{font-size:40px;top:92px;right:12px}.sub{display:none}.panel{left:6px;right:6px;bottom:6px;padding:10px}#zoom{display:none}
+#stats{top:auto;bottom:auto;left:8px;top:92px;min-width:0;padding:7px 9px;font-size:11px}#stats b{font-size:13px}}
+</style>
+</head>
+<body>
+<canvas id="map"></canvas>
+<header>
+  <div class="brand"><h1>Wehikuł czasu <span>·</span> Życie PW</h1><div class="sub">Jak rosły miasta powiatu wołomińskiego: zdjęcia lotnicze od 1997 roku</div></div>
+  <div class="cities" id="cities"></div>
+</header>
+<div id="yearBig"></div>
+<div id="stats"></div>
+<div id="zoom"><button id="zin" aria-label="Przybliż">+</button><button id="zout" aria-label="Oddal">−</button><button id="zfit" aria-label="Całe miasto">⤢</button></div>
+<div id="hint">Przeciągnij, aby przesunąć · kółko lub dwa palce, aby przybliżyć</div>
+<div id="load">Ładowanie zdjęć…</div>
+<div id="about"><div><h3>Skąd te warstwy?</h3>
+<p>Las, wycinki, budynki i drogi na tej mapie są <b>wyliczone osobno dla każdego roku ze zdjęć lotniczych</b> GUGiK, a nie przepisane z dzisiejszej mapy.</p>
+<p>Model komputerowy nauczył się na każdym zdjęciu, jak wygląda dach, las, asfalt i droga gruntowa. Punktem odniesienia są obrysy z państwowej bazy BDOT10k. Potem sprawdził każdy budynek i każdy odcinek drogi osobno: czy w danym roku już stał, czy droga istniała i czy była utwardzona. Na koniec wyniki wygładzono w czasie: budynek nie znika i nie wraca, asfalt nie zamienia się w piach, a las nie znika na rok tylko dlatego, że zdjęcie zrobiono wczesną wiosną.</p>
+<p><b>Ograniczenia:</b> zdjęcia mają 2 m na piksel, więc małe budynki gospodarcze bywają pomijane. Obiekty rozebrane przed dziś, których nie ma w BDOT10k, nie są pokazane. Pojedyncze błędy są możliwe. To obraz zmian, a nie rejestr urzędowy.</p>
+<p style="color:var(--mut);font-size:12px">Zdjęcia: GUGiK (geoportal.gov.pl). Obrysy referencyjne: BDOT10k, GUGiK. Opracowanie: Życie PW.</p>
+<button id="aboutClose">Zamknij</button></div></div>
+<div class="panel">
+  <div class="row">
+    <div class="modes"><button id="mSlide" class="on">Suwak lat</button><button id="mCmp">Przed / po</button></div>
+    <button class="play" id="play" title="Odtwórz">▶</button>
+    <div class="timeline" id="tl"><input type="range" id="yr" min="0" max="7" step="0.01" value="7"><div class="ticks" id="ticks"></div></div>
+    <div class="cmp" id="cmp"><select id="yA"></select><span style="color:var(--mut)">⇆</span><select id="yB"></select><span style="color:var(--mut);font-size:12px">przeciągnij kurtynę na mapie</span></div>
+  </div>
+  <div class="layers" id="layers"></div>
+  <div id="legend"></div>
+  <div class="foot"><span>Zdjęcia: <a href="https://www.geoportal.gov.pl" target="_blank" rel="noopener">GUGiK</a> · warstwy wyliczone ze zdjęć dla każdego roku · <button class="link" id="aboutBtn">jak to policzono?</button></span><span>zyciepw.pl</span></div>
+</div>
+<script>
+const CITIES=[{"slug": "wolomin", "name": "Wołomin", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 3821, "H": 3732}, {"slug": "kobylka", "name": "Kobyłka", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 3480, "H": 3441}, {"slug": "marki", "name": "Marki", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 3392, "H": 4297}, {"slug": "zabki", "name": "Ząbki", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 2481, "H": 2547}, {"slug": "zielonka", "name": "Zielonka", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 3357, "H": 4395}, {"slug": "radzymin", "name": "Radzymin", "years": ["2001", "2007", "2011", "2014", "2017", "2020", "2022", "2024"], "W": 4529, "H": 4005}, {"slug": "tluszcz", "name": "Tłuszcz", "years": ["1997", "2006", "2010", "2014", "2017", "2020", "2022", "2024"], "W": 2488, "H": 1864}, {"slug": "jadow", "name": "Jadów", "years": ["1997", "2006", "2010", "2014", "2017", "2020", "2022", "2024"], "W": 2103, "H": 2305}];
+const PAL=['#9aa7b4','#3a86ff','#00b4d8','#2ec4b6','#a7c957','#ffd166','#f8961e','#ef233c'];
+const LAYERS=[{k:'las',n:'Las',c:'#2fa84f'},{k:'wyc',n:'Wycinki',c:'#ff3b30'},{k:'bud',n:'Budynki wg roku powstania',c:'linear-gradient(90deg,#3a86ff,#ffd166,#ef233c)'},{k:'dr',n:'Drogi: asfalt / gruntowe',c:'#fff'},{k:'gr',n:'Granica miasta',c:'#ffd166'}];
+const on={las:false,wyc:true,bud:true,dr:false,gr:true};
+const cv=document.getElementById('map'),ctx=cv.getContext('2d');
+let DPR=Math.min(2,window.devicePixelRatio||1),VW,VH;
+let city=null,imgs={},D=null,G=null,view={s:1,x:0,y:0},t=0,mode='slide',curt=.5,yA=0,yB=0,playing=null,forestBits=null,fCache={},pCache={};
+
+function resize(){VW=innerWidth;VH=innerHeight;cv.width=VW*DPR;cv.height=VH*DPR;cv.style.width=VW+'px';cv.style.height=VH+'px';draw()}
+function fit(){if(!city)return;const top=innerWidth<640?100:110,bot=innerWidth<640?170:150;const s=Math.min(VW/city.W,(VH-top-bot)/city.H);view.s=s;view.x=(VW-city.W*s)/2;view.y=top+((VH-top-bot)-city.H*s)/2;draw()}
+function load(src){return new Promise(r=>{const i=new Image();i.decoding='async';i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src})}
+const dec=a=>{const o=new Float32Array(a.length);let x=0,y=0;for(let i=0;i<a.length;i+=2){x+=a[i];y+=a[i+1];o[i]=x/2;o[i+1]=y/2}return o};
+function addPath(p,c,close){p.moveTo(c[0],c[1]);for(let i=2;i<c.length;i+=2)p.lineTo(c[i],c[i+1]);if(close)p.closePath()}
+
+async function setCity(slug){
+  const c=CITIES.find(x=>x.slug===slug)||CITIES[0];city=c;imgs={};D=null;G=null;forestBits=null;fCache={};pCache={};
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.dataset.s===c.slug));
+  if(location.hash.slice(1)!==c.slug)history.replaceState(null,'','#'+c.slug);
+  const n=c.years.length,yr=document.getElementById('yr');yr.max=n-1;t=n-1;yr.value=t;yA=0;yB=n-1;
+  document.getElementById('ticks').innerHTML=c.years.map((y,i)=>`<span style="left:${i/(n-1)*100}%" data-i="${i}">${y}</span>`).join('');
+  const opts=c.years.map((y,i)=>`<option value="${i}">${y}</option>`).join('');const A=document.getElementById('yA'),B=document.getElementById('yB');A.innerHTML=opts;B.innerHTML=opts;A.value=yA;B.value=yB;
+  legend();fit();document.getElementById('load').style.display='block';
+  loadData(c);
+  const order=[n-1,0,...c.years.map((_,i)=>i).slice(1,n-1).reverse()];
+  const first=await Promise.all(order.slice(0,2).map(i=>load(`img/${c.slug}_${c.years[i]}.webp`)));
+  if(city!==c)return;imgs[order[0]]=first[0];imgs[order[1]]=first[1];document.getElementById('load').style.display='none';draw();
+  for(const i of order.slice(2)){const im=await load(`img/${c.slug}_${c.years[i]}.webp`);if(city!==c)return;imgs[i]=im;draw()}
+  ui();
+}
+async function loadData(c){
+  const [r,fimg]=await Promise.all([fetch(`data/${c.slug}.json`).then(r=>r.json()),load(`data/${c.slug}_las.png`)]);if(city!==c)return;
+  D=r;const Y=D.years.length;
+  G={bud:D.bud.map(dec),dr:D.dr.map(x=>dec(x[2])),kolej:new Path2D(),gr:new Path2D()};
+  D.kolej.forEach(a=>addPath(G.kolej,dec(a),false));D.granica.forEach(a=>addPath(G.gr,dec(a),true));
+  G.first=D.bb.map(b=>{for(let i=0;i<Y;i++)if(b>>i&1)return i;return -1});
+  if(fimg){const oc=document.createElement('canvas');oc.width=fimg.width;oc.height=fimg.height;const x=oc.getContext('2d');x.drawImage(fimg,0,0);const d=x.getImageData(0,0,oc.width,oc.height).data;forestBits={w:oc.width,h:oc.height,b:new Uint8Array(oc.width*oc.height)};for(let i=0;i<forestBits.b.length;i++)forestBits.b[i]=d[i*4]}
+  stats();draw();
+}
+// per-year paths for buildings and roads
+function paths(i,pb){
+  if(pb==null)pb=i-1;const key=i+'_'+pb;if(pCache[key])return pCache[key];const Y=D.years.length;
+  const P={bud:[],newb:new Path2D(),pav:[0,0,0,0,0,0,0].map(()=>new Path2D()),unp:new Path2D(),newp:new Path2D()};
+  for(let k=0;k<Y;k++)P.bud.push(new Path2D());
+  G.bud.forEach((c,j)=>{if(D.bb[j]>>i&1){const f=Math.max(0,Math.min(G.first[j],i));addPath(P.bud[G.first[j]<0?0:f],c,true);if(i>0&&G.first[j]===i)addPath(P.newb,c,true)}});
+  G.dr.forEach((c,j)=>{const s=D.ds[j][i];if(s==='2'){addPath(P.pav[D.dr[j][0]],c,false);if(pb>=0&&pb<i&&D.ds[j][pb]!=='2')addPath(P.newp,c,false)}else if(s==='1')addPath(P.unp,c,false)});
+  if(Object.keys(pCache).length>8)pCache={};return pCache[key]=P;
+}
+// forest raster for year i (and cuts relative to base year b)
+function forest(i,b){
+  const key=i+'_'+b;if(fCache[key])return fCache[key];if(!forestBits)return null;
+  const {w,h,b:bits}=forestBits,oc=document.createElement('canvas');oc.width=w;oc.height=h;const x=oc.getContext('2d'),im=x.createImageData(w,h),d=im.data;
+  const mi=1<<i;let baseMask=0;for(let k=b;k<i;k++)baseMask|=1<<k;
+  for(let p=0;p<bits.length;p++){const v=bits[p],q=p*4;
+    if(on.las&&(v&mi)){d[q]=40;d[q+1]=175;d[q+2]=75;d[q+3]=120}
+    else if(on.wyc&&!(v&mi)&&(v&baseMask)){ // forest earlier, gone now
+      let last=-1;for(let k=i-1;k>=b;k--)if(v>>k&1){last=k;break}
+      const recent=last===i-1;d[q]=255;d[q+1]=recent?40:90;d[q+2]=recent?30:70;d[q+3]=recent?210:150}}
+  x.putImageData(im,0,0);if(Object.keys(fCache).length>6)fCache={};return fCache[key]=oc;
+}
+function drawLayers(i,base,clipX){
+  if(!D)return;const s=view.s;ctx.save();if(clipX!=null){ctx.beginPath();ctx.rect(clipX,-1e6,2e6,2e6);ctx.clip()}
+  if(on.las||on.wyc){const f=forest(i,base);if(f){ctx.imageSmoothingEnabled=false;ctx.drawImage(f,0,0,city.W,city.H);ctx.imageSmoothingEnabled=true}}
+  if(on.dr){const P=paths(i,mode==='cmp'&&clipX!=null?base:i-1);ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.setLineDash([4/s,4/s]);ctx.strokeStyle='rgba(214,150,80,.95)';ctx.lineWidth=1.6/s*Math.max(1,Math.min(2,s));ctx.stroke(P.unp);ctx.setLineDash([]);
+    const Wd=[0,4,3.2,2.4,1.8,1.4,1];for(let k=6;k>=1;k--){ctx.strokeStyle=k<=2?'#ffb703':k<=3?'#ffe27a':'rgba(255,255,255,.92)';ctx.lineWidth=Wd[k]/s*Math.max(1,Math.min(2.2,s*1.3));ctx.stroke(P.pav[k])}
+    ctx.strokeStyle='#00e5ff';ctx.lineWidth=3/s*Math.max(1,Math.min(2,s));ctx.stroke(P.newp);
+    ctx.setLineDash([6/s,6/s]);ctx.strokeStyle='#fff';ctx.lineWidth=2.4/s;ctx.stroke(G.kolej);ctx.setLineDash([]);ctx.strokeStyle='#222';ctx.lineWidth=1/s;ctx.stroke(G.kolej)}
+  if(on.bud){const P=paths(i);for(let k=0;k<=i;k++){ctx.fillStyle=k===0||k<base?'rgba(150,160,172,.55)':PAL[k];ctx.globalAlpha=k===0||k<base?1:.85;ctx.fill(P.bud[k])}ctx.globalAlpha=1;
+    if(mode==='slide'&&i>0){ctx.strokeStyle='#fff';ctx.lineWidth=Math.min(1.6/s,2.5);ctx.stroke(P.newb)}}
+  if(on.gr){ctx.setLineDash([10/s,6/s]);ctx.strokeStyle='rgba(0,0,0,.6)';ctx.lineWidth=4/s;ctx.stroke(G.gr);ctx.strokeStyle='#ffd166';ctx.lineWidth=2/s;ctx.stroke(G.gr);ctx.setLineDash([])}
+  ctx.restore();
+}
+function drawImg(i,alpha,clipX){const im=imgs[i];if(!im)return;ctx.save();ctx.globalAlpha=alpha;if(clipX!=null){ctx.beginPath();ctx.rect(clipX,-1e6,2e6,2e6);ctx.clip()}ctx.drawImage(im,0,0,city.W,city.H);ctx.restore()}
+function nearest(i){if(imgs[i])return i;for(let d=1;d<20;d++){if(imgs[i-d])return i-d;if(imgs[i+d])return i+d}return null}
+function draw(){
+  if(!city||!VW)return;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.setTransform(DPR*view.s,0,0,DPR*view.s,DPR*view.x,DPR*view.y);ctx.fillStyle='#222';ctx.fillRect(0,0,city.W,city.H);
+  if(mode==='slide'){const a=Math.floor(t),f=t-a,ia=nearest(a);if(ia!=null)drawImg(ia,1);if(f>.001&&imgs[a+1])drawImg(a+1,f);drawLayers(Math.round(t),0,null)}
+  else{const ia=nearest(yA),ib=nearest(yB),cx=(curt*VW-view.x)/view.s;if(ia!=null)drawImg(ia,1);
+    ctx.save();ctx.beginPath();ctx.rect(-1e6,-1e6,cx+1e6,2e6);ctx.clip();drawLayers(yA,0,null);ctx.restore();
+    if(ib!=null)drawImg(ib,1,cx);drawLayers(yB,yA,cx)}
+  if(mode==='cmp'){ctx.setTransform(DPR,0,0,DPR,0,0);const x=curt*VW;ctx.fillStyle='#fff';ctx.fillRect(x-1.5,0,3,VH);ctx.beginPath();ctx.arc(x,VH*.45,18,0,7);ctx.fill();ctx.fillStyle='#111';ctx.font='700 13px Inter';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('◀ ▶',x,VH*.45+1);
+    ctx.font='800 22px Fraunces,serif';ctx.lineWidth=4;ctx.strokeStyle='rgba(0,0,0,.6)';ctx.fillStyle='#fff';const top=innerWidth<640?150:130;
+    ctx.textAlign='right';ctx.strokeText(city.years[yA],x-14,top);ctx.fillText(city.years[yA],x-14,top);ctx.textAlign='left';ctx.strokeText(city.years[yB],x+14,top);ctx.fillText(city.years[yB],x+14,top)}
+  const yb=document.getElementById('yearBig');if(mode==='slide'){yb.innerHTML=`${city.years[Math.round(t)]}<small>${city.name}</small>`;yb.style.display=''}else yb.style.display='none';
+}
+let raf=0;function req(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw()})}
+const fmt=n=>n.toLocaleString('pl-PL');
+function stats(){
+  const el=document.getElementById('stats');if(!D){el.innerHTML='';return}
+  const i=mode==='slide'?Math.round(t):yB,b=mode==='slide'?0:yA,S=D.stats,s=S[i],o=S[b];
+  const d=(x,y,u,green)=>{const v=Math.round((x-y)*10)/10;if(i===b||!v)return'';const up=v>0;return`<span class="d ${green?(up?'gr':'dn'):'up'}">${up?'+':'−'}${fmt(Math.abs(v))}${u}</span>`};
+  el.innerHTML=`<div class="t">${city.name} (w granicach miasta) · ${D.years[i]}${i!==b?` · zmiana od ${D.years[b]}`:''}</div>
+  <div class="r"><span>Budynki</span><span><b>${fmt(s.bud)}</b>${d(s.bud,o.bud,'')}</span></div>
+  <div class="r"><span>Pow. dachów</span><span><b>${fmt(Math.round(s.bud_m2/1e4))} ha</b>${d(s.bud_m2/1e4,o.bud_m2/1e4,' ha')}</span></div>
+  <div class="r"><span>Las</span><span><b>${fmt(Math.round(s.las_ha))} ha</b>${d(s.las_ha,o.las_ha,' ha',true)}</span></div>
+  <div class="r"><span>Drogi utwardzone</span><span><b>${fmt(s.utw_km)} km</b>${d(s.utw_km,o.utw_km,' km')}</span></div>`;
+}
+function legend(){const L=document.getElementById('legend');if(!city)return;
+  L.innerHTML=(on.bud?'<span>Budynki stoją od:</span> '+city.years.map((y,i)=>`<span class="sw"><i style="background:${PAL[i]}"></i>${i===0?'≤'+y:y}</span>`).join(''):'')+
+  (on.wyc?' <span class="sw"><i style="background:#ff2a1e"></i>wycięte od poprzedniego zdjęcia</span><span class="sw"><i style="background:#ff5a46;opacity:.7"></i>wycięte wcześniej</span>':'')+
+  (on.dr?' <span class="sw"><i style="background:#fff"></i>utwardzona</span><span class="sw"><i style="background:#d69650"></i>gruntowa</span><span class="sw"><i style="background:#00e5ff"></i>utwardzona od poprzedniego / porównywanego roku</span>':'')}
+function ui(){document.querySelectorAll('#ticks span').forEach(s=>s.classList.toggle('on',+s.dataset.i===Math.round(t)));stats()}
+// interaction
+const ptrs=new Map();let last=null,pinch=null,dragCurt=false;
+function zoomAt(f,px,py){const ns=Math.max(.05,Math.min(10,view.s*f));f=ns/view.s;view.x=px-(px-view.x)*f;view.y=py-(py-view.y)*f;view.s=ns;req()}
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);hideHint();
+  if(mode==='cmp'&&ptrs.size===1&&Math.abs(e.clientX-curt*VW)<28){dragCurt=true;return}
+  if(ptrs.size===2){const [a,b]=[...ptrs.values()];pinch={d:Math.hypot(a[0]-b[0],a[1]-b[1]),cx:(a[0]+b[0])/2,cy:(a[1]+b[1])/2}}
+  last=[e.clientX,e.clientY];cv.classList.add('drag')});
+cv.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,[e.clientX,e.clientY]);
+  if(dragCurt){curt=Math.max(0,Math.min(1,e.clientX/VW));req();return}
+  if(ptrs.size===2&&pinch){const [a,b]=[...ptrs.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]),cx=(a[0]+b[0])/2,cy=(a[1]+b[1])/2;view.x+=cx-pinch.cx;view.y+=cy-pinch.cy;zoomAt(d/pinch.d,cx,cy);pinch={d,cx,cy};return}
+  if(last){view.x+=e.clientX-last[0];view.y+=e.clientY-last[1];last=[e.clientX,e.clientY];req()}});
+function up(e){ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=null;if(!ptrs.size){last=null;dragCurt=false;cv.classList.remove('drag')}else last=[...ptrs.values()][0]}
+cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('wheel',e=>{e.preventDefault();zoomAt(Math.exp(-e.deltaY*.0018),e.clientX,e.clientY)},{passive:false});
+cv.addEventListener('dblclick',e=>zoomAt(2,e.clientX,e.clientY));
+document.getElementById('zin').onclick=()=>zoomAt(1.6,VW/2,VH/2);document.getElementById('zout').onclick=()=>zoomAt(1/1.6,VW/2,VH/2);document.getElementById('zfit').onclick=fit;
+const yr=document.getElementById('yr');
+yr.addEventListener('input',()=>{t=+yr.value;stop();req();ui()});yr.addEventListener('change',()=>anim(Math.round(t)));
+document.getElementById('ticks').addEventListener('click',e=>{if(e.target.dataset.i){stop();anim(+e.target.dataset.i)}});
+function anim(to){const from=t,t0=performance.now(),d=500;(function st(n){const k=Math.min(1,(n-t0)/d);t=from+(to-from)*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2);yr.value=t;draw();ui();if(k<1)requestAnimationFrame(st)})(t0)}
+const playB=document.getElementById('play');
+function stop(){if(playing){clearTimeout(playing);playing=null;playB.textContent='▶'}}
+playB.onclick=()=>{if(playing)return stop();if(mode!=='slide')setMode('slide');playB.textContent='❚❚';if(Math.round(t)>=city.years.length-1){t=0;yr.value=0;draw();ui()}
+  const step=()=>{const nx=Math.round(t)+1;if(nx>=city.years.length)return stop();const from=t,t0=performance.now();(function st(n){const k=Math.min(1,(n-t0)/1100);t=from+(nx-from)*k;yr.value=t;draw();ui();if(k<1&&playing)requestAnimationFrame(st)})(t0);playing=setTimeout(step,2000)};playing=setTimeout(step,200)};
+function setMode(m){mode=m;stop();document.getElementById('mSlide').classList.toggle('on',m==='slide');document.getElementById('mCmp').classList.toggle('on',m==='cmp');
+  document.getElementById('tl').style.display=m==='slide'?'':'none';document.getElementById('cmp').style.display=m==='cmp'?'flex':'none';playB.style.display=m==='slide'?'':'none';curt=.5;draw();stats()}
+document.getElementById('mSlide').onclick=()=>setMode('slide');document.getElementById('mCmp').onclick=()=>setMode('cmp');
+document.getElementById('yA').onchange=e=>{yA=+e.target.value;draw();stats()};document.getElementById('yB').onchange=e=>{yB=+e.target.value;draw();stats()};
+document.getElementById('cities').innerHTML=CITIES.map(c=>`<button class="pill" data-s="${c.slug}">${c.name}</button>`).join('');
+document.getElementById('cities').onclick=e=>{const s=e.target.dataset&&e.target.dataset.s;if(s){stop();setCity(s)}};
+document.getElementById('layers').innerHTML=LAYERS.map(l=>`<div class="lay${on[l.k]?' on':''}" data-k="${l.k}"><i style="background:${l.c}"></i>${l.n}</div>`).join('');
+document.getElementById('layers').onclick=e=>{const el=e.target.closest('.lay');if(!el)return;const k=el.dataset.k;on[k]=!on[k];el.classList.toggle('on',on[k]);fCache={};legend();draw()};
+document.getElementById('aboutBtn').onclick=()=>document.getElementById('about').style.display='flex';
+document.getElementById('aboutClose').onclick=()=>document.getElementById('about').style.display='none';
+function hideHint(){document.getElementById('hint').style.opacity=0}setTimeout(hideHint,4500);
+addEventListener('resize',()=>{resize();fit()});
+addEventListener('hashchange',()=>{const s=location.hash.slice(1);if(city&&s!==city.slug&&CITIES.some(c=>c.slug===s))setCity(s)});
+resize();setCity(location.hash.slice(1)||'wolomin');
+</script>
+</body>
+</html>
