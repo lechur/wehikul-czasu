@@ -4,7 +4,22 @@
   "adres": "ul. Wołomińska 1, 05-230 Kobyłka",
   "email": "urzad@kobylka.pl",
   "epuap": "/kobylka/skrytka",
-  "tel": "22 760 70 00"
+  "tel": "22 760 70 00",
+  "godziny": [
+   [
+    "Poniedziałek",
+    "8:00–18:00"
+   ],
+   [
+    "Wtorek–czwartek",
+    "8:00–16:00"
+   ],
+   [
+    "Piątek",
+    "8:00–14:00"
+   ]
+  ],
+  "godziny_uwagi": "Kasa: pon. 8:00–17:00, wt.–czw. 8:00–15:00, pt. 8:00–13:00."
  },
  "odpady": {
   "rejony": [
@@ -444,7 +459,73 @@
     "pdf": "https://www.kobylka.pl/uploads/pub/repozytorium/port_3975/fe08140ef659191f1f1b13004f1b27df08b9c19c.pdf"
    }
   ],
-  "zrodlo": "https://www.kobylka.pl/strona-3975-harmonogram_odbioru_odpadow_styczen.html"
+  "zrodlo": "https://www.kobylka.pl/strona-3975-harmonogram_odbioru_odpadow_styczen.html",
+  "oplata": {
+   "stawka": 39.5,
+   "terminy_md": [
+    [
+     1,
+     15,
+     null
+    ],
+    [
+     2,
+     15,
+     null
+    ],
+    [
+     3,
+     15,
+     null
+    ],
+    [
+     4,
+     15,
+     null
+    ],
+    [
+     5,
+     15,
+     null
+    ],
+    [
+     6,
+     15,
+     null
+    ],
+    [
+     7,
+     15,
+     null
+    ],
+    [
+     8,
+     15,
+     null
+    ],
+    [
+     9,
+     15,
+     null
+    ],
+    [
+     10,
+     15,
+     null
+    ],
+    [
+     11,
+     15,
+     null
+    ],
+    [
+     12,
+     15,
+     null
+    ]
+   ],
+   "opis": "Opłata za odpady: 39,50 zł od osoby miesięcznie (3 zł mniej przy kompostowniku). Płacisz do 15. dnia następnego miesiąca na indywidualne konto nieruchomości albo w kasie Urzędu; można też z góry za kwartał, pół roku lub rok."
+  }
  },
  "wydarzenia": [
   {
@@ -813,7 +894,7 @@
    "id": "marcin-zdunek",
    "imie": "Marcin Zdunek",
    "okreg": 3,
-   "funkcja": "przewodniczący Komisji Rewizyjnej (wg pamięci projektu, nie z BIP)"
+   "funkcja": "przewodniczący Komisji Rewizyjnej"
   },
   {
    "id": "andrzej-michalik",
@@ -846,5 +927,379 @@
    "funkcja": "BRAK"
   }
  ],
- "pszok": "ul. Łokietka 80, tel. 531 690 107. Wt–śr 7–13, czw–pt 12–18 (IV–IX pt do 20), sob 8–16, pn nieczynny."
+ "pszok": "ul. Łokietka 80, tel. 531 690 107. Wt–śr 7–13, czw–pt 12–18 (IV–IX pt do 20), sob 8–16, pn nieczynny.",
+ "rada": {
+  "okregi": [
+   {
+    "nr": 1,
+    "mandaty": 5,
+    "ulice": [
+     "Barbary",
+     "Bolesława Chrobrego",
+     "Bolesława Krzywoustego",
+     "Bolesława Śmiałego",
+     "Borówkowa",
+     "Ceramiczna",
+     "Czarna",
+     "Dworkowa",
+     "Dworska",
+     "Ejtnera",
+     "Gospodarcza",
+     "Jagiełły",
+     "Jeżynowa",
+     "Kazimierza Odnowiciela",
+     "Kazimierza Wielkiego",
+     "Ketlinga",
+     "Kmicica",
+     "Kontuszowa",
+     "Kordeckiego",
+     "Kościelna",
+     "Krzywa",
+     "Królowej Bony",
+     "Królowej Marysieńki",
+     "Kępna",
+     "Leszka",
+     "Logistyczna",
+     "Longinusa",
+     "Marecka",
+     "Mickiewicza",
+     "Mieszka I",
+     "Nadmeńska",
+     "Niecała",
+     "Oleńki",
+     "Olszewskiego",
+     "Paproci",
+     "Pałacowa",
+     "Piastowska",
+     "Podleśna",
+     "Pogodna",
+     "Popiełuszki",
+     "Porzeczkowa",
+     "Poziomkowa",
+     "Prosta",
+     "Prusa",
+     "Przyjacielska",
+     "Rycerska",
+     "Saska",
+     "Skrzetuskiego",
+     "Szeroka",
+     "Wołodyjowskiego",
+     "Wrzosowa",
+     "Wygonowa",
+     "Zagłoby",
+     "Zamkowa",
+     "Ziemiańska",
+     "Zygmunta Starego",
+     "Złotopolska",
+     "Łokietka",
+     "Żurawinowa"
+    ]
+   },
+   {
+    "nr": 2,
+    "mandaty": 6,
+    "ulice": [
+     "Akacjowa",
+     "Albańska",
+     "Aleja Jana Pawła II",
+     "Belgijska",
+     "Bema",
+     "Białobrzeska",
+     "Brzechwy",
+     "Brzozowa",
+     "Brzóski",
+     "Bukowa",
+     "Cedrowa",
+     "Cisowa",
+     "Czarna Kawka",
+     "Czarnoleska",
+     "Dojazdowa",
+     "Duńska",
+     "Dębowa",
+     "Długosza",
+     "Francuska",
+     "Frycza-Modrzewskiego",
+     "Graniczna",
+     "Grecka",
+     "Jabłonkowska",
+     "Jacka Soplicy",
+     "Jarzębinowa",
+     "Jazłowiecka",
+     "Jałowcowa",
+     "Jaśminowa",
+     "Kalinowa",
+     "Kasztanowa",
+     "Kochanowskiego",
+     "Konarskiego",
+     "Kossaka",
+     "Kostrowskiego",
+     "Kołłątaja",
+     "Kraszewska",
+     "Krechowiecka",
+     "Krótka",
+     "Kwiatowa",
+     "Leśmiana",
+     "Marmo",
+     "Mała",
+     "Mironowska",
+     "Modrzewiowa",
+     "Natolińska",
+     "Niska",
+     "Norweska",
+     "Norwida",
+     "Okopowa",
+     "Orszagha",
+     "Pana Tadeusza",
+     "Parkowa",
+     "Piaskowa",
+     "Pieniążka",
+     "Pionierska",
+     "Pola",
+     "Powstańców",
+     "Promienna",
+     "Radzymińska",
+     "Rasztowska",
+     "Reja",
+     "Rosłana",
+     "Rumuńska",
+     "Spokojna",
+     "Syrokomli",
+     "Szwedzka",
+     "Słoneczna",
+     "Słowackiego",
+     "Telimeny",
+     "Traugutta",
+     "Turka",
+     "Urszulki",
+     "Ustronie",
+     "Weissa",
+     "Wierzbowa",
+     "Wiesławska",
+     "Węgierska",
+     "Zaciszna",
+     "Zagórna",
+     "Zegrzyńska",
+     "Zieleniecka",
+     "ks. Kazimierza Konowrockiego",
+     "Świerkowa",
+     "Żółtowskiego"
+    ]
+   },
+   {
+    "nr": 3,
+    "mandaty": 5,
+    "ulice": [
+     "11-go Listopada",
+     "3-go Maja",
+     "Asnyka",
+     "Bohaterów Ossowa",
+     "Bohusza-Szyszko",
+     "Broniewskiego",
+     "Ceglana",
+     "Cicha",
+     "Dwernickiego",
+     "Długa",
+     "Fałata",
+     "Fredry",
+     "Kasprowicza",
+     "Klonowa",
+     "Kobyłkowska",
+     "Konopnickiej",
+     "Korczaka",
+     "Krasickiego",
+     "Królewska",
+     "Królowej Jadwigi",
+     "Leśna",
+     "Leśniczówka",
+     "Lipowa",
+     "Literacka",
+     "Nadarzyńska",
+     "Narutowicza",
+     "Nasfetera",
+     "Nałkowskiego",
+     "Nowa",
+     "Ogrodowa",
+     "Okrzei",
+     "Orkana",
+     "Orzeszkowej",
+     "Osiedlowa",
+     "Poprzeczna",
+     "Przemysłowa",
+     "Przerwy-Tetmajera",
+     "Pułaskiego",
+     "Reymonta",
+     "Rynek",
+     "Ręczajska",
+     "Sempołowskiej",
+     "Sienkiewicza",
+     "Skorupki",
+     "Solskiego",
+     "Sosnowa",
+     "Staffa",
+     "Staszica",
+     "Szpotańskiego",
+     "Topolowa",
+     "Tuwima",
+     "Warszawska",
+     "Wasia",
+     "Wiśniowa",
+     "Wołomińska",
+     "Wspólna",
+     "Wysockiego",
+     "Wyspiańskiego",
+     "Wąska",
+     "Zgoda",
+     "Zielona",
+     "Średnia",
+     "Żeromskiego",
+     "Żwirki i Wigury",
+     "Żytnia"
+    ]
+   },
+   {
+    "nr": 4,
+    "mandaty": 5,
+    "ulice": [
+     "Andersa",
+     "Batalionów Chłopskich",
+     "Borysów",
+     "Chałubińskiego",
+     "Chopina",
+     "Dereniowa",
+     "Dąbrowskiego",
+     "Dąbrowskiej",
+     "Gościnna",
+     "Grodzka",
+     "Głowackiego",
+     "Heweliusza",
+     "Hubala",
+     "Husarii",
+     "Jagodowa",
+     "Jasińskiego",
+     "Jesionowa",
+     "Jezuicka",
+     "Kawalerii",
+     "Kilińskiego",
+     "Kleeberga",
+     "Kombatantów",
+     "Kopernika",
+     "Kosynierów",
+     "Kościuszki",
+     "Kresowa",
+     "Legionów Polskich",
+     "Lotników",
+     "Maczka",
+     "Madalińskiego",
+     "Majdańska",
+     "Malinowa",
+     "Matejki",
+     "Mikołajczyka",
+     "Moniuszki",
+     "Morelowa",
+     "Nadarzyn",
+     "Napoleona",
+     "Niemcewicza",
+     "Nowaka-Jeziorańskiego",
+     "Ogińskiego",
+     "Orląt Lwowskich",
+     "Ossowska",
+     "Paderewskiego",
+     "Partyzantów",
+     "Paschalisa",
+     "Pileckiego",
+     "Plater",
+     "Polna",
+     "Poniatowskiego",
+     "Rataja",
+     "Rejtana",
+     "Rozwadowskiego",
+     "Rydza-Śmigłego",
+     "Serwitucka",
+     "Sikorskiego",
+     "Skalskiego",
+     "Skłodowskiej-Curie",
+     "Spacerowa",
+     "Szwoleżerów",
+     "Szymanowskiego",
+     "Truskawkowa",
+     "Turowska",
+     "Ułanów",
+     "Waryńskiego",
+     "Wesoła",
+     "Wieniawskiego",
+     "Wileńska",
+     "Witosa",
+     "Wróblewskiego",
+     "Zagańczyka",
+     "Zaułek",
+     "Zycha",
+     "Łukasińskiego",
+     "Źródnik",
+     "Żołnierska"
+    ]
+   }
+  ],
+  "dzielone": {
+   "Czereśniowa": [
+    [
+     1,
+     "numery nieparzyste 37-45, parzyste 6-14"
+    ],
+    [
+     4,
+     "numery nieparzyste 1-35, parzyste 2-4"
+    ]
+   ],
+   "Żymirskiego": [
+    [
+     2,
+     "numery nieparzyste 1-73A, parzyste 2-54"
+    ],
+    [
+     3,
+     "numery nieparzyste od 75 do końca, parzyste od 56 do końca"
+    ]
+   ],
+   "Załuskiego": [
+    [
+     2,
+     "numery nieparzyste 1-57, parzyste 2-88"
+    ],
+    [
+     3,
+     "numery nieparzyste od 59 do końca, parzyste od 90 do końca"
+    ]
+   ]
+  },
+  "okregi_zrodlo": "https://warszawa.kbw.gov.pl/uploaded_files/1761347908_1568-25-okregi-kobylka.pdf",
+  "sesje_daty": [
+   "2026-01-16",
+   "2026-02-18",
+   "2026-03-23",
+   "2026-04-27",
+   "2026-05-25",
+   "2026-06-25",
+   "2026-08-24",
+   "2026-09-04",
+   "2026-09-28",
+   "2026-10-26"
+  ],
+  "transmisje": "https://esesja.tv/transmisje_z_obrad/193/rada-miasta-kobylka.htm",
+  "materialy": "https://kobylka.esesja.pl",
+  "biuro_tel": "22 760 70 60",
+  "biuro_email": "brm@kobylka.pl",
+  "biuro_adres": "ul. Wołomińska 1b, 05-230 Kobyłka (Salka za drzwiami po lewej stronie, obok bankomatu PKO)",
+  "dyzury": "Radni przyjmują mieszkańców w poniedziałki 17:00–18:00 w Biurze Rady (ul. Wołomińska 1b, obok bankomatu PKO). Spotkanie z konkretnym radnym umówisz przez Biuro Rady.",
+  "dyzury_daty": [
+   "2026-11-16",
+   "2026-11-23",
+   "2026-12-07"
+  ],
+  "przewodniczaca": "Sylwia Jaźwińska",
+  "budzet_obywatelski": {
+   "url": "https://budzet.kobylka.pl",
+   "pula": 500000,
+   "opis": "Co roku mieszkańcy zgłaszają projekty i głosują, na co wydać 500 tys. zł. V edycja (2026) jest rozstrzygnięta: 7 projektów do realizacji w 2027 roku. Terminy VI edycji ogłosi Urząd."
+  }
+ }
 }

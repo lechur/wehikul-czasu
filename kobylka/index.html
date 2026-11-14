@@ -378,7 +378,7 @@ input[type=range]{padding:0;min-height:34px;border:0;accent-color:var(--acc);bac
 
 <section class="view" id="v-rada">
   <h2>Rada Miasta</h2>
-  <p class="mut">21 radnych wybranych w okręgach. Radni stanowią prawo miejscowe, uchwalają budżet i kontrolują burmistrza. Możesz zwrócić się do każdego z nich, najlepiej do radnych ze swojego okręgu.</p>
+  <p class="mut">21 radnych wybranych w 4 okręgach wyborczych. Radni stanowią prawo miejscowe, uchwalają budżet i kontrolują burmistrza. Możesz zwrócić się do każdego z nich, najlepiej do radnych ze swojego okręgu.</p>
   <div class="card" id="r-twoi"></div>
   <h3>Jak radny może pomóc</h3>
   <div class="card">
@@ -389,6 +389,8 @@ input[type=range]{padding:0;min-height:34px;border:0;accent-color:var(--acc);bac
   </div>
   <h3>Sesje Rady</h3>
   <div class="card" id="r-sesje"></div>
+  <h3>Dyżury i budżet obywatelski</h3>
+  <div class="card" id="r-bo"></div>
   <h3>Wszyscy radni</h3>
   <div id="r-lista"></div>
 </section>
@@ -507,12 +509,13 @@ function terminyPlatnosci(){const L=[];
  nextDates([[3,15,'Podatek od nieruchomości, I rata'],[5,15,'Podatek od nieruchomości, II rata'],[9,15,'Podatek od nieruchomości, III rata'],[11,15,'Podatek od nieruchomości, IV rata']],4).forEach(x=>L.push(x));
  const op=DANE&&DANE.odpady&&DANE.odpady.oplata;if(op&&Array.isArray(op.terminy_md))nextDates(op.terminy_md.map(x=>[x[0],x[1],'Opłata za odpady'+(x[2]?', '+x[2]:'')]),4).forEach(x=>L.push(x));
  const se=DANE&&DANE.rada&&DANE.rada.sesje_daty;if(Array.isArray(se))se.filter(d=>d>=today()).slice(0,2).forEach(d=>L.push({d,lab:'Sesja Rady Miasta',sesja:1}));
+ const dy=DANE&&DANE.rada&&DANE.rada.dyzury_daty;if(Array.isArray(dy))dy.filter(d=>d>=today()).slice(0,2).forEach(d=>L.push({d,lab:'Dyżur radnych, 17:00–18:00'}));
  return L.sort((a,b)=>a.d<b.d?-1:1);}
 function termRow(x){const dt=new Date(x.d+'T12:00'),n=Math.round((dt-new Date(today()+'T12:00'))/864e5);
  return `<div class="term"><div class="dd"><b>${dt.getDate()}</b><span>${dt.toLocaleDateString('pl-PL',{month:'short'})}</span></div><div class="grow"><b style="font-size:15px">${x.lab}</b><div class="${n<=7?'soon':'mut'}">${n===0?'dziś':n===1?'jutro':'za '+n+' dni'}</div></div></div>`;}
 function renderTerminy(){const L=terminyPlatnosci();
- const seen=new Set(),S=L.filter(x=>{const k=x.lab.split(',')[0];if(seen.has(k))return false;seen.add(k);return true;});$('#s-terminy').innerHTML=S.slice(0,3).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Raty podatku od nieruchomości dotyczą osób fizycznych. Kwotę podaje decyzja z Urzędu.</p>';
- $('#u-terminy').innerHTML=L.slice(0,6).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Podatek od nieruchomości: jeśli kwota nie przekracza 100 zł, płacisz całość do 15 marca.</p>'+
+ const seen=new Set(),S=L.filter(x=>{const k=x.lab.split(',')[0];if(seen.has(k))return false;seen.add(k);return true;});$('#s-terminy').innerHTML=S.slice(0,3).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Podatek: raty dla osób fizycznych, kwota w decyzji z Urzędu. Opłata za odpady: za poprzedni miesiąc.</p>';
+ $('#u-terminy').innerHTML=L.filter(x=>/Podatek|Opłata/.test(x.lab)).slice(0,5).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Podatek od nieruchomości: jeśli kwota nie przekracza 100 zł, płacisz całość do 15 marca.</p>'+
   ((DANE&&DANE.odpady&&DANE.odpady.oplata&&DANE.odpady.oplata.opis)?`<p class="mut">${DANE.odpady.oplata.opis}</p>`:'');}
 /* ===== urząd ===== */
 const USPRAWY=[
@@ -533,18 +536,21 @@ function renderUrzad(){const u=(DANE&&DANE.urzad)||{};
 /* ===== rada ===== */
 function adresMenu(){const u=store('ulica'),x=u&&rejonUlicy(u);const e=$('#m-adres');if(e)e.textContent=x?`${x.u} · ${x.r.nazwa}`+(okregUlicy()?` · okręg ${okregUlicy()}`:''):'Ustaw ulicę: wywóz i Twój okręg';}
 function okregUlicy(){const u=store('ulica');const O=DANE&&DANE.rada&&DANE.rada.okregi;if(!u||!Array.isArray(O))return null;const n=nrm(u);const f=O.find(o=>(o.ulice||[]).some(x=>nrm(x)===n));return f?f.nr:null;}
+function okregDzielony(){const u=store('ulica'),D=DANE&&DANE.rada&&DANE.rada.dzielone;if(!u||!D)return null;const k=Object.keys(D).find(x=>nrm(x)===nrm(u));return k?D[k]:null;}
 let OKR=null;
 function renderRada(){const R=(DANE&&DANE.radni&&DANE.radni.length?DANE.radni:(window.RADNI||[]));const nums=[...new Set(R.map(r=>r.okreg))].sort((a,b)=>a-b);
  const auto=okregUlicy();if(OKR===null)OKR=auto||store('okreg')||null;
  const ini=n=>n.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('');
- const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'radny okręgu nr '+r.okreg}</div></div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:''}</div>`;
+ const RB=(DANE&&DANE.rada)||{};const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'radny okręgu nr '+r.okreg}</div></div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:RB.biuro_email?`<a class="btn sm line" href="mailto:${RB.biuro_email}?subject=${encodeURIComponent('Prośba o kontakt z radnym: '+r.imie)}">Napisz</a>`:''}</div>`;
  const pick=`<div class="okr">${nums.map(n=>`<button data-ok="${n}" class="${n===OKR?'on':''}">Okręg ${n}</button>`).join('')}</div>`;
  const twoi=OKR?R.filter(r=>r.okreg===OKR):[];
- $('#r-twoi').innerHTML=`<b>Twoi radni</b><div class="mut">${auto&&OKR===auto?`Twoja ulica ${store('ulica')} leży w okręgu nr ${auto}.`:(DANE&&DANE.rada&&DANE.rada.okregi?'Ustaw ulicę w zakładce Odpady albo wybierz okręg.':'Wybierz swój okręg wyborczy.')}</div>${pick}${twoi.map(card).join('')}`;
+ const dz=okregDzielony(),src=DANE&&DANE.rada&&DANE.rada.okregi_zrodlo;
+ $('#r-twoi').innerHTML=`<b>Twoi radni</b><div class="mut">${auto&&OKR===auto?`Ulica ${store('ulica')} leży w okręgu nr ${auto}.`:dz?`Ulica ${store('ulica')} jest podzielona między okręgi: ${dz.map(x=>`okręg ${x[0]} (${x[1]})`).join('; ')}.`:store('ulica')?`Nie mam ulicy ${store('ulica')} w opisie okręgów. Wybierz okręg poniżej.`:'Ustaw ulicę w zakładce Odpady albo wybierz okręg.'}</div>${pick}${twoi.map(card).join('')}${src?`<p class="mut" style="margin:8px 0 0">Granice okręgów: <a href="${src}" target="_blank" rel="noopener">postanowienie Komisarza Wyborczego</a>.</p>`:''}`;
  $$('#r-twoi [data-ok]').forEach(b=>b.onclick=()=>{OKR=+b.dataset.ok;store('okreg',OKR);renderRada();});
  $('#r-lista').innerHTML=nums.map(n=>`<div class="card"><b>Okręg nr ${n}</b>${R.filter(r=>r.okreg===n).map(card).join('')}</div>`).join('');
  const se=(DANE&&DANE.rada)||{};
- $('#r-sesje').innerHTML=`<div>Sesje są jawne. Możesz przyjść albo obejrzeć transmisję.</div>${Array.isArray(se.sesje_daty)&&se.sesje_daty.some(d=>d>=today())?`<div style="margin-top:6px">Najbliższa sesja: <b>${fmtD(se.sesje_daty.find(d=>d>=today()))}</b></div>`:''}<div class="flex-wrap" style="margin-top:10px">${se.transmisje?`<a class="btn sm" href="${se.transmisje}" target="_blank" rel="noopener">Transmisje i nagrania</a>`:''}${se.biuro_tel?`<a class="btn sm line" href="tel:${se.biuro_tel.replace(/\s/g,'')}">Biuro Rady</a>`:''}${se.biuro_email?`<a class="btn sm line" href="mailto:${se.biuro_email}">E-mail do Biura Rady</a>`:''}</div>${se.dyzury?`<p class="mut">${se.dyzury}</p>`:''}`;}
+ const bo=se.budzet_obywatelski;$('#r-bo').innerHTML=bo?`<b>Budżet obywatelski</b><p style="margin:6px 0">${bo.opis}</p><a class="btn sm" href="${bo.url}" target="_blank" rel="noopener">budzet.kobylka.pl</a>`:'';
+ $('#r-sesje').innerHTML=`<div>Sesje są jawne: możesz przyjść do sali konferencyjnej Urzędu albo obejrzeć transmisję.</div>${se.przewodniczaca?`<div class="mut">Przewodnicząca Rady: ${se.przewodniczaca}</div>`:''}${Array.isArray(se.sesje_daty)&&se.sesje_daty.some(d=>d>=today())?`<div style="margin-top:6px">Najbliższa sesja: <b>${fmtD(se.sesje_daty.find(d=>d>=today()))}</b></div>`:''}<div class="flex-wrap" style="margin-top:10px">${se.transmisje?`<a class="btn sm" href="${se.transmisje}" target="_blank" rel="noopener">Transmisje i nagrania</a>`:''}${se.biuro_tel?`<a class="btn sm line" href="tel:${se.biuro_tel.replace(/\s/g,'')}">Biuro Rady</a>`:''}${se.biuro_email?`<a class="btn sm line" href="mailto:${se.biuro_email}">E-mail do Biura Rady</a>`:''}</div>${se.dyzury?`<p class="mut">${se.dyzury}</p>`:''}`;}
 /* ===== lokalnie ===== */
 const zl=v=>Math.round(v).toLocaleString('pl-PL');
 function lok(){const kw=+$('#lk-kw').value,n=+$('#lk-n').value,doch=+$('#lk-doch').value;
