@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0F1B2D">
+<meta name="theme-color" content="#F4F6F9">
 <title>Aplikacja mieszkańca Kobyłki</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Kobyłka">
 <meta property="og:type" content="website"><meta property="og:url" content="https://lechur.github.io/wehikul-czasu/kobylka/"><meta property="og:title" content="Aplikacja mieszkańca Kobyłki"><meta property="og:description" content="Wywóz odpadów pod Twoim adresem, wydarzenia, sprawy do Urzędu i radnych, firmy sąsiadów i niebo nad Kobyłką. Bezpłatnie, w telefonie."><meta property="og:image" content="https://lechur.github.io/wehikul-czasu/kobylka/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="pl_PL"><meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Aplikacja mieszkańca Kobyłki: odpady, wydarzenia, zgłoszenia i pisma do Urzędu, sprawy do radnych, niebo nad miastem.">
@@ -78,25 +78,104 @@ nav.bar button.on{color:var(--gold)}
 details summary{cursor:pointer}
 .photo{max-width:100%;border-radius:10px;margin-top:6px}
 .empty{text-align:center;color:var(--mut);padding:20px}
+
+/* ===== UX/UI 2026-11 ===== */
+:root{--bg:#F4F6F9;--card:#fff;--ink:#14213D;--mut:#5B6577;--line:#E4E8EF;--pri:#14315A;--acc:#0E7C6B;--acc2:#E6F4F1;--acc-ink:#0B5E52;--warm:#F59E0B;--night:#14315A;--night2:#1C4170}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+header.app{position:sticky;top:0;z-index:12;background:rgba(244,246,249,.92);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);color:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid transparent}
+header.app.sc{border-bottom-color:var(--line)}
+header.app .logo{width:38px;height:38px;border-radius:11px;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;letter-spacing:-.02em;flex:none}
+header.app h1{font-family:inherit;font-weight:800;font-size:20px;letter-spacing:-.02em;margin:0;line-height:1.1}
+header.app .hdate{font-size:12.5px;color:var(--mut);text-transform:capitalize}
+.ib{width:42px;height:42px;border-radius:12px;border:0;background:#fff;color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer}
+main{max-width:720px;padding:6px 16px calc(110px + env(safe-area-inset-bottom))}
+h2{font-family:inherit;font-weight:800;font-size:26px;letter-spacing:-.02em;margin:10px 0 12px}
+h3{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--mut);margin:22px 0 8px}
+.sec{display:flex;align-items:baseline;justify-content:space-between}.sec a,.sec button{font-size:14px;font-weight:600;color:var(--acc);text-decoration:none;background:none;border:0;padding:0;cursor:pointer}
+.card{border:0;border-radius:18px;padding:16px;box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04)}
+.card.night{background:var(--acc2);color:var(--ink);box-shadow:none}.card.night .mut{color:var(--mut)}
+.card.dark{background:linear-gradient(160deg,#0F1B2D,#16263f);color:#F3EAD7;border:0}.card.dark .mut{color:#c9c3b3}
+.mut{font-size:14px}
+.btn{background:var(--pri);border-radius:14px;padding:13px 18px;font-weight:650;min-height:46px;transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.gold{background:var(--acc);color:#fff}.btn.line{background:#fff;color:var(--ink);border:1px solid #CBD2DC}.btn.sm{padding:9px 14px;min-height:38px;font-size:14px;border-radius:12px}
+input,select,textarea{font-size:16px;padding:12px 13px;border:1px solid #CFD6E0;border-radius:12px;min-height:48px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(14,124,107,.15)}
+label{font-size:14px;font-weight:600;color:var(--ink)}
+.chip{background:#EEF1F5;color:var(--ink);font-weight:500;padding:4px 10px}
+nav.bar{background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);grid-template-columns:repeat(5,1fr);padding:6px 6px calc(8px + env(safe-area-inset-bottom))}
+nav.bar button{color:#7A8496;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0}
+nav.bar button .i{width:24px;height:24px}
+nav.bar button.on{color:var(--acc)}
+nav.bar button.fab .i{width:30px;height:30px;color:#fff;background:var(--acc);border-radius:50%;padding:5px;box-sizing:content-box;margin-top:-4px;box-shadow:0 4px 12px rgba(14,124,107,.35)}
+nav.bar button.fab.on{color:var(--acc)}
+.toast{bottom:calc(92px + env(safe-area-inset-bottom));border-radius:14px;background:#14213D;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.qa button{display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:#fff;border:0;border-radius:18px;padding:14px;text-align:left;font:inherit;color:var(--ink);box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);cursor:pointer;min-height:96px}
+.qa button:active{transform:scale(.98)}
+.qa .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.qa b{font-size:15px;line-height:1.2}.qa small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px;font-weight:400}
+.menu{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);margin:10px 0}
+.menu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:#fff;padding:14px 16px;font:inherit;color:var(--ink);text-align:left;border-bottom:1px solid var(--line);cursor:pointer;min-height:64px}
+.menu button:last-child{border-bottom:0}.menu button:active{background:#F6F8FA}
+.menu .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.menu .t{flex:1;min-width:0}.menu .t b{display:block;font-size:16px}.menu .t small{color:var(--mut);font-size:13px}
+.menu .chev{color:#A0A8B6}
+.badge{background:var(--acc);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px}
+.c1{background:#E6F4F1;color:#0E7C6B}.c2{background:#EAF0FB;color:#2456B3}.c3{background:#FEF3E2;color:#B45309}.c4{background:#F3ECFB;color:#7C3AED}.c5{background:#FDECEC;color:#C2410C}.c6{background:#EEF1F5;color:#334155}
+#s-waste{background:linear-gradient(135deg,#0E7C6B,#0B5E52);color:#fff}
+#s-waste .mut{color:rgba(255,255,255,.8)}#s-waste .wtag{color:#fff}#s-waste .btn.line{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}#s-waste .btn{background:#fff;color:var(--acc-ink)}
+#s-waste .wbig{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:2px 0 8px}
+.wnext{background:linear-gradient(135deg,#0E7C6B,#0B5E52)}.wnext .when{font-family:inherit;font-weight:800;letter-spacing:-.01em}
+.wday,.ev .d{background:#EEF1F5}
+.ev.sky .d{background:#14315A;color:#fff}
+.today{display:flex;gap:14px;align-items:center}.today .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
+#install{background:#fff!important;color:var(--ink);box-shadow:0 10px 30px rgba(20,33,61,.18)}#install .mut{color:var(--mut)}#install-x{color:var(--mut)}
+header.app .hdate{text-transform:none}
+#s-dzis{text-transform:none!important}
+#s-waste .wtag i,.wnext .bin i{box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+nav.bar button .i{height:26px}
+nav.bar button.fab .i{width:26px;height:26px;padding:8px;margin-top:-16px}
+#s-zap .card .flex-wrap{margin-top:auto!important;padding-top:10px}
+#f-branze,#v-kal>.flex-wrap{flex-wrap:nowrap;overflow-x:auto;margin-left:-16px;margin-right:-16px;padding:2px 16px 6px;scrollbar-width:none}
+#f-branze::-webkit-scrollbar,#v-kal>.flex-wrap::-webkit-scrollbar{display:none}
+#f-branze .btn,#v-kal>.flex-wrap .btn{white-space:nowrap;flex:none}
+.back{display:none;width:38px;height:38px;border-radius:11px;border:0;background:#fff;color:var(--ink);place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer;flex:none}
+header.app.sub .back{display:grid}header.app.sub .logo{display:none}
+.back svg{transform:rotate(180deg)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 10px;padding:2px 16px 4px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;white-space:nowrap;font:inherit;font-size:14px;font-weight:600;border:1px solid #CBD2DC;background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}
+.tabs button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+header.app .logo{background:linear-gradient(145deg,#1C4170,#14315A);position:relative;overflow:hidden}header.app .logo::after{content:"";position:absolute;right:-9px;bottom:-9px;width:22px;height:22px;border-radius:50%;background:#0E7C6B;z-index:0}header.app .logo{z-index:0}header.app .logo span{position:relative;z-index:1}
+.letter{font-size:15px;line-height:1.55;color:var(--ink)}
 </style>
 </head>
 <body>
-<header>
-  <canvas id="hsky" aria-label="Niebo nad Kobyłką teraz"></canvas>
-  <div class="grow"><div class="sub" style="letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-size:11px">Aplikacja mieszkańca</div><h1>Kobyłka</h1><div class="sub" id="hsub">Niebo nad Kobyłką w tej chwili</div></div>
+<header class="app"><canvas id="hsky" hidden></canvas><span id="hsub" hidden></span>
+  <button class="back" data-go="menu" aria-label="Wróć"><svg class="i" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button><div class="logo" aria-hidden="true"><span>K</span></div>
+  <div class="grow"><h1>Kobyłka</h1><div class="hdate" id="hdate">Aplikacja mieszkańca</div></div>
+  <button class="ib" data-polec aria-label="Poleć aplikację"><svg class="i" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg></button>
 </header>
 <main>
 <!-- START -->
 <section class="view on" id="v-start">
-  <div class="card night" style="text-align:center;padding:10px"><canvas id="startsky" style="width:min(340px,80vw);height:min(340px,80vw)"></canvas><div class="mut">Niebo nad Kobyłką w tej chwili · <a href="#" data-go="odkryj" style="color:var(--gold)">zobacz niebo w swoim dniu</a></div></div>
-  <h3>Zapowiedzi</h3><div id="s-zap" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px"></div>
-  <div class="card night"><div class="row"><div class="grow"><div class="mut">Dziś</div><div class="big" id="s-dzis"></div><div class="mut" id="s-sun"></div></div><div style="text-align:right"><div class="mut">Księżyc</div><div id="s-moon"></div></div></div></div>
-  <h3>Odpady</h3><div class="card" id="s-waste"></div>
-  <h3>Moje sprawy</h3><div class="card" id="s-sprawy"></div>
-  <h3>Sąsiedzi polecają</h3><div id="s-firmy" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px"></div>
-  <h3>Na niebie</h3><div class="card" id="s-ev"></div>
-  <div class="card"><div class="mut" style="font-family:Georgia,serif;font-size:16px;color:var(--ink)">Drodzy Mieszkańcy, przygotowałam dla Was aplikację, w której Kobyłka mieści się w kieszeni: odpady, wydarzenia, sprawy do załatwienia w Urzędzie i niebo nad naszym miastem. Jest otwarta dla wszystkich radnych, więc swoją sprawę możecie przekazać radnemu, którego wybierzecie.</div><div class="mut" style="margin-top:6px">Edyta Zbieć, radna Rady Miasta Kobyłka</div></div>
-  <div class="card"><b>Coś nie działa albo czegoś brakuje?</b><p class="mut">Zgłoś dziurę, zgasłą latarnię, potrzebę przejścia dla pieszych. Aplikacja przygotuje pismo do Urzędu, przypilnuje terminu odpowiedzi i w razie potrzeby przygotuje ponaglenie.</p><button class="btn gold" data-go="zglos">Zgłoś sprawę</button></div>
+  <div class="sec"><h3>Wywóz odpadów</h3></div>
+  <div class="card" id="s-waste"></div>
+  <div class="qa">
+   <button data-go="zglos"><span class="ico c5"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><span><b>Zgłoś problem</b><small>dziura, latarnia, potrzeba</small></span></button>
+   <button data-go="sprawy"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></span><span><b>Moje sprawy</b><small>pisma i terminy</small></span></button>
+   <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><b>Ważne telefony</b><small>awarie i alarmowe</small></span></button>
+   <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span><b>Firmy sąsiadów</b><small>kupuj lokalnie</small></span></button>
+  </div>
+  <div class="sec"><h3>Wydarzenia</h3><button data-go="kal">Wszystkie</button></div>
+  <div id="s-zap" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px"></div>
+  <div class="sec"><h3>Moje sprawy</h3><button data-go="sprawy">Otwórz</button></div><div class="card" id="s-sprawy"></div>
+  <div class="sec"><h3>Sąsiedzi polecają</h3><button data-go="firmy">Katalog</button></div>
+  <div id="s-firmy" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px"></div>
+  <h3>Dziś</h3>
+  <div class="card today"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div class="grow"><b id="s-dzis" style="text-transform:capitalize"></b><div class="mut" id="s-sun"></div><div class="mut">Księżyc: <span id="s-moon"></span></div></div><button class="btn sm line" data-go="odkryj">Odkrywaj</button></div>
+  <div class="card"><div class="letter">Drodzy Mieszkańcy, przygotowałam dla Was aplikację, w której Kobyłka mieści się w kieszeni: odpady, wydarzenia, sprawy do załatwienia w Urzędzie i niebo nad naszym miastem. Jest otwarta dla wszystkich radnych, więc swoją sprawę możecie przekazać radnemu, którego wybierzecie.</div><div class="mut" style="margin-top:8px">— Edyta Zbieć, radna Rady Miasta Kobyłka</div></div>
+  <div hidden><canvas id="startsky"></canvas><div id="s-ev"></div></div>
 </section>
 
 <!-- ODPADY -->
@@ -114,7 +193,7 @@ details summary{cursor:pointer}
 
 <!-- KALENDARZ -->
 <section class="view" id="v-kal">
-  <h2>Kalendarz Kobyłki</h2>
+  <h2>Wydarzenia</h2>
   <div class="flex-wrap"><button class="btn sm" data-f="wszystko">Wszystko</button><button class="btn sm line" data-f="miasto">W mieście</button><button class="btn sm line" data-f="niebo">Na niebie</button><button class="btn sm line" data-f="odpady">Odpady</button></div>
   <div class="card" id="k-lista"></div>
   <button class="btn line wide" id="k-ics">Dodaj cały kalendarz do telefonu</button>
@@ -134,11 +213,6 @@ details summary{cursor:pointer}
 <!-- ODKRYWAJ -->
 <section class="view" id="v-odkryj">
   <h2>Odkrywaj Kobyłkę</h2>
-  <div class="card night" style="text-align:center"><b style="font-family:Georgia,serif;font-size:20px;font-weight:400">Niebo w Twoim dniu</b>
-   <p class="mut">Urodziny, ślub, narodziny dziecka, pierwszy dzień w Kobyłce. Zobacz, jak wyglądały gwiazdy nad naszym miastem.</p>
-   <div class="flex-wrap" style="justify-content:center"><input type="date" id="my-d" value="2000-01-01" min="1900-01-01" max="2100-12-31" style="width:auto"><input type="time" id="my-t" value="21:00" style="width:auto"></div>
-   <canvas id="mysky" style="width:min(380px,84vw);height:min(380px,84vw);margin-top:10px"></canvas><div class="mut" id="my-info"></div>
-   <div class="flex-wrap" style="justify-content:center;margin-top:8px"><button class="btn sm gold" id="my-save">Zapisz jako obrazek</button><button class="btn sm" id="my-share" style="background:rgba(255,255,255,.12)">Udostępnij</button></div></div>
   <h3>Mapy Kobyłki</h3>
   <div class="tabs" id="maptabs"><button data-m="wzrost" class="on">Jak rosła Kobyłka</button><button data-m="rzezba">Rzeźba terenu</button><button data-m="budynki">Każdy budynek</button><button data-m="ulice">Ulice</button></div>
   <img id="mapimg" src="img/wzrost.jpg" alt="Mapa Kobyłki" style="width:100%;border-radius:14px;display:block" loading="lazy"><p class="mut" id="mapdesc"></p>
@@ -156,7 +230,13 @@ details summary{cursor:pointer}
    <div class="ev"><div class="d">14–15<span>VIII 1920</span></div><div class="grow"><b>Walki nad Czarną i Długą</b><div class="mut">Bitwa Warszawska tuż obok, w Ossowie. Obchody co roku na Placu 15 Sierpnia.</div></div></div>
    <div class="ev"><div class="d">1969</div><div class="grow"><b>Kobyłka miastem</b><div class="mut">Nadanie praw miejskich.</div></div></div>
    <p class="mut">Źródła: <a href="https://www.kobylka.pl/strona-3967-historia_kobylki.html">kobylka.pl</a>, <a href="https://zabytek.pl/en/obiekty/kobylka-bazylika-mniejsza-pw-swietej-trojcy">zabytek.pl</a>.</p></div>
-  <button class="btn line wide" data-go="wiecej">Ważne telefony i adresy</button>
+  <h3>Niebo nad Kobyłką</h3>
+  <div class="card dark" style="text-align:center"><b style="font-size:20px">Niebo w Twoim dniu</b>
+   <p class="mut">Urodziny, ślub, narodziny dziecka, pierwszy dzień w Kobyłce. Zobacz, jak wyglądały gwiazdy nad naszym miastem.</p>
+   <div class="flex-wrap" style="justify-content:center"><input type="date" id="my-d" value="2000-01-01" min="1900-01-01" max="2100-12-31" style="width:auto"><input type="time" id="my-t" value="21:00" style="width:auto"></div>
+   <canvas id="mysky" style="width:min(380px,84vw);height:min(380px,84vw);margin-top:10px"></canvas><div class="mut" id="my-info"></div>
+   <div class="flex-wrap" style="justify-content:center;margin-top:8px"><button class="btn sm gold" id="my-save">Zapisz jako obrazek</button><button class="btn sm" id="my-share" style="background:rgba(255,255,255,.12)">Udostępnij</button></div></div>
+  
 </section>
 
 <!-- ZGŁOŚ -->
@@ -191,30 +271,43 @@ details summary{cursor:pointer}
   <div id="sp-radna" hidden><h3>Panel radnego</h3><div class="card"><label>Jestem radną / radnym</label><select id="sp-ja"></select><p class="mut">Widzisz sprawy, które mieszkańcy przekazali Tobie.</p></div><div id="sp-radna-lista"></div></div>
 </section>
 
+<!-- MENU -->
+<section class="view" id="v-menu">
+  <h2>Więcej</h2>
+  <div class="menu">
+   <button data-go="sprawy"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></span><span class="t"><b>Moje sprawy</b><small>Pisma do Urzędu, terminy, radni</small></span><span id="m-sprawy"></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span class="t"><b>Firmy sąsiadów</b><small>Usługi i sklepy z Kobyłki</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span class="t"><b>Ważne telefony i adresy</b><small>Awarie, Urząd, PSZOK, alarmowe</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="odkryj"><span class="ico c4"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span><span class="t"><b>Odkrywaj Kobyłkę</b><small>Mapy, historia, niebo w Twoim dniu</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+  </div>
+  <div class="menu">
+   <button id="m-inst"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></span><span class="t"><b>Zainstaluj aplikację</b><small id="m-inst-txt">Ikona na ekranie telefonu</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-polec><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg></span><span class="t"><b>Poleć sąsiadom</b><small>Wyślij link albo pokaż kod QR</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="wiecej" data-scroll="w-dane"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg></span><span class="t"><b>Twoje dane i o aplikacji</b><small>Co zostaje w telefonie</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+  </div>
+</section>
+
 <!-- WIĘCEJ -->
 <section class="view" id="v-wiecej">
-  <h3>Aplikacja w Twoim telefonie</h3>
+  <h2 id="w-tel">Ważne telefony i adresy</h2>
+  <div id="w-awarie"></div>
+  <canvas id="bigsky" hidden></canvas>
+  <h3 id="w-app">Aplikacja w Twoim telefonie</h3>
   <div class="card night" id="w-inst"><div class="row"><img src="icon-192.png" alt="" style="width:52px;height:52px;border-radius:12px"><div class="grow"><b>Zainstaluj aplikację</b><div class="mut" id="w-inst-txt">Ikona na ekranie telefonu, działa także bez internetu.</div></div></div>
    <button class="btn gold wide" id="w-inst-btn" style="margin-top:10px">Zainstaluj</button>
    <div class="mut" style="margin-top:10px"><b style="color:var(--star)">Android:</b> w Chrome menu ⋮ → „Zainstaluj aplikację”.<br><b style="color:var(--star)">iPhone:</b> w Safari Udostępnij ⬆ → „Do ekranu początkowego”.</div></div>
   <div class="card" style="text-align:center"><b>Poleć sąsiadom</b><p class="mut">Pokaż ten kod do zeskanowania aparatem albo wyślij link.</p><img src="qr.png" alt="Kod QR do aplikacji" style="width:200px;height:200px"><button class="btn wide" data-polec style="margin-top:10px">Wyślij link do aplikacji</button></div>
-  <h2>Ważne telefony i adresy</h2>
-  <div id="w-awarie"></div>
-  <h3>Niebo nad Kobyłką</h3>
-  <div class="card night" style="text-align:center"><canvas id="bigsky" style="width:min(360px,86vw);height:min(360px,86vw)"></canvas><div class="mut">Tak wygląda niebo teraz. Północ u góry, wschód po lewej.</div></div>
-  <h3>Twoje dane</h3><div class="card mut"><b style="color:var(--ink)">Aplikacja nie wysyła Twoich danych na żaden serwer.</b> Sprawy, pisma i zdjęcia zostają w pamięci Twojego telefonu. Pismo do Urzędu wysyłasz sam(a): e-mailem, przez ePUAP lub gov.pl albo w kancelarii. Gdy przekazujesz sprawę radnemu, wysyłasz ją ze swojej skrzynki e-mail na adres radnego; od tej chwili za Twoje dane w tej sprawie odpowiada ten radny. Wyczyszczenie danych przeglądarki usuwa sprawy z telefonu.</div>
+  <h3 id="w-dane">Twoje dane</h3><div class="card mut"><b style="color:var(--ink)">Aplikacja nie wysyła Twoich danych na żaden serwer.</b> Sprawy, pisma i zdjęcia zostają w pamięci Twojego telefonu. Pismo do Urzędu wysyłasz sam(a): e-mailem, przez ePUAP lub gov.pl albo w kancelarii. Gdy przekazujesz sprawę radnemu, wysyłasz ją ze swojej skrzynki e-mail na adres radnego; od tej chwili za Twoje dane w tej sprawie odpowiada ten radny. Wyczyszczenie danych przeglądarki usuwa sprawy z telefonu.</div>
 <div class="card mut">Aplikacja mieszkańców i radnych Kobyłki. Inicjatywa radnej Edyty Zbieć, otwarta dla wszystkich radnych Rady Miasta. To nie jest usługa Urzędu Miasta Kobyłka. Pisma wysyłasz sam(a) albo przekazujesz wybranemu radnemu. Mapy: GUGiK (BDOT10k). Gwiazdy: HYG Database i Stellarium (CC BY-SA). Odpady i wydarzenia: kobylka.pl.</div>
 </section>
 </main>
 
 <nav class="bar">
-  <button data-go="start" class="on"><b>☾</b>Start</button>
-  <button data-go="odpady"><b>♻</b>Odpady</button>
-  <button data-go="kal"><b>✦</b>Kalendarz</button>
-  <button data-go="firmy"><b>⌂</b>Firmy</button>
-  <button data-go="odkryj"><b>☆</b>Odkrywaj</button>
-  <button data-go="zglos"><b>＋</b>Zgłoś</button>
-  <button data-go="sprawy"><b>✉</b>Sprawy</button>
+  <button data-go="start" class="on"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg>Start</button>
+  <button data-go="odpady"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg>Odpady</button>
+  <button data-go="zglos" class="fab"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Zgłoś</button>
+  <button data-go="kal"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Wydarzenia</button>
+  <button data-go="menu"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>Więcej</button>
 </nav>
 <div class="toast" id="toast"></div>
 <div id="install" class="card night" style="position:fixed;left:12px;right:12px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:15;display:none"><div class="row"><img src="icon-192.png" alt="" style="width:44px;height:44px;border-radius:10px"><div class="grow"><b>Zainstaluj aplikację</b><div class="mut" id="install-txt">Kobyłka na ekranie Twojego telefonu, także bez internetu.</div></div><button class="btn sm gold" id="install-btn">Zainstaluj</button><button class="btn sm" id="install-x" aria-label="Zamknij" style="background:none">✕</button></div></div>
@@ -260,15 +353,18 @@ function drawSky(cv,t,labels){const dpr=window.devicePixelRatio||1,w=cv.clientWi
  c.restore();c.strokeStyle='rgba(243,234,215,.6)';c.lineWidth=1;c.beginPath();c.arc(cx,cy,Rr,0,7);c.stroke();
  if(labels){c.fillStyle='rgba(243,234,215,.75)';c.font='11px system-ui';c.textAlign='center';c.textBaseline='middle';[['PN',0,-1],['WSCH',-1,0],['PD',0,1],['ZACH',1,0]].forEach(([l,dx,dy])=>c.fillText(l,cx+dx*(Rr+15),cy+dy*(Rr+11)));}
  return m;}
-function skyTick(){const t=Date.now();const m=drawSky($('#hsky'),t,false);if($('#v-start').classList.contains('on'))drawSky($('#startsky'),t,true);if($('#v-wiecej').classList.contains('on'))drawSky($('#bigsky'),t,true);
- const s=sun();$('#s-dzis').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
+function skyTick(){const t=Date.now();const m=moon(t);if($('#v-start').classList.contains('on'))drawSky($('#startsky'),t,true);if($('#v-wiecej').classList.contains('on'))drawSky($('#bigsky'),t,true);
+ const s=sun();{const q=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});$('#s-dzis').textContent=q.charAt(0).toUpperCase()+q.slice(1);}
  $('#s-sun').textContent='Wschód Słońca '+s[0]+' · zachód '+s[1];$('#s-moon').textContent=moonName(m)+' '+Math.round(m.ill*100)+'%';
  const next=EVS.find(e=>e.kind==='niebo'&&e.d>=today());$('#hsub').textContent=next?('Następne na niebie: '+next.title.replace(/^\S+\s/,'')+', '+fmtD(next.d)):'Niebo nad Kobyłką w tej chwili';}
 
 /* ===== nawigacja ===== */
-function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));window.scrollTo(0,0);
+function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',TAB[v]==='menu'&&v!=='menu');}window.scrollTo(0,0);
  if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();} try{history.replaceState(null,'','#'+v);}catch(e){}}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go);if(b.dataset.scroll){const t=document.getElementById(b.dataset.scroll);if(t)setTimeout(()=>t.scrollIntoView({block:'start'}),30);}}});
+const TAB={start:'start',odpady:'odpady',zglos:'zglos',kal:'kal',menu:'menu',sprawy:'menu',firmy:'menu',wiecej:'menu',odkryj:'menu'};
+window.addEventListener('scroll',()=>{const h=document.querySelector('header.app');if(h)h.classList.toggle('sc',scrollY>4);},{passive:true});
+(()=>{const d=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});const e=document.getElementById('hdate');if(e)e.textContent=d.charAt(0).toUpperCase()+d.slice(1);})();
 
 /* ===== odpady ===== */
 const FRAK=[{k:'bio',n:'Bio',c:'#8B5A2B'},{k:'zmiesz',n:'Zmieszane',c:'#374151'},{k:'niesegreg',n:'Zmieszane',c:'#374151'},{k:'metal',n:'Metale i tworzywa',c:'#E5B700'},{k:'tworzyw',n:'Metale i tworzywa',c:'#E5B700'},{k:'papier',n:'Papier',c:'#2563EB'},{k:'szk',n:'Szkło',c:'#16A34A'},{k:'gabaryt',n:'Gabaryty',c:'#9333EA'},{k:'choink',n:'Choinki',c:'#15803D'},{k:'popi',n:'Popiół',c:'#9CA3AF'}];
@@ -329,7 +425,7 @@ function odpady(){
  const nxt=`<div class="wnext"><div class="lbl">Najbliższy wywóz · ${x.u}</div><div class="when">${kiedy(d0)}</div><div class="ile">${zaIle(d0)}</div><div class="bins">${b0.map(bin).join('')}</div></div>`;
  const lst=g.slice(1,10).map(([d,b])=>{const dt=new Date(d+'T12:00');return`<div class="wrow"><div class="wday"><b>${dt.getDate()}</b><span>${dt.toLocaleDateString('pl-PL',{month:'short'})}</span></div><div class="grow"><div style="font-weight:600;margin-bottom:3px">${kiedy(d)}</div><div class="wtags">${b.map(tag).join('')}</div></div></div>`;}).join('');
  $('#o-terminy').innerHTML=nxt+(lst?`<div class="card"><b>Kolejne wywozy</b>${lst}</div>`:'')+`<div class="card"><b>Przypomnienia w telefonie</b><p class="mut" style="margin:4px 0 8px">Dodaj kalendarz swojego rejonu, a telefon sam przypomni o wywozie.</p>${btns}${stopka}</div>`;
- $('#s-waste').innerHTML=`<div class="row"><div class="grow"><div class="mut">${x.u} · ${r.nazwa}</div><div style="font-family:Georgia,serif;font-size:22px;margin:2px 0">${kiedy(d0)}</div><div class="wtags">${b0.map(tag).join('')}</div></div><button class="btn sm line" data-go="odpady">Więcej</button></div>`;
+ $('#s-waste').innerHTML=`<div class="row"><div class="grow"><div class="mut">${x.u} · ${r.nazwa}</div><div class="wbig">${kiedy(d0)}</div><div class="mut" style="margin:-4px 0 8px">${zaIle(d0)}</div><div class="wtags">${b0.map(tag).join('')}</div></div><button class="btn sm line" data-go="odpady">Więcej</button></div>`;
 }
 function segreguj(){let q=$('#o-szukaj').value.trim().toLowerCase();if(q.length>=5)q=q.slice(0,q.length-1);if(!q||!DANE||!DANE.segregacja){$('#o-wynik').innerHTML='';return;}
  const hit=DANE.segregacja.map(f=>({f,y:(f.tak||[]).filter(x=>x.toLowerCase().includes(q)),n:(f.nie||[]).filter(x=>x.toLowerCase().includes(q))})).filter(x=>x.y.length||x.n.length);
@@ -344,7 +440,7 @@ function evHTML(e){const d=new Date(e.d+'T12:00');return `<div class="ev ${e.kin
 function kalendarz(){const a=evAll().filter(e=>FILTR==='wszystko'||e.kind===FILTR);$('#k-lista').innerHTML=a.slice(0,60).map(evHTML).join('')||'<p class="empty">Brak wydarzeń.</p>';
  $('#s-ev').innerHTML=evAll().filter(e=>e.kind==='niebo').slice(0,3).map(evHTML).join('')||'<p class="mut">Brak.</p>';
  const z=evAll().filter(e=>e.kind==='miasto'&&!/^.{0,3}(Nów|Pełnia)/.test(e.title)).slice(0,10);
- $('#s-zap').innerHTML=z.map((e,i)=>{const d=new Date(e.d+'T12:00');return `<div class="card" style="min-width:230px;max-width:260px;scroll-snap-align:start;margin:0;background:linear-gradient(160deg,#fff,#f4efe4)"><div class="mut" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--acc)">${d.toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})}${e.t?' · '+e.t:''}</div><b style="display:block;margin:4px 0;font-size:16px">${e.title.replace(/^\S+\s/,'')}</b><div class="mut">${e.miejsce||e.desc||''}</div><div class="flex-wrap" style="margin-top:8px"><button class="btn sm" data-ev="${i}">Do kalendarza</button>${e.url?`<a class="btn sm line" href="${e.url}">Więcej</a>`:''}</div></div>`;}).join('')||'<p class="mut">Brak zapowiedzi.</p>';
+ $('#s-zap').innerHTML=z.map((e,i)=>{const d=new Date(e.d+'T12:00');return `<div class="card" style="min-width:230px;max-width:260px;scroll-snap-align:start;margin:0;background:#fff;display:flex;flex-direction:column"><div class="mut" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:700;color:var(--acc)">${d.toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})}${e.t?' · '+e.t:''}</div><b style="display:block;margin:4px 0;font-size:16px">${e.title.replace(/^\S+\s/,'')}</b><div class="mut">${e.miejsce||e.desc||''}</div><div class="flex-wrap" style="margin-top:8px"><button class="btn sm" data-ev="${i}">Do kalendarza</button>${e.url?`<a class="btn sm line" href="${e.url}">Więcej</a>`:''}</div></div>`;}).join('')||'<p class="mut">Brak zapowiedzi.</p>';
  $$('#s-zap [data-ev]').forEach(b=>b.onclick=()=>{const e=z[+b.dataset.ev];save('wydarzenie.ics',icsOf([Object.assign({},e,{alarm:'PT2H'})],'Kobyłka'),'text/calendar');});}
 $$('[data-f]').forEach(b=>b.onclick=()=>{FILTR=b.dataset.f;$$('[data-f]').forEach(x=>x.classList.toggle('line',x!==b));kalendarz();});
 function icsOf(list,name){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Moja Kobylka//PL','X-WR-CALNAME:'+name];const st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
@@ -525,14 +621,13 @@ async function init(){
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  SPRAWY=store('sprawy')||[];renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
- if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej'].includes(h))go(h);
+ if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=store('sprawy')||[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
    if(local.length&&!sn.docs.length){local.forEach(s=>db.collection('data/users/'+uid).doc(s.id).set(s));store('sprawy',[]);local.length=0;}renderSprawy();},err=>toast('Konto niedostępne: '+err.code));
   let canEdit=false;try{canEdit=await (await window.claude.use('user')).canEdit();}catch(_){} if(isOwner||canEdit)panelRadnego();}
 }
-const more=document.createElement('button');more.dataset.go='wiecej';more.className='btn sm line';more.textContent='Telefony, adresy i niebo';more.style.margin='8px 0';$('#v-start').appendChild(more);
 window.addEventListener('resize',()=>{if(SKY){skyTick();drawMap();}});
 init();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
@@ -547,7 +642,6 @@ async function polec(){const d={title:'Aplikacja mieszkańca Kobyłki',text:'Kie
  try{if(navigator.share){await navigator.share(d);return;}}catch(e){if(e.name==='AbortError')return;}
  try{await navigator.clipboard.writeText(d.text+' '+APP_URL);toast('Link skopiowany. Wklej go na Messengerze, WhatsAppie albo w grupie.');}catch(e){prompt('Skopiuj link:',APP_URL);}}
 document.addEventListener('click',e=>{if(e.target.closest('[data-polec]'))polec();});
-const sb=document.createElement('button');sb.className='btn sm line';sb.dataset.polec='1';sb.textContent='Poleć aplikację sąsiadom';sb.style.margin='8px 0 0 8px';$('#v-start').appendChild(sb);
 const inApp=/FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\/|wv\)/i.test(navigator.userAgent),iOS=/iphone|ipad/i.test(navigator.userAgent);
 function instUI(){const t=$('#w-inst-txt'),b=$('#w-inst-btn');
  if(standalone){t.textContent='Aplikacja jest już zainstalowana na tym telefonie.';b.hidden=true;return;}
@@ -557,6 +651,8 @@ function instUI(){const t=$('#w-inst-txt'),b=$('#w-inst-btn');
 window.addEventListener('beforeinstallprompt',()=>setTimeout(instUI,0));window.addEventListener('appinstalled',()=>{inst.style.display='none';toast('Gotowe! Aplikacja jest na ekranie telefonu.');});
 if(inApp&&!store('noinstall')){$('#install-txt').textContent='Żeby zainstalować, otwórz link w '+(iOS?'Safari':'Chrome')+' (menu ⋯ → Otwórz w przeglądarce).';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',3000);}
 instUI();
+$('#m-inst').onclick=()=>{if(deferred&&!inApp){deferred.prompt();deferred.userChoice.then(()=>{deferred=null;instUI();});return;}go('wiecej');setTimeout(()=>{const t=document.getElementById('w-app');if(t)t.scrollIntoView({block:'start'});},30);};
+if(standalone){$('#m-inst-txt').textContent='Już zainstalowana';}
 })();
 </script>
 </body>
