@@ -369,8 +369,8 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <section class="view" id="v-dziki">
   <h2>Dziki w mieście</h2>
   <div class="card" style="background:var(--warnbg);box-shadow:none"><b>Dziki blisko ludzi, ranne albo agresywne?</b><p class="mut" style="color:var(--ink);margin:4px 0 10px">Nie podchodź. Zadzwoń od razu.</p><div class="flex-wrap" id="dz-tel"></div></div>
-  <div id="dz-wspolna" hidden><div class="sec"><h3>Mapa obserwacji</h3><a href="https://www.zyciepw.pl/dziki-kobylka/" target="_blank" rel="noopener">Duża mapa</a></div>
-  <div class="card" style="padding:10px"><b id="dz-sum" style="display:block;margin:4px 6px 8px"></b><canvas id="dz-map" style="width:100%;height:300px;border-radius:12px;display:block"></canvas><p class="mut" style="margin:8px 6px 2px">Zgłoszenia mieszkańców z ostatnich 14 dni, niezweryfikowane. Im jaśniejszy punkt, tym starsza obserwacja. Miejsca zaokrąglone do ok. 100 m.</p></div></div>
+  <div id="dz-wspolna" hidden><div class="sec"><h3>Mapa obserwacji</h3><a href="https://www.zyciepw.pl/dziki/kobylka/" target="_blank" rel="noopener">Duża mapa</a></div>
+  <div class="card" style="padding:10px"><b id="dz-sum" style="display:block;margin:4px 6px 8px"></b><canvas id="dz-map" style="width:100%;height:300px;border-radius:12px;display:block"></canvas><p class="mut" style="margin:8px 6px 2px">Zgłoszenia mieszkańców z ostatnich 14 dni, niezweryfikowane. Im jaśniejszy punkt, tym starsza obserwacja.</p></div></div>
   <h3>Zgłoś obserwację</h3>
   <div class="card">
    <label for="dz-gdzie">Gdzie?</label>
@@ -383,7 +383,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <label class="sw"><input type="checkbox" id="dz-pub" checked> <span>Pokaż na wspólnej mapie (anonimowo)</span></label>
    <button class="btn gold wide" id="dz-wyslij" style="margin-top:12px">Wyślij zgłoszenie do Urzędu</button>
    <button class="btn line wide" id="dz-zapisz" style="margin-top:8px">Tylko zapisz u mnie</button>
-   <p class="mut">Zgłoszenie wysyłasz e-mailem ze swojej skrzynki do Urzędu Miasta. Na wspólną mapę trafia tylko miejsce (zaokrąglone do ok. 100 m), czas, liczba i zachowanie dzików, bez żadnych danych o Tobie. Mapę prowadzi portal zyciepw.pl; punkty znikają po 14 dniach.</p>
+   <p class="mut">Zgłoszenie wysyłasz e-mailem ze swojej skrzynki do Urzędu Miasta. Na wspólną mapę trafia tylko miejsce, czas, liczba i zachowanie dzików, bez żadnych danych o Tobie. Mapę prowadzi portal zyciepw.pl; punkty znikają po 14 dniach.</p>
   </div>
   <h3>Moje obserwacje</h3>
   <div id="dz-lista"></div>
@@ -676,7 +676,7 @@ function dzMapa(){const cv=$('#dz-map');if(!cv||!MAPA||!DZ)return;const dpr=wind
  poly(MAPA._f,dark?'#1f3a2e':'#d9e8d6');poly(MAPA._w,dark?'#27405c':'#b9d3e6');const W=[2.4,1.9,1.4,1,.6,.3];c.strokeStyle=dark?'#8894a8':'#5b6577';c.lineCap='round';
  MAPA._r.forEach((cl,i)=>{c.lineWidth=W[i];c.globalAlpha=i>=4?.45:.9;c.beginPath();cl.forEach(p=>{c.moveTo(X(p[0]),Y(p[1]));for(let k=2;k<p.length;k+=2)c.lineTo(X(p[k]),Y(p[k+1]));});c.stroke();});
  const now=Date.now();DZ.slice().reverse().forEach(o=>{const [E,N]=fwd(o.lon,o.lat),wiek=(now-new Date(o.kiedy))/864e5;c.globalAlpha=Math.max(.25,1-wiek/14*.75);c.fillStyle='#C2410C';c.strokeStyle='#fff';c.lineWidth=1.5;c.beginPath();c.arc(X(E),Y(N),wiek<1?8:6,0,7);c.fill();c.stroke();});c.globalAlpha=1;}
-async function dzWczytaj(){try{const r=await fetch(DZ_API,{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();DZ=d.obserwacje||[];$('#dz-wspolna').hidden=false;const t=DZ.filter(o=>Date.now()-new Date(o.kiedy)<7*864e5).length;
+async function dzWczytaj(){try{const r=await fetch(DZ_API+'?gmina=kobylka',{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();DZ=d.obserwacje||[];$('#dz-wspolna').hidden=false;const t=DZ.filter(o=>Date.now()-new Date(o.kiedy)<7*864e5).length;
   $('#dz-sum').textContent=DZ.length?`${t} ${pl(t,'obserwacja','obserwacje','obserwacji')} w ostatnich 7 dniach, ${DZ.length} w ostatnich 14`:'W ostatnich 14 dniach nikt nie zgłosił dzików';dzMapa();dzAlert();}catch(e){DZ=null;}}
 function dzAlert(){const el=$('#dz-alert');if(!el)return;el.hidden=true;const u=store('ulica');if(!DZ||!u||!UGEO||!UGEO.ulice[u])return;const P=UGEO.ulice[u],O=UGEO.origin10m;
  const blisko=DZ.filter(o=>Date.now()-new Date(o.kiedy)<864e5).filter(o=>{const [E,N]=fwd(o.lon,o.lat),x=E/10-O[0],y=N/10-O[1];return P.some(p=>(p[0]-x)**2+(p[1]-y)**2<60*60);});
