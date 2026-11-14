@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F1B2D">
+<title>Aplikacja mieszkańca Kobyłki</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kobyłka">
+<meta name="description" content="Aplikacja mieszkańca Kobyłki: odpady, wydarzenia, zgłoszenia i pisma do Urzędu, sprawy do radnych, niebo nad miastem.">
+<style>
+:root{--night:#0F1B2D;--night2:#16263f;--star:#F3EAD7;--gold:#E7C46C;--ink:#1d2430;--mut:#6b7280;--bg:#f6f3ec;--card:#fff;--line:#e8e2d6;--acc:#C8553D;--ok:#2E7D4F;--warn:#C27C0E}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+a{color:var(--acc)}
+header{background:radial-gradient(700px 300px at 70% -40%,#24406a,var(--night));color:var(--star);padding:calc(14px + env(safe-area-inset-top)) 16px 14px;display:flex;gap:12px;align-items:center;position:relative;overflow:hidden}
+header canvas{width:84px;height:84px;flex:none}
+header h1{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0}
+header .sub{font-size:13px;opacity:.8}
+header .tw{position:absolute;inset:0;pointer-events:none;opacity:.35}
+main{max-width:720px;margin:0 auto;padding:12px 14px 40px}
+.view{display:none}.view.on{display:block}
+h2{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:8px 0}
+h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.card.night{background:linear-gradient(160deg,var(--night),var(--night2));color:var(--star);border:0}
+.card.night .mut{color:#c9c3b3}
+.mut{color:var(--mut);font-size:13px}
+.big{font-size:20px;font-weight:700}
+.row{display:flex;gap:10px;align-items:center}
+.grow{flex:1;min-width:0}
+.chip{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;background:#efe9dd;margin:2px 4px 2px 0}
+.st-szkic{background:#eee}.st-zlozone{background:#e7f1fb}.st-odpowiedz{background:#e5f4e4}.st-zaleglosc{background:#fbebeb}.st-zalatwione{background:#e5f4e4}
+.btn{font:inherit;border:0;background:var(--night);color:#fff;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.gold{background:var(--gold);color:var(--night)}.btn.line{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.sm{padding:8px 12px;font-size:14px}
+.btn.wide{width:100%}
+label{display:block;font-size:13px;color:#374151;margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid #d7d0c2;border-radius:10px;background:#fff}
+textarea{min-height:90px}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cat{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;text-align:center;font-size:13px;cursor:pointer}
+.cat b{display:block;font-size:24px}
+.cat.on{border-color:var(--night);box-shadow:0 0 0 2px var(--night) inset}
+#map{width:100%;height:300px;border-radius:14px;display:block;touch-action:none;background:#f3ede2}
+.ev{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.ev:last-child{border:0}
+.ev .d{min-width:54px;text-align:center;background:#f2ede3;border-radius:10px;padding:5px 3px;font-weight:700;line-height:1.1}
+.ev .d span{display:block;font-size:11px;font-weight:500;color:var(--mut)}
+.ev.sky .d{background:var(--night);color:var(--gold)}.ev.sky .d span{color:#c9c3b3}
+nav.bar{position:fixed;left:0;right:0;bottom:0;background:var(--night);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
+nav.bar button{background:none;border:0;color:#b9b4a6;font:inherit;font-size:11px;padding:4px 0;cursor:pointer}
+nav.bar button b{display:block;font-size:20px;line-height:1.2}
+nav.bar button.on{color:var(--gold)}
+.pismo{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;background:#fffdf8;border:1px solid var(--line);border-radius:12px;padding:14px;max-height:340px;overflow:auto}
+.flex-wrap{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--night);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;display:none;z-index:20}
+.waste{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+details summary{cursor:pointer}
+.photo{max-width:100%;border-radius:10px;margin-top:6px}
+.empty{text-align:center;color:var(--mut);padding:20px}
+</style>
+</head>
+<body>
+<header>
+  <canvas id="hsky" aria-label="Niebo nad Kobyłką teraz"></canvas>
+  <div class="grow"><div class="sub" style="letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-size:11px">Aplikacja mieszkańca</div><h1>Kobyłka</h1><div class="sub" id="hsub">Niebo nad Kobyłką w tej chwili</div></div>
+</header>
+<main>
+<!-- START -->
+<section class="view on" id="v-start">
+  <div class="card night"><div class="row"><div class="grow"><div class="mut">Dziś</div><div class="big" id="s-dzis"></div><div class="mut" id="s-sun"></div></div><div style="text-align:right"><div class="mut">Księżyc</div><div id="s-moon"></div></div></div></div>
+  <h3>Odpady</h3><div class="card" id="s-waste"></div>
+  <h3>Moje sprawy</h3><div class="card" id="s-sprawy"></div>
+  <h3>Najbliżej w kalendarzu</h3><div class="card" id="s-ev"></div>
+  <div class="card"><b>Coś nie działa albo czegoś brakuje?</b><p class="mut">Zgłoś dziurę, zgasłą latarnię, potrzebę przejścia dla pieszych. Aplikacja przygotuje pismo do Urzędu, przypilnuje terminu odpowiedzi i w razie potrzeby przygotuje ponaglenie.</p><button class="btn gold" data-go="zglos">Zgłoś sprawę</button></div>
+</section>
+
+<!-- ODPADY -->
+<section class="view" id="v-odpady">
+  <h2>Odpady</h2>
+  <div class="card"><label>Twoja ulica</label><input id="o-ulica" list="o-ulice" placeholder="np. Wołomińska"><datalist id="o-ulice"></datalist><div class="mut" id="o-rejon" style="margin-top:6px"></div></div>
+  <div class="card" id="o-terminy"></div>
+  <h3>Gdzie to wyrzucić?</h3>
+  <div class="card"><input id="o-szukaj" placeholder="np. gazety, słoik, folia, liście"><p class="mut" style="margin:6px 0 0">Kolory pojemników według zasad ogólnopolskich, listy według kobylka.pl.</p><div id="o-wynik"></div></div>
+  <div class="card" id="o-pszok"></div>
+</section>
+
+<!-- KALENDARZ -->
+<section class="view" id="v-kal">
+  <h2>Kalendarz Kobyłki</h2>
+  <div class="flex-wrap"><button class="btn sm" data-f="wszystko">Wszystko</button><button class="btn sm line" data-f="miasto">W mieście</button><button class="btn sm line" data-f="niebo">Na niebie</button><button class="btn sm line" data-f="odpady">Odpady</button></div>
+  <div class="card" id="k-lista"></div>
+  <button class="btn line wide" id="k-ics">Dodaj cały kalendarz do telefonu</button>
+</section>
+
+<!-- ZGŁOŚ -->
+<section class="view" id="v-zglos">
+  <h2>Zgłoś sprawę</h2>
+  <p class="mut">Wybierz, czego dotyczy sprawa. Aplikacja wskaże, gdzie najszybciej to załatwić, i przygotuje pismo do Urzędu Miasta.</p>
+  <div class="cats" id="z-cats"></div>
+  <div id="z-szybko"></div>
+  <label>Co się dzieje albo czego potrzeba?</label><textarea id="z-opis" placeholder="Np. Od tygodnia nie świeci latarnia przy przejściu dla pieszych. Wieczorem jest tu bardzo ciemno."></textarea>
+  <label>Miejsce</label><input id="z-miejsce" placeholder="ulica, numer, punkt orientacyjny">
+  <canvas id="map"></canvas><div class="mut" id="z-pin">Dotknij mapy, żeby zaznaczyć dokładne miejsce.</div>
+  <label>Zdjęcie (nieobowiązkowe)</label><input type="file" id="z-foto" accept="image/*"><img id="z-foto-p" class="photo" alt="" hidden>
+  <label>Rodzaj pisma</label>
+  <select id="z-typ">
+    <option value="wniosek">Wniosek do Urzędu (art. 241 KPA, odpowiedź do 1 miesiąca)</option>
+    <option value="udip">Wniosek o informację publiczną (odpowiedź do 14 dni)</option>
+    <option value="petycja">Petycja (odpowiedź do 3 miesięcy)</option>
+    <option value="skarga">Skarga (art. 227 KPA, do 1 miesiąca)</option>
+  </select>
+  <h3>Twoje dane do pisma</h3>
+  <p class="mut">Zostają w Twoim telefonie i na Twoim koncie. Urząd potrzebuje imienia, nazwiska i adresu, żeby odpowiedzieć.</p>
+  <label>Imię i nazwisko</label><input id="z-imie" autocomplete="name">
+  <label>Adres do korespondencji</label><input id="z-adres" autocomplete="street-address">
+  <label>E-mail lub telefon</label><input id="z-kontakt" autocomplete="email">
+  <button class="btn wide" id="z-gotowe" style="margin-top:14px">Przygotuj pismo</button>
+</section>
+
+<!-- SPRAWY -->
+<section class="view" id="v-sprawy">
+  <h2>Moje sprawy</h2>
+  <div id="sp-lista"></div>
+  <div id="sp-radna" hidden><h3>Panel radnego</h3><div class="card"><label>Jestem radną / radnym</label><select id="sp-ja"></select><p class="mut">Widzisz sprawy, które mieszkańcy przekazali Tobie.</p></div><div id="sp-radna-lista"></div></div>
+</section>
+
+<!-- WIĘCEJ -->
+<section class="view" id="v-wiecej">
+  <h2>Ważne telefony i adresy</h2>
+  <div id="w-awarie"></div>
+  <h3>Niebo nad Kobyłką</h3>
+  <div class="card night" style="text-align:center"><canvas id="bigsky" style="width:min(360px,86vw);height:min(360px,86vw)"></canvas><div class="mut">Tak wygląda niebo teraz. Północ u góry, wschód po lewej.</div></div>
+  <h3>Twoje dane</h3><div class="card mut"><b style="color:var(--ink)">Aplikacja nie wysyła Twoich danych na żaden serwer.</b> Sprawy, pisma i zdjęcia zostają w pamięci Twojego telefonu. Pismo do Urzędu wysyłasz sam(a): e-mailem, przez ePUAP lub gov.pl albo w kancelarii. Gdy przekazujesz sprawę radnemu, wysyłasz ją ze swojej skrzynki e-mail na adres radnego; od tej chwili za Twoje dane w tej sprawie odpowiada ten radny. Wyczyszczenie danych przeglądarki usuwa sprawy z telefonu.</div>
+<div class="card mut">Aplikacja mieszkańców i radnych Kobyłki. Inicjatywa radnej Edyty Zbieć, otwarta dla wszystkich radnych Rady Miasta. To nie jest usługa Urzędu Miasta Kobyłka. Pisma wysyłasz sam(a) albo przekazujesz wybranemu radnemu. Mapy: GUGiK (BDOT10k). Gwiazdy: HYG Database i Stellarium (CC BY-SA). Odpady i wydarzenia: kobylka.pl.</div>
+</section>
+</main>
+
+<nav class="bar">
+  <button data-go="start" class="on"><b>☾</b>Start</button>
+  <button data-go="odpady"><b>♻</b>Odpady</button>
+  <button data-go="kal"><b>✦</b>Kalendarz</button>
+  <button data-go="zglos"><b>＋</b>Zgłoś</button>
+  <button data-go="sprawy"><b>✉</b>Sprawy</button>
+</nav>
+<div class="toast" id="toast"></div>
+<div id="install" class="card night" style="position:fixed;left:12px;right:12px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:15;display:none"><div class="row"><img src="icon-192.png" alt="" style="width:44px;height:44px;border-radius:10px"><div class="grow"><b>Zainstaluj aplikację</b><div class="mut" id="install-txt">Kobyłka na ekranie Twojego telefonu, także bez internetu.</div></div><button class="btn sm gold" id="install-btn">Zainstaluj</button><button class="btn sm" id="install-x" aria-label="Zamknij" style="background:none">✕</button></div></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const LAT=52.3394, LON=21.1955, R=Math.PI/180;
+const URZAD={nazwa:'Urząd Miasta Kobyłka',adres:'ul. Wołomińska 1, 05-230 Kobyłka',email:'',epuap:'',tel:'22 760 70 00'};
+let SKY=null, EVS=[], DANE=null, MAPA=null, db=null, uid=null, isOwner=false;
+let SPRAWY=[]; let RADNA=[];
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem('mk_'+k));localStorage.setItem('mk_'+k,JSON.stringify(v));}catch(e){return null;}}
+const fmtD=d=>new Date(d+'T12:00').toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'long'});
+const today=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Warsaw'});
+const addDays=(d,n)=>{const x=new Date(d+'T12:00');x.setDate(x.getDate()+n);return x.toLocaleDateString('sv-SE');};
+const addMonths=(d,n)=>{const x=new Date(d+'T12:00');x.setMonth(x.getMonth()+n);return x.toLocaleDateString('sv-SE');};
+
+/* ===== niebo ===== */
+function lst(t){const d=t/86400000+2440587.5-2451545;return((280.46061837+360.98564736629*d+LON)%360+360)%360;}
+function altaz(ra,dec,L){const ha=(L-ra)*R,de=dec*R,la=LAT*R;const alt=Math.asin(Math.sin(de)*Math.sin(la)+Math.cos(de)*Math.cos(la)*Math.cos(ha));
+ const az=Math.atan2(-Math.sin(ha)*Math.cos(de),Math.cos(la)*Math.sin(de)-Math.sin(la)*Math.cos(de)*Math.cos(ha));return[alt/R,((az/R)%360+360)%360];}
+function proj(a,z){const r=Math.tan((90-a)*Math.PI/360);return[-r*Math.sin(z*R),-r*Math.cos(z*R)];}
+function moon(t){const T=(t/86400000+2440587.5-2451545)/36525;const L=218.316+481267.881*T,M=134.963+477198.867*T,F=93.272+483202.018*T;
+ const l=(L+6.289*Math.sin(M*R))*R,b=5.128*Math.sin(F*R)*R,e=23.439*R;
+ const ra=Math.atan2(Math.sin(l)*Math.cos(e)-Math.tan(b)*Math.sin(e),Math.cos(l)),dec=Math.asin(Math.sin(b)*Math.cos(e)+Math.cos(b)*Math.sin(e)*Math.sin(l));
+ const Ls=280.459+36000.77*T+1.915*Math.sin((357.529+35999.05*T)*R);const el=(((l/R)-Ls)%360+360)%360;return{ra:((ra/R)%360+360)%360,dec:dec/R,ill:(1-Math.cos(el*R))/2,el};}
+function moonName(m){const k=m.el;return k<15||k>345?'nów':k<80?'rosnący sierp':k<100?'pierwsza kwadra':k<170?'rośnie':k<190?'pełnia':k<260?'maleje':k<280?'ostatnia kwadra':'malejący sierp';}
+function sun(){const now=new Date();const day=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate());const n=Math.floor((day-Date.UTC(now.getUTCFullYear(),0,0))/864e5);const g=2*Math.PI/365*(n-1);
+ const eq=229.18*(0.000075+0.001868*Math.cos(g)-0.032077*Math.sin(g)-0.014615*Math.cos(2*g)-0.040849*Math.sin(2*g));
+ const dec=0.006918-0.399912*Math.cos(g)+0.070257*Math.sin(g)-0.006758*Math.cos(2*g)+0.000907*Math.sin(2*g)-0.002697*Math.cos(3*g)+0.00148*Math.sin(3*g);
+ const ha=Math.acos(Math.cos(90.833*R)/(Math.cos(LAT*R)*Math.cos(dec))-Math.tan(LAT*R)*Math.tan(dec))/R;
+ const f=m=>new Date(day+m*60000).toLocaleTimeString('pl-PL',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit'});
+ return[f(720-4*(LON+ha)-eq),f(720-4*(LON-ha)-eq)];}
+function drawSky(cv,t,labels){const dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;cv.width=w*dpr;cv.height=h*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
+ const cx=w/2,cy=h/2,Rr=Math.min(w,h)/2*(labels?0.84:0.96),L=lst(t);
+ const g=c.createRadialGradient(cx,cy,Rr*.1,cx,cy,Rr);g.addColorStop(0,'#1d3357');g.addColorStop(1,'#0b1526');c.fillStyle=g;c.beginPath();c.arc(cx,cy,Rr,0,7);c.fill();
+ c.save();c.beginPath();c.arc(cx,cy,Rr,0,7);c.clip();c.strokeStyle='rgba(231,196,108,.45)';c.lineWidth=labels?0.7:0.5;c.beginPath();
+ for(const s of SKY.lines){const A=altaz(s[0],s[1],L),B=altaz(s[2],s[3],L);if(A[0]<0||B[0]<0)continue;const p=proj(...A),q=proj(...B);c.moveTo(cx+p[0]*Rr,cy+p[1]*Rr);c.lineTo(cx+q[0]*Rr,cy+q[1]*Rr);}c.stroke();
+ c.fillStyle='#F3EAD7';for(const s of SKY.stars){if(!labels&&s[2]>4.5)continue;const A=altaz(s[0],s[1],L);if(A[0]<0)continue;const p=proj(...A);c.globalAlpha=Math.min(1,.35+.15*(6-s[2]));c.beginPath();c.arc(cx+p[0]*Rr,cy+p[1]*Rr,Math.max(.35,(5.9-s[2]))*Rr/330,0,7);c.fill();}
+ c.globalAlpha=1;const m=moon(t),MA=altaz(m.ra,m.dec,L);if(MA[0]>0){const p=proj(...MA),mx=cx+p[0]*Rr,my=cy+p[1]*Rr,mr=Rr*.05;c.fillStyle='#FFF6DA';c.beginPath();c.arc(mx,my,mr,0,7);c.fill();c.fillStyle='rgba(11,21,38,.85)';c.beginPath();c.arc(mx+(m.el<180?-1:1)*mr*2*m.ill,my,mr,0,7);c.fill();}
+ c.restore();c.strokeStyle='rgba(243,234,215,.6)';c.lineWidth=1;c.beginPath();c.arc(cx,cy,Rr,0,7);c.stroke();
+ if(labels){c.fillStyle='rgba(243,234,215,.75)';c.font='11px system-ui';c.textAlign='center';c.textBaseline='middle';[['PN',0,-1],['WSCH',-1,0],['PD',0,1],['ZACH',1,0]].forEach(([l,dx,dy])=>c.fillText(l,cx+dx*(Rr+15),cy+dy*(Rr+11)));}
+ return m;}
+function skyTick(){const t=Date.now();const m=drawSky($('#hsky'),t,false);if($('#v-wiecej').classList.contains('on'))drawSky($('#bigsky'),t,true);
+ const s=sun();$('#s-dzis').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
+ $('#s-sun').textContent='Wschód Słońca '+s[0]+' · zachód '+s[1];$('#s-moon').textContent=moonName(m)+' '+Math.round(m.ill*100)+'%';
+ const next=EVS.find(e=>e.kind==='niebo'&&e.d>=today());$('#hsub').textContent=next?('Następne na niebie: '+next.title.replace(/^\S+\s/,'')+', '+fmtD(next.d)):'Niebo nad Kobyłką w tej chwili';}
+
+/* ===== nawigacja ===== */
+function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));window.scrollTo(0,0);
+ if(v==='zglos')drawMap(); if(v==='wiecej')skyTick(); try{history.replaceState(null,'','#'+v);}catch(e){}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
+
+/* ===== odpady ===== */
+const KOLOR={'zmieszane':'#4b5563','metale i tworzywa sztuczne':'#E5B700','papier':'#2563EB','szkło':'#16A34A','bio':'#8B5A2B','gabaryty':'#9333EA','choinki':'#15803D','popiół':'#9CA3AF'};
+function kol(f){f=(f||'').toLowerCase();for(const k in KOLOR)if(f.includes(k.split(' ')[0]))return KOLOR[k];return '#999';}
+function rejonUlicy(u){if(!DANE||!u)return null;const n=u.trim().toLowerCase();return DANE.odpady.rejony.find(r=>(r.ulice||[]).some(x=>x.toLowerCase()===n))||DANE.odpady.rejony.find(r=>(r.ulice||[]).some(x=>x.toLowerCase().includes(n)&&n.length>3));}
+function odpady(){
+ const ok=DANE&&DANE.odpady&&DANE.odpady.rejony&&DANE.odpady.rejony.length;
+ if(ok){const dl=$('#o-ulice');const all=new Set();DANE.odpady.rejony.forEach(r=>(r.ulice||[]).forEach(u=>all.add(u)));dl.innerHTML=[...all].sort().map(u=>`<option value="${u}">`).join('');}
+ const u=$('#o-ulica').value||store('ulica')||'';$('#o-ulica').value=u;const r=rejonUlicy(u);
+ const src=DANE&&DANE.odpady&&DANE.odpady.zrodlo||'https://www.kobylka.pl/strona-3975-harmonogram_odbioru_odpadow_styczen.html';
+ if(!ok){$('#o-terminy').innerHTML=`<p class="mut">Harmonogram wczytuje się z danych Urzędu. Na razie sprawdź swój rejon na <a href="${src}">kobylka.pl</a>.</p>`;$('#s-waste').innerHTML=$('#o-terminy').innerHTML;return;}
+ if(!r){$('#o-rejon').textContent=u?'Nie znam tej ulicy. Wybierz z listy podpowiedzi.':'Wpisz ulicę, a pokażę Twoje terminy.';$('#o-terminy').innerHTML='';$('#s-waste').innerHTML='<p class="mut">Ustaw swoją ulicę w zakładce Odpady.</p><button class="btn sm" data-go="odpady">Ustaw ulicę</button>';return;}
+ store('ulica',u);$('#o-rejon').textContent='Rejon: '+r.nazwa;
+ const up=(Array.isArray(r.terminy)?r.terminy:[]).filter(t=>t.data>=today()).sort((a,b)=>a.data<b.data?-1:1);
+ if(!up.length){const cid=r.kalendarz_id?encodeURIComponent(r.kalendarz_id):'';const wc=r.ical?r.ical.replace(/^https:/,'webcal:'):'';
+  const box=`<b>Terminy wywozu: ${r.nazwa}</b><p class="mut">Urząd prowadzi oficjalny kalendarz wywozu dla Twojego rejonu. Dodaj go raz, a terminy same pojawią się w Twoim telefonie.</p><div class="flex-wrap">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Dodaj do Kalendarza Google (Android)</a>`:''}${wc?`<a class="btn sm line" href="${wc}">Dodaj do iPhone’a</a>`:''}${r.pdf?`<a class="btn sm line" href="${r.pdf}">Harmonogram PDF</a>`:''}</div><p class="mut">Źródło: <a href="${src}">kobylka.pl</a>.</p>`;
+  $('#o-terminy').innerHTML=box;$('#s-waste').innerHTML=`<div class="mut">${r.nazwa} · ${u}</div><div class="flex-wrap" style="margin-top:6px">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Wywóz w moim kalendarzu</a>`:''}<button class="btn sm line" data-go="odpady">Szczegóły</button></div>`;return;}
+ const html=up.slice(0,12).map(t=>`<div class="waste"><span class="dot" style="background:${kol(t.frakcja)}"></span><div class="grow"><b>${t.frakcja}</b><div class="mut">${fmtD(t.data)}${t.data===addDays(today(),1)?' · <b style="color:var(--acc)">JUTRO – wystaw pojemnik</b>':''}${t.data===today()?' · <b>DZIŚ</b>':''}</div></div></div>`).join('')||'<p class="mut">Brak terminów w danych. Sprawdź na kobylka.pl.</p>';
+ $('#o-terminy').innerHTML=`<b>Najbliższe odbiory</b>${html}<p class="mut">Źródło: <a href="${src}">harmonogram Urzędu Miasta</a>.${r.kalendarz_google?` <a href="${r.kalendarz_google}">Kalendarz Google rejonu</a>.`:''}</p>`;
+ const n=up[0];$('#s-waste').innerHTML=n?`<div class="waste"><span class="dot" style="background:${kol(n.frakcja)}"></span><div class="grow"><b>${n.frakcja}</b><div class="mut">${fmtD(n.data)} · ${r.nazwa}</div></div></div>`:'<p class="mut">Brak najbliższych terminów w danych.</p>';
+}
+$('#o-ulica').addEventListener('change',odpady);
+function segreguj(){let q=$('#o-szukaj').value.trim().toLowerCase();if(q.length>=5)q=q.slice(0,q.length-1);if(!q||!DANE||!DANE.segregacja){$('#o-wynik').innerHTML='';return;}
+ const hit=DANE.segregacja.map(f=>({f,y:(f.tak||[]).filter(x=>x.toLowerCase().includes(q)),n:(f.nie||[]).filter(x=>x.toLowerCase().includes(q))})).filter(x=>x.y.length||x.n.length);
+ $('#o-wynik').innerHTML=hit.length?hit.map(x=>x.y.length?`<div class="waste"><span class="dot" style="background:${kol(x.f.frakcja)}"></span><div><b>${x.f.frakcja}</b> (${x.f.kolor||''})<div class="mut">${x.y.join(', ')}</div></div></div>`:`<div class="mut">Nie do: ${x.f.frakcja} – ${x.n.join(', ')}</div>`).join(''):'<p class="mut">Nie znalazłam. Spróbuj innego słowa albo zapytaj w PSZOK.</p>';}
+$('#o-szukaj').addEventListener('input',segreguj);
+
+/* ===== kalendarz ===== */
+let FILTR='wszystko';
+function evAll(){let a=[...EVS];if(DANE&&DANE.odpady&&DANE.odpady.rejony){const r=rejonUlicy(store('ulica'));if(r&&Array.isArray(r.terminy))a=a.concat(r.terminy.map(t=>({d:t.data,t:'',title:'♻ Odbiór: '+t.frakcja,desc:r.nazwa,kind:'odpady',allday:true})));}
+ return a.filter(e=>e.d>=today()).sort((x,y)=>(x.d+x.t)<(y.d+y.t)?-1:1);}
+function evHTML(e){const d=new Date(e.d+'T12:00');return `<div class="ev ${e.kind==='niebo'?'sky':''}"><div class="d">${d.getDate()}<span>${d.toLocaleDateString('pl-PL',{month:'short'})} ${e.t||''}</span></div><div class="grow"><b>${e.title}</b><div class="mut">${e.desc||''}${e.miejsce?' · '+e.miejsce:''}${e.url?` · <a href="${e.url}">więcej</a>`:''}</div></div></div>`;}
+function kalendarz(){const a=evAll().filter(e=>FILTR==='wszystko'||e.kind===FILTR);$('#k-lista').innerHTML=a.slice(0,60).map(evHTML).join('')||'<p class="empty">Brak wydarzeń.</p>';
+ $('#s-ev').innerHTML=evAll().filter(e=>e.kind!=='odpady').slice(0,3).map(evHTML).join('')||'<p class="mut">Brak.</p>';}
+$$('[data-f]').forEach(b=>b.onclick=()=>{FILTR=b.dataset.f;$$('[data-f]').forEach(x=>x.classList.toggle('line',x!==b));kalendarz();});
+function icsOf(list,name){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Moja Kobylka//PL','X-WR-CALNAME:'+name];const st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+ list.forEach((e,i)=>{L.push('BEGIN:VEVENT','UID:mk-'+i+'-'+e.d+'@mojakobylka','DTSTAMP:'+st);const d=e.d.replace(/-/g,'');
+  if(e.allday||!e.t){const n=addDays(e.d,1).replace(/-/g,'');L.push('DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+n);}else{L.push('DTSTART;TZID=Europe/Warsaw:'+d+'T'+e.t.replace(':','')+'00');}
+  L.push('SUMMARY:'+e.title.replace(/[,;]/g,m=>'\\'+m),'DESCRIPTION:'+(e.desc||'').replace(/[,;]/g,m=>'\\'+m).replace(/\n/g,'\\n'));
+  if(e.alarm)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+e.title,'TRIGGER:-'+e.alarm,'END:VALARM');L.push('END:VEVENT');});
+ L.push('END:VCALENDAR');return L.join('\r\n');}
+async function save(name,text,type){const blob=new Blob([text],{type});try{const d=await window.claude?.use?.('downloads');if(d){await d.save({filename:name,data:blob});return true;}}catch(e){}
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();return true;}catch(e){return false;}}
+$('#k-ics').onclick=async()=>{if(await save('moja-kobylka.ics',icsOf(evAll().map(e=>Object.assign({},e,{alarm:e.kind==='odpady'?'PT14H':e.alarm})),'Moja Kobyłka'),'text/calendar'))toast('Otwórz pobrany plik, żeby dodać do kalendarza');};
+
+/* ===== zgłoszenia ===== */
+const CATS=[
+ {id:'oswietlenie',ik:'💡',n:'Oświetlenie',adr:'Urząd Miasta'},{id:'droga',ik:'🕳',n:'Droga, chodnik',adr:'Urząd Miasta lub ZDP'},{id:'woda',ik:'🚰',n:'Woda, kanalizacja',adr:'operator wodociągów'},
+ {id:'odpady',ik:'🗑',n:'Odpady, dzikie wysypisko',adr:'Urząd Miasta'},{id:'zielen',ik:'🌳',n:'Zieleń, drzewa',adr:'Urząd Miasta'},{id:'bezpieczenstwo',ik:'🚸',n:'Bezpieczeństwo ruchu',adr:'Urząd Miasta'},
+ {id:'zwierzeta',ik:'🐕',n:'Zwierzęta',adr:'Urząd Miasta'},{id:'potrzeba',ik:'✚',n:'Potrzeba: nowa inwestycja',adr:'Urząd Miasta'},{id:'inne',ik:'✉',n:'Inna sprawa',adr:'Urząd Miasta'}];
+let Z={cat:null,E:null,N:null,foto:null};
+function cats(){$('#z-cats').innerHTML=CATS.map(c=>`<div class="cat" data-c="${c.id}"><b>${c.ik}</b>${c.n}</div>`).join('');
+ $$('.cat').forEach(el=>el.onclick=()=>{Z.cat=el.dataset.c;$$('.cat').forEach(x=>x.classList.toggle('on',x===el));szybko();});}
+function szybko(){const aw=(DANE&&DANE.awarie)||[];const key={oswietlenie:'oświetl',droga:'drog',woda:'wod',odpady:'odpad',zwierzeta:'zwierz',bezpieczenstwo:'policj'}[Z.cat];
+ const hit=key?aw.filter(a=>(a.kategoria+' '+(a.kto||'')).toLowerCase().includes(key)):[];
+ $('#z-szybko').innerHTML=hit.length?`<div class="card"><b>Pilne? Najszybciej:</b>${hit.slice(0,3).map(a=>`<div class="waste"><div class="grow"><b>${a.kto||a.kategoria}</b><div class="mut">${a.uwagi||''}</div></div>${a.telefon?`<a class="btn sm" href="tel:${a.telefon.replace(/\s/g,'')}">${a.telefon}</a>`:''}</div>`).join('')}<p class="mut">Jeśli sprawa nie jest pilna albo nikt nie reaguje, przygotuj pismo poniżej: zostanie ślad i termin na odpowiedź.</p></div>`:'';}
+/* mapa wyboru miejsca */
+let view={cx:0,cy:0,w:2400};
+function dec(a){const p=[];let x=0,y=0;for(let i=0;i<a.length;i+=2){x+=a[i];y+=a[i+1];p.push(x,y);}return p;}
+function drawMap(){if(!MAPA)return;const cv=$('#map'),dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;cv.width=w*dpr;cv.height=h*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
+ if(!view.cx){view.cx=MAPA.center[0];view.cy=MAPA.center[1];}const s=w/view.w,X=v=>w/2+(v-view.cx)*s,Y=v=>h/2-(v-view.cy)*s;
+ c.fillStyle='#f3ede2';c.fillRect(0,0,w,h);const poly=(L,col)=>{c.fillStyle=col;for(const p of L){c.beginPath();c.moveTo(X(p[0]),Y(p[1]));for(let i=2;i<p.length;i+=2)c.lineTo(X(p[i]),Y(p[i+1]));c.fill();}};
+ poly(MAPA._f,'#e2dccb');poly(MAPA._w,'#a9c1ce');const W=[3,2.4,1.8,1.2,.8,.4];c.strokeStyle='#1e2a36';c.lineCap='round';
+ MAPA._r.forEach((cl,i)=>{c.lineWidth=W[i];c.globalAlpha=i===5?.5:1;c.beginPath();cl.forEach(p=>{c.moveTo(X(p[0]),Y(p[1]));for(let k=2;k<p.length;k+=2)c.lineTo(X(p[k]),Y(p[k+1]));});c.stroke();});c.globalAlpha=1;
+ if(Z.E){const px=X(Z.E),py=Y(Z.N);c.fillStyle='#C8553D';c.beginPath();c.arc(px,py-14,10,0,7);c.fill();c.beginPath();c.moveTo(px-7,py-8);c.lineTo(px,py);c.lineTo(px+7,py-8);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(px,py-14,4,0,7);c.fill();}
+ c.fillStyle='rgba(30,42,54,.6)';c.font='11px system-ui';c.fillText('przeciągnij, aby przesunąć · dwa palce lub kółko: zoom',8,h-8);}
+(function(){const cv=$('#map');let drag=null,moved=false,pts=new Map(),pinch=null;
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.clientX,e.clientY]);drag=[e.clientX,e.clientY,view.cx,view.cy];moved=false;
+   if(pts.size===2){const [a,b]=[...pts.values()];pinch=[Math.hypot(a[0]-b[0],a[1]-b[1]),view.w];}});
+ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,[e.clientX,e.clientY]);
+   if(pts.size===2&&pinch){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);view.w=Math.min(9000,Math.max(500,pinch[1]*pinch[0]/d));moved=true;drawMap();return;}
+   if(!drag)return;const dx=e.clientX-drag[0],dy=e.clientY-drag[1];if(Math.abs(dx)+Math.abs(dy)>6)moved=true;const s=cv.clientWidth/view.w;view.cx=drag[2]-dx/s;view.cy=drag[3]+dy/s;drawMap();});
+ cv.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!moved&&drag){const r=cv.getBoundingClientRect(),s=cv.clientWidth/view.w;Z.E=view.cx+(e.clientX-r.left-cv.clientWidth/2)/s;Z.N=view.cy-(e.clientY-r.top-cv.clientHeight/2)/s;
+   const ll=inv(Z.E,Z.N);$('#z-pin').textContent='Zaznaczone: '+ll[1].toFixed(5)+', '+ll[0].toFixed(5);drawMap();}drag=null;});
+ cv.addEventListener('wheel',e=>{e.preventDefault();view.w=Math.min(9000,Math.max(500,view.w*(e.deltaY>0?1.15:0.87)));drawMap();},{passive:false});})();
+/* PUWG1992 -> WGS84 */
+function inv(E,N){const a=6378137,f=1/298.257222101,k0=0.9993,lon0=19*R,FE=500000,FN=-5300000,n=f/(2-f),A=a/(1+n)*(1+n*n/4+n**4/64);
+ const be=[n/2-2*n*n/3+37*n**3/96,n*n/48+n**3/15,17*n**3/480],de=[2*n-2*n*n/3-2*n**3,7*n*n/3-8*n**3/5,56*n**3/15];
+ const xi=(N-FN)/(k0*A),eta=(E-FE)/(k0*A);let x=xi,y=eta;for(let j=0;j<3;j++){x-=be[j]*Math.sin(2*(j+1)*xi)*Math.cosh(2*(j+1)*eta);y-=be[j]*Math.cos(2*(j+1)*xi)*Math.sinh(2*(j+1)*eta);}
+ const chi=Math.asin(Math.sin(x)/Math.cosh(y));let lat=chi;for(let j=0;j<3;j++)lat+=de[j]*Math.sin(2*(j+1)*chi);return[(lon0+Math.atan2(Math.sinh(y),Math.cos(x)))/R,lat/R];}
+/* zdjęcie */
+$('#z-foto').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;const img=await createImageBitmap(f);const sc=Math.min(1,1024/Math.max(img.width,img.height));
+ const c=document.createElement('canvas');c.width=img.width*sc;c.height=img.height*sc;c.getContext('2d').drawImage(img,0,0,c.width,c.height);Z.foto=c.toDataURL('image/jpeg',0.7);const p=$('#z-foto-p');p.src=Z.foto;p.hidden=false;});
+/* pisma */
+const TYPY={wniosek:{n:'WNIOSEK',pod:'Na podstawie art. 241 Kodeksu postępowania administracyjnego',term:d=>addMonths(d,1),tt:'do 1 miesiąca (art. 244 § 1 KPA)'},
+ udip:{n:'WNIOSEK O UDOSTĘPNIENIE INFORMACJI PUBLICZNEJ',pod:'Na podstawie art. 2 ust. 1 i art. 10 ust. 1 ustawy o dostępie do informacji publicznej',term:d=>addDays(d,14),tt:'14 dni (art. 13 ust. 1 u.d.i.p.)'},
+ petycja:{n:'PETYCJA',pod:'Na podstawie ustawy z dnia 11 lipca 2014 r. o petycjach',term:d=>addMonths(d,3),tt:'do 3 miesięcy (art. 10 ust. 1 ustawy o petycjach)'},
+ skarga:{n:'SKARGA',pod:'Na podstawie art. 227 Kodeksu postępowania administracyjnego',term:d=>addMonths(d,1),tt:'do 1 miesiąca (art. 237 § 1 KPA)'}};
+function pismo(s){const t=TYPY[s.typ],cat=CATS.find(c=>c.id===s.cat)||CATS[8];const d=new Date(s.data+'T12:00').toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'});
+ return `${s.imie}\n${s.adres}\n${s.kontakt}\n\nKobyłka, ${d}\n\n${URZAD.nazwa}\n${URZAD.adres}\n\n${t.n}\n(${cat.n.toLowerCase()})\n\n${t.pod} zwracam się z prośbą o:\n\n${s.opis}\n\nMiejsce: ${s.miejsce||'—'}${s.lat?`\nWspółrzędne: ${s.lat.toFixed(5)} N, ${s.lon.toFixed(5)} E`:''}${s.foto?'\nW załączeniu zdjęcie z miejsca.':''}\n\n${s.typ==='udip'?'Proszę o przesłanie informacji na adres e-mail podany powyżej.':'Proszę o informację o sposobie załatwienia sprawy.'}\n\nZ poważaniem\n${s.imie}`;}
+function ponaglenie(s){const d=new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'});
+ return `${s.imie}\n${s.adres}\n\nKobyłka, ${d}\n\n${URZAD.nazwa}\n${URZAD.adres}\n\nPONAGLENIE\n\nNa podstawie art. 37 Kodeksu postępowania administracyjnego wnoszę ponaglenie w sprawie mojego pisma z dnia ${new Date(s.zlozono+'T12:00').toLocaleDateString('pl-PL')} (${TYPY[s.typ].n.toLowerCase()}: ${s.opis.slice(0,80)}${s.opis.length>80?'…':''}). Termin odpowiedzi upłynął ${new Date(s.termin+'T12:00').toLocaleDateString('pl-PL')}, a sprawa nie została załatwiona.\n\nProszę o niezwłoczne załatwienie sprawy i wskazanie przyczyn zwłoki.\n\nZ poważaniem\n${s.imie}`;}
+$('#z-gotowe').onclick=async()=>{const opis=$('#z-opis').value.trim(),imie=$('#z-imie').value.trim(),adres=$('#z-adres').value.trim();
+ if(!Z.cat){toast('Wybierz, czego dotyczy sprawa');return;} if(opis.length<10){toast('Opisz sprawę kilkoma zdaniami');return;} if(!imie||!adres){toast('Podaj imię, nazwisko i adres – są potrzebne w piśmie');return;}
+ store('dane',{imie,adres,kontakt:$('#z-kontakt').value});const ll=Z.E?inv(Z.E,Z.N):null;
+ const s={id:'s'+Date.now().toString(36),cat:Z.cat,typ:$('#z-typ').value,opis,miejsce:$('#z-miejsce').value.trim(),lat:ll?ll[1]:null,lon:ll?ll[0]:null,foto:Z.foto,imie,adres,kontakt:$('#z-kontakt').value.trim(),data:today(),status:'szkic',historia:[{d:today(),t:'Utworzono'}]};
+ await zapisz(s);Z={cat:null,E:null,N:null,foto:null};$('#z-opis').value='';$('#z-miejsce').value='';$('#z-foto').value='';$('#z-foto-p').hidden=true;$$('.cat').forEach(x=>x.classList.remove('on'));
+ go('sprawy');otworz(s.id);};
+/* zapis: konto (db) albo telefon */
+async function zapisz(s){const i=SPRAWY.findIndex(x=>x.id===s.id);if(i>=0)SPRAWY[i]=s;else SPRAWY.unshift(s);
+ if(db&&uid){try{await db.collection('data/users/'+uid).doc(s.id).set(s);}catch(e){toast('Nie zapisano na koncie: '+(e.code||e.message));}} else store('sprawy',SPRAWY);
+ renderSprawy();}
+function stan(s){if(s.status==='zlozone'&&s.termin&&s.termin<today())return['zaleglosc','Po terminie'];return[s.status,{szkic:'Do wysłania',zlozone:'Czeka na odpowiedź',odpowiedz:'Jest odpowiedź',zalatwione:'Załatwione',zaleglosc:'Po terminie'}[s.status]];}
+function renderSprawy(){const L=SPRAWY;
+ $('#sp-lista').innerHTML=L.length?L.map(s=>{const [k,n]=stan(s),cat=CATS.find(c=>c.id===s.cat)||{};return `<div class="card" data-open="${s.id}" style="cursor:pointer"><div class="row"><b style="font-size:22px">${cat.ik||'✉'}</b><div class="grow"><b>${cat.n||''}</b> <span class="chip st-${k}">${n}</span><div class="mut">${s.opis.slice(0,90)}</div>${s.termin&&s.status==='zlozone'?`<div class="mut">Odpowiedź do: <b>${fmtD(s.termin)}</b></div>`:''}</div></div><div id="op-${s.id}"></div></div>`;}).join(''):'<div class="card empty">Nie masz jeszcze spraw. <button class="btn sm" data-go="zglos">Zgłoś pierwszą</button></div>';
+ $$('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('button,a,textarea,input,select'))return;otworz(el.dataset.open);});
+ const open=L.filter(s=>s.status!=='zalatwione');$('#s-sprawy').innerHTML=open.length?open.slice(0,3).map(s=>{const [k,n]=stan(s);return `<div class="waste"><div class="grow"><b>${(CATS.find(c=>c.id===s.cat)||{}).n||''}</b> <span class="chip st-${k}">${n}</span><div class="mut">${s.opis.slice(0,60)}</div></div></div>`;}).join('')+'<button class="btn sm line" data-go="sprawy">Wszystkie sprawy</button>':'<p class="mut">Brak otwartych spraw.</p>';}
+function otworz(id){const s=SPRAWY.find(x=>x.id===id);if(!s)return;$$('[id^="op-"]').forEach(x=>x.innerHTML='');const box=$('#op-'+id);if(!box)return;
+ const tx=pismo(s),[k]=stan(s),mail=URZAD.email;
+ box.innerHTML=`<h3>Pismo</h3><div class="pismo">${tx.replace(/</g,'&lt;')}</div>${s.foto?`<img class="photo" src="${s.foto}" alt="Zdjęcie">`:''}
+ <div class="flex-wrap" style="margin-top:10px"><button class="btn sm" data-a="kopiuj">Kopiuj pismo</button>
+ <a class="btn sm line" href="https://www.gov.pl/web/gov/wyslij-pismo-ogolne">Wyślij przez gov.pl (profil zaufany)</a>
+ ${mail?`<a class="btn sm line" href="mailto:${mail}?subject=${encodeURIComponent(TYPY[s.typ].n)}&body=${encodeURIComponent(tx)}">E-mail do Urzędu</a>`:''}
+ <button class="btn sm gold" data-a="radna">Przekaż radnemu</button></div><div class="row" style="margin-top:8px"><span class="mut">Komu:</span><select data-a2="radny" style="flex:1">${radniOpts(s.radny_id)}</select></div>
+ <p class="mut">Termin odpowiedzi: ${TYPY[s.typ].tt}.${mail?' Adres e-mail Urzędu: '+mail+'.':''} Pismo możesz też zanieść do kancelarii Urzędu (${URZAD.adres}).</p>
+ ${s.status==='szkic'?`<button class="btn wide" data-a="zlozone">Wysłałem/am pismo – pilnuj terminu</button>`:''}
+ ${s.status==='zlozone'?`<div class="flex-wrap"><button class="btn sm" data-a="odpowiedz">Dostałem/am odpowiedź</button><button class="btn sm line" data-a="termin">Termin do kalendarza</button>${k==='zaleglosc'?'<button class="btn sm gold" data-a="ponaglenie">Przygotuj ponaglenie</button>':''}</div>`:''}
+ ${s.status==='odpowiedz'?`<label>Co odpowiedział Urząd?</label><textarea data-a="notatka">${s.notatka||''}</textarea><div class="flex-wrap"><button class="btn sm" data-a="zalatwione">Sprawa załatwiona</button><button class="btn sm line" data-a="radna">Odpowiedź mnie nie satysfakcjonuje – przekaż radnemu</button></div>`:''}
+ <details style="margin-top:10px"><summary class="mut">Historia</summary>${(s.historia||[]).map(h=>`<div class="mut">${h.d}: ${h.t}</div>`).join('')}</details>
+ <button class="btn sm line" data-a="usun" style="margin-top:8px">Usuń sprawę</button>`;
+ box.onclick=async e=>{const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;e.stopPropagation();
+  if(a==='kopiuj'||a==='ponaglenie'){const t=a==='kopiuj'?tx:ponaglenie(s);if(a==='ponaglenie'){box.querySelector('.pismo').textContent=t;s.historia.push({d:today(),t:'Przygotowano ponaglenie (art. 37 KPA)'});await zapisz(s);}
+    try{await navigator.clipboard.writeText(t);toast('Skopiowano – wklej w gov.pl lub e-mail');}catch(_){toast('Zaznacz tekst i skopiuj ręcznie');}}
+  if(a==='zlozone'){s.status='zlozone';s.zlozono=today();s.termin=TYPY[s.typ].term(today());s.historia.push({d:today(),t:'Wysłano pismo. Termin odpowiedzi: '+s.termin});await zapisz(s);otworz(s.id);toast('Przypilnuję terminu: '+fmtD(s.termin));}
+  if(a==='termin'){await save('termin-'+s.id+'.ics',icsOf([{d:s.termin,t:'09:00',title:'Termin odpowiedzi Urzędu: '+(CATS.find(c=>c.id===s.cat)||{}).n,desc:'Jeśli nie ma odpowiedzi, otwórz aplikację Moja Kobyłka i przygotuj ponaglenie.',alarm:'PT0M'}],'Moja Kobyłka – terminy'),'text/calendar');}
+  if(a==='odpowiedz'){s.status='odpowiedz';s.historia.push({d:today(),t:'Urząd odpowiedział'});await zapisz(s);otworz(s.id);}
+  if(a==='zalatwione'){s.notatka=box.querySelector('textarea')?.value||s.notatka;s.status='zalatwione';s.historia.push({d:today(),t:'Załatwione'});await zapisz(s);}
+  if(a==='radna'){await doRadnej(s);}
+  if(a==='usun'){SPRAWY=SPRAWY.filter(x=>x.id!==s.id);if(db&&uid){try{await db.collection('data/users/'+uid).doc(s.id).delete();}catch(_){}}else store('sprawy',SPRAWY);renderSprawy();}};}
+let RADNI=[];
+function radnyById(id){return RADNI.find(r=>r.id===id);}
+function radniOpts(sel){/* r.email z radni.json */const def=sel||store('radny')||(RADNI.find(r=>r.id.includes('zbiec'))||RADNI[0]||{}).id;
+ return RADNI.map(r=>`<option value="${r.id}" ${r.id===def?'selected':''}>${r.imie}${r.okreg?' (okręg '+r.okreg+')':''}${r.funkcja?' – '+r.funkcja:''}</option>`).join('')||'<option value="edyta-zbiec">Edyta Zbieć</option>';}
+async function doRadnej(s){const box=document.querySelector('#op-'+s.id);const rid=(box&&box.querySelector('[data-a2="radny"]')?.value)||'edyta-zbiec';store('radny',rid);
+ const r=radnyById(rid)||{imie:'Edyta Zbieć'};const copy=Object.assign({},s);delete copy.foto;copy.przekazano=today();copy.radny_id=rid;
+ if(db&&uid){try{const ref=db.doc('do_radnych/'+uid);const cur=await ref.get();const body=cur.exists?JSON.parse(JSON.stringify(cur.data())):{};body.sprawy=body.sprawy||{};body.sprawy[s.id]=copy;await ref.set(body);
+   s.historia.push({d:today(),t:'Przekazano: '+r.imie});s.radny_id=rid;await zapisz(s);toast('Przekazano: '+r.imie+'. Odezwie się na podany kontakt.');return;}catch(e){toast('Nie udało się przekazać: '+(e.code||e.message));}}
+ const t='Sprawa dla: '+r.imie+'\n\n'+pismo(s)+'\n\n(Przesłane z Aplikacji mieszkańca Kobyłki)';
+ if(r.email){location.href='mailto:'+r.email+'?subject='+encodeURIComponent('Sprawa mieszkańca: '+((CATS.find(c=>c.id===s.cat)||{}).n||''))+'&body='+encodeURIComponent(t);s.historia.push({d:today(),t:'Wysłano e-mail do: '+r.imie});s.radny_id=rid;await zapisz(s);return;}
+ try{await navigator.clipboard.writeText(t);}catch(_){} s.historia.push({d:today(),t:'Skopiowano sprawę dla: '+r.imie});await zapisz(s);
+ toast(r.imie+' nie podał(a) jeszcze adresu e-mail w aplikacji. Treść skopiowana – wyślij ją radnemu.'+(r.kontakt?' Kontakt: '+r.kontakt:''));}
+/* panel radnego: interwencja art. 24 ust. 2 u.s.g. */
+function interwencja(s,r){const d=new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'});
+ return `${r.imie}\nRadn${/a$/.test(r.imie.split(' ')[0])?'a':'y'} Rady Miasta Kobyłka\n\nKobyłka, ${d}\n\nBurmistrz Miasta Kobyłka\n${URZAD.adres}\n\nINTERWENCJA ${/a$/.test(r.imie.split(' ')[0])?'RADNEJ':'RADNEGO'}\n\nNa podstawie art. 24 ust. 2 ustawy o samorządzie gminnym, w związku ze zgłoszeniem mieszkańca, zwracam się o podjęcie działań w sprawie:\n\n${s.opis}\n\nMiejsce: ${s.miejsce||'—'}${s.lat?` (${s.lat.toFixed(5)} N, ${s.lon.toFixed(5)} E)`:''}\n${s.zlozono?`Mieszkaniec złożył w tej sprawie pismo do Urzędu dnia ${s.zlozono}.\n`:''}\nProszę o informację o podjętych działaniach i terminie ich realizacji w ciągu 7 dni.\n\nZ poważaniem\n${r.imie}`;}
+let ALLR=[],STAT={},unsubS=null;
+function panelRadnego(){if(!db)return;$('#sp-radna').hidden=false;const sel=$('#sp-ja');sel.innerHTML=radniOpts(store('ja_radny'));
+ const render=()=>{const rid=sel.value;store('ja_radny',rid);const r=radnyById(rid)||{imie:rid};const L=ALLR.filter(x=>x.radny_id===rid).sort((x,y)=>x.przekazano<y.przekazano?1:-1);
+  $('#sp-radna-lista').innerHTML=L.length?L.map(s=>`<div class="card"><b>${(CATS.find(c=>c.id===s.cat)||{}).n||''}</b> <span class="chip">${STAT[s.id]||'nowa'}</span><div class="mut">${s.przekazano} · ${s.imie} · ${s.kontakt||''}</div><p>${s.opis}</p><div class="mut">${s.miejsce||''}</div>
+   <details><summary class="mut">Pismo interwencyjne (art. 24 ust. 2 u.s.g.)</summary><div class="pismo">${interwencja(s,r).replace(/</g,'&lt;')}</div></details>
+   <div class="flex-wrap" style="margin-top:8px">${['w toku','interwencja wysłana','załatwiona'].map(x=>`<button class="btn sm line" data-st="${x}" data-sid="${s.id}">${x}</button>`).join('')}</div></div>`).join(''):'<p class="mut">Nikt jeszcze nie przekazał Ci sprawy.</p>';
+  $$('#sp-radna-lista [data-st]').forEach(b=>b.onclick=async()=>{STAT[b.dataset.sid]=b.dataset.st;try{await db.doc('statusy/'+rid).set({...STAT});}catch(e){toast(e.code||e.message);}render();});};
+ db.collection('do_radnych').onSnapshot(sn=>{ALLR=[];sn.docs.forEach(d=>Object.values((d.data()||{}).sprawy||{}).forEach(x=>ALLR.push(x)));render();},()=>{$('#sp-radna-lista').innerHTML='<p class="mut">Brak dostępu do skrzynki radnych.</p>';});
+ const subS=()=>{if(unsubS)unsubS();unsubS=db.doc('statusy/'+sel.value).onSnapshot(d=>{STAT=d.exists?Object.assign({},d.data()):{};render();},()=>{});};
+ sel.onchange=()=>{subS();render();};subS();}
+
+/* ===== więcej ===== */
+function wiecej(){const aw=(DANE&&DANE.awarie)||[];$('#w-awarie').innerHTML=`<div class="card"><b>${URZAD.nazwa}</b><div class="mut">${URZAD.adres} · <a href="tel:227607000">${URZAD.tel}</a>${URZAD.email?' · '+URZAD.email:''}${URZAD.epuap?' · ePUAP: '+URZAD.epuap:''}</div></div>`+
+ aw.map(a=>`<div class="card"><div class="row"><div class="grow"><b>${a.kto||a.kategoria}</b><div class="mut">${a.kategoria}${a.uwagi?' · '+a.uwagi:''}${a.www?` · <a href="${a.www}">strona</a>`:''}</div></div>${a.telefon?`<a class="btn sm" href="tel:${a.telefon.replace(/\s/g,'')}">${a.telefon}</a>`:''}</div></div>`).join('')+
+ `<div class="card"><b>Alarmowy</b><div class="mut">Pogotowie, policja, straż: <a href="tel:112">112</a> · pogotowie energetyczne 991 · gazowe 992</div></div>`;
+ if(DANE&&DANE.pszok)$('#o-pszok').innerHTML='<b>PSZOK</b><div class="mut">'+DANE.pszok+'</div>';else $('#o-pszok').innerHTML='<b>PSZOK</b><div class="mut">ul. Łokietka 80, tel. 531 690 107. Wt–śr 7–13, czw–pt 12–18 (IV–IX pt do 20), sob 8–16, pn nieczynny.</div>';}
+
+/* ===== start ===== */
+async function init(){
+ const [s,e,m,d]=await Promise.all([fetch('sky.json').then(r=>r.json()),fetch('wydarzenia.json').then(r=>r.json()),fetch('mapa.json').then(r=>r.json()),fetch('dane.json').then(r=>r.ok?r.json():null).catch(()=>null)]);
+ const T=await fetch('terminy.json').then(r=>r.ok?r.json():null).catch(()=>null);
+ if(T&&d&&d.odpady)d.odpady.rejony.forEach(r=>{const x=T.rejony&&T.rejony[r.nazwa];if(x&&x.length)r.terminy=x;});
+ const RD=await fetch('radni.json').then(r=>r.ok?r.json():null).catch(()=>null);if(RD&&d)d.radni=RD;
+ SKY=s;MAPA=m;MAPA._r=m.roads.map(cl=>cl.map(dec));MAPA._w=m.water.map(dec);MAPA._f=m.forest.map(dec);DANE=d;
+ if(d&&d.urzad)Object.assign(URZAD,d.urzad);
+ RADNI=(d&&d.radni&&d.radni.length)?d.radni:[{id:'edyta-zbiec',imie:'Edyta Zbieć'}];
+ EVS=e.map(x=>({d:x.d,t:x.allday?'':x.t,title:x.title,desc:x.desc,kind:x.cat==='niebo'?'niebo':'miasto',allday:x.allday,alarm:x.alarm?('-'+x.alarm).slice(1):null}));
+ if(d&&d.wydarzenia)EVS=EVS.concat(d.wydarzenia.map(x=>({d:x.data,t:x.godzina||'',title:'🎭 '+x.tytul,desc:x.opis||'',miejsce:x.miejsce||'',url:x.url||x.zrodlo,kind:'miasto'})));
+ cats();odpady();kalendarz();wiecej();skyTick();setInterval(skyTick,60000);
+ const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
+ SPRAWY=store('sprawy')||[];renderSprawy();
+ const h=(location.hash||'').slice(1);if(['start','odpady','kal','zglos','sprawy','wiecej'].includes(h))go(h);
+ // konto i baza (gdy dostępne)
+ try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
+ if(db&&uid){const local=store('sprawy')||[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
+   if(local.length&&!sn.docs.length){local.forEach(s=>db.collection('data/users/'+uid).doc(s.id).set(s));store('sprawy',[]);local.length=0;}renderSprawy();},err=>toast('Konto niedostępne: '+err.code));
+  let canEdit=false;try{canEdit=await (await window.claude.use('user')).canEdit();}catch(_){} if(isOwner||canEdit)panelRadnego();}
+}
+const more=document.createElement('button');more.dataset.go='wiecej';more.className='btn sm line';more.textContent='Telefony, adresy i niebo';more.style.margin='8px 0';$('#v-start').appendChild(more);
+window.addEventListener('resize',()=>{if(SKY){skyTick();drawMap();}});
+init();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+let deferred=null;const inst=$('#install');const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(!standalone&&!store('noinstall'))inst.style.display='block';});
+if(!standalone&&!store('noinstall')&&/iphone|ipad/i.test(navigator.userAgent)){$('#install-txt').textContent='Stuknij Udostępnij ⬆ i wybierz „Do ekranu początkowego”.';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',4000);}
+$('#install-btn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;}inst.style.display='none';};
+$('#install-x').onclick=()=>{inst.style.display='none';store('noinstall',1);};
+})();
+</script>
+</body>
+</html>
