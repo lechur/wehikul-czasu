@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F4F6F9">
+<meta name="theme-color" content="#F4F6F9" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0D131D" media="(prefers-color-scheme: dark)"><meta name="color-scheme" content="light dark">
 <title>Aplikacja mieszkańca Kobyłki</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -26,18 +26,18 @@ header .tw{position:absolute;inset:0;pointer-events:none;opacity:.35}
 main{max-width:720px;margin:0 auto;padding:12px 14px calc(120px + env(safe-area-inset-bottom))}
 .ac{position:relative}.ac input{padding-right:40px}
 .ac-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:24px;color:var(--mut);width:34px;height:34px;display:none}
-.ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(10,20,40,.18);z-index:30;overflow:hidden;display:none}
-.ac-list button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:13px 14px;font-size:17px;color:var(--ink);font-family:inherit}
-.ac-list button:last-child{border-bottom:0}.ac-list button:active{background:#f3efe6}.ac-list small{color:var(--mut);font-size:12px;white-space:nowrap}.ac-list mark{background:none;color:var(--acc);font-weight:700}
+.ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(10,20,40,.18);z-index:30;overflow:hidden;display:none}
+.ac-list button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:var(--card);padding:13px 14px;font-size:17px;color:var(--ink);font-family:inherit}
+.ac-list button:last-child{border-bottom:0}.ac-list button:active{background:var(--soft)}.ac-list small{color:var(--mut);font-size:12px;white-space:nowrap}.ac-list mark{background:none;color:var(--acc);font-weight:700}
 .wnext{border-radius:18px;padding:18px;color:#fff;background:linear-gradient(160deg,var(--night),var(--night2));margin:10px 0;position:relative;overflow:hidden}
 .wnext .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}.wnext .when{font-family:Georgia,serif;font-size:30px;line-height:1.15;margin:4px 0 2px}
 .wnext .ile{font-size:14px;opacity:.85}.bins{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .bin{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:12px;padding:8px 11px;font-size:15px;font-weight:600}
 .bin i{width:14px;height:18px;outline:1.5px solid rgba(255,255,255,.55);border-radius:3px 3px 4px 4px;display:inline-block;box-shadow:inset 0 3px 0 rgba(0,0,0,.25)}
 .wrow{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.wrow:last-child{border-bottom:0}
-.wday{width:52px;text-align:center;flex:none;border-radius:12px;background:#f3efe6;padding:6px 0}.wday b{display:block;font-size:20px;line-height:1}.wday span{font-size:11px;text-transform:uppercase;color:var(--mut)}
+.wday{width:52px;text-align:center;flex:none;border-radius:12px;background:var(--soft);padding:6px 0}.wday b{display:block;font-size:20px;line-height:1}.wday span{font-size:11px;text-transform:uppercase;color:var(--mut)}
 .wtags{display:flex;flex-wrap:wrap;gap:6px}.wtag{display:inline-flex;align-items:center;gap:6px;font-size:14px}.wtag i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.warn{background:#fff7e0;border:1px solid #f0d98a;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:8px}
+.warn{background:var(--warnbg);border:1px solid var(--warnbd);border-radius:12px;padding:10px 12px;font-size:13px;margin-top:8px}
 .view::after{content:"";display:block;height:20px}
 .view{display:none}.view.on{display:block}
 h2{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:8px 0}
@@ -49,28 +49,28 @@ h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)
 .big{font-size:20px;font-weight:700}
 .row{display:flex;gap:10px;align-items:center}
 .grow{flex:1;min-width:0}
-.chip{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;background:#efe9dd;margin:2px 4px 2px 0}
-.st-szkic{background:#eee}.st-zlozone{background:#e7f1fb}.st-odpowiedz{background:#e5f4e4}.st-zaleglosc{background:#fbebeb}.st-zalatwione{background:#e5f4e4}
+.chip{display:inline-block;font-size:12px;padding:3px 9px;border-radius:999px;background:var(--soft);margin:2px 4px 2px 0}
+.st-szkic{background:var(--soft)}.st-zlozone{background:var(--infobg)}.st-odpowiedz{background:var(--okbg)}.st-zaleglosc{background:var(--errbg)}.st-zalatwione{background:var(--okbg)}
 .btn{font:inherit;border:0;background:var(--night);color:#fff;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
-.btn.gold{background:var(--gold);color:var(--night)}.btn.line{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.sm{padding:8px 12px;font-size:14px}
+.btn.gold{background:var(--gold);color:var(--night)}.btn.line{background:var(--card);color:var(--ink);border:1px solid var(--ink)}.btn.sm{padding:8px 12px;font-size:14px}
 .btn.wide{width:100%}
-label{display:block;font-size:13px;color:#374151;margin:10px 0 4px}
-input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid #d7d0c2;border-radius:10px;background:#fff}
+label{display:block;font-size:13px;color:var(--ink);margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
 textarea{min-height:90px}
 .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cat{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;text-align:center;font-size:13px;cursor:pointer}
+.cat{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 6px;text-align:center;font-size:13px;cursor:pointer}
 .cat b{display:block;font-size:24px}
 .cat.on{border-color:var(--night);box-shadow:0 0 0 2px var(--night) inset}
-#map{width:100%;height:300px;border-radius:14px;display:block;touch-action:none;background:#f3ede2}
+#map{width:100%;height:300px;border-radius:14px;display:block;touch-action:none;background:var(--soft)}
 .ev{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.ev:last-child{border:0}
-.ev .d{min-width:54px;text-align:center;background:#f2ede3;border-radius:10px;padding:5px 3px;font-weight:700;line-height:1.1}
+.ev .d{min-width:54px;text-align:center;background:var(--soft);border-radius:10px;padding:5px 3px;font-weight:700;line-height:1.1}
 .ev .d span{display:block;font-size:11px;font-weight:500;color:var(--mut)}
 .ev.sky .d{background:var(--night);color:var(--gold)}.ev.sky .d span{color:#c9c3b3}
 nav.bar{position:fixed;left:0;right:0;bottom:0;background:var(--night);display:grid;grid-template-columns:repeat(7,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
 nav.bar button{background:none;border:0;color:#b9b4a6;font:inherit;font-size:10.5px;padding:4px 0;cursor:pointer;white-space:nowrap}
 nav.bar button b{display:block;font-size:20px;line-height:1.2}
 nav.bar button.on{color:var(--gold)}
-.pismo{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;background:#fffdf8;border:1px solid var(--line);border-radius:12px;padding:14px;max-height:340px;overflow:auto}
+.pismo{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;max-height:340px;overflow:auto}
 .flex-wrap{display:flex;gap:8px;flex-wrap:wrap}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--night);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;display:none;z-index:20}
 .waste{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
@@ -82,12 +82,12 @@ details summary{cursor:pointer}
 /* ===== UX/UI 2026-11 ===== */
 :root{--bg:#F4F6F9;--card:#fff;--ink:#14213D;--mut:#5B6577;--line:#E4E8EF;--pri:#14315A;--acc:#0E7C6B;--acc2:#E6F4F1;--acc-ink:#0B5E52;--warm:#F59E0B;--night:#14315A;--night2:#1C4170}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-header.app{position:sticky;top:0;z-index:12;background:rgba(244,246,249,.92);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);color:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid transparent}
+header.app{position:sticky;top:0;z-index:12;background:var(--hdrbg);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);color:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid transparent}
 header.app.sc{border-bottom-color:var(--line)}
 header.app .logo{width:38px;height:38px;border-radius:11px;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;letter-spacing:-.02em;flex:none}
 header.app h1{font-family:inherit;font-weight:800;font-size:20px;letter-spacing:-.02em;margin:0;line-height:1.1}
 header.app .hdate{font-size:12.5px;color:var(--mut);text-transform:capitalize}
-.ib{width:42px;height:42px;border-radius:12px;border:0;background:#fff;color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer}
+.ib{width:42px;height:42px;border-radius:12px;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer}
 main{max-width:720px;padding:6px 16px calc(110px + env(safe-area-inset-bottom))}
 h2{font-family:inherit;font-weight:800;font-size:26px;letter-spacing:-.02em;margin:10px 0 12px}
 h3{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--mut);margin:22px 0 8px}
@@ -98,39 +98,39 @@ h3{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--mut);margin:2
 .mut{font-size:14px}
 .btn{background:var(--pri);border-radius:14px;padding:13px 18px;font-weight:650;min-height:46px;transition:transform .08s}
 .btn:active{transform:scale(.98)}
-.btn.gold{background:var(--acc);color:#fff}.btn.line{background:#fff;color:var(--ink);border:1px solid #CBD2DC}.btn.sm{padding:9px 14px;min-height:38px;font-size:14px;border-radius:12px}
-input,select,textarea{font-size:16px;padding:12px 13px;border:1px solid #CFD6E0;border-radius:12px;min-height:48px}
+.btn.gold{background:var(--acc);color:#fff}.btn.line{background:var(--card);color:var(--ink);border:1px solid var(--bd)}.btn.sm{padding:9px 14px;min-height:38px;font-size:14px;border-radius:12px}
+input,select,textarea{font-size:16px;padding:12px 13px;border:1px solid var(--bd);border-radius:12px;min-height:48px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(14,124,107,.15)}
 label{font-size:14px;font-weight:600;color:var(--ink)}
-.chip{background:#EEF1F5;color:var(--ink);font-weight:500;padding:4px 10px}
-nav.bar{background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);grid-template-columns:repeat(5,1fr);padding:6px 6px calc(8px + env(safe-area-inset-bottom))}
-nav.bar button{color:#7A8496;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0}
+.chip{background:var(--soft);color:var(--ink);font-weight:500;padding:4px 10px}
+nav.bar{background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);grid-template-columns:repeat(5,1fr);padding:6px 6px calc(8px + env(safe-area-inset-bottom))}
+nav.bar button{color:var(--navc);font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0}
 nav.bar button .i{width:24px;height:24px}
 nav.bar button.on{color:var(--acc)}
 nav.bar button.fab .i{width:30px;height:30px;color:#fff;background:var(--acc);border-radius:50%;padding:5px;box-sizing:content-box;margin-top:-4px;box-shadow:0 4px 12px rgba(14,124,107,.35)}
 nav.bar button.fab.on{color:var(--acc)}
-.toast{bottom:calc(92px + env(safe-area-inset-bottom));border-radius:14px;background:#14213D;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast{bottom:calc(92px + env(safe-area-inset-bottom));border-radius:14px;background:var(--toast);box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .qa{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.qa button{display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:#fff;border:0;border-radius:18px;padding:14px;text-align:left;font:inherit;color:var(--ink);box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);cursor:pointer;min-height:96px}
+.qa button{display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:var(--card);border:0;border-radius:18px;padding:14px;text-align:left;font:inherit;color:var(--ink);box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);cursor:pointer;min-height:96px}
 .qa button:active{transform:scale(.98)}
 .qa .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
 .qa b{font-size:15px;line-height:1.2}.qa small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px;font-weight:400}
-.menu{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);margin:10px 0}
-.menu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:#fff;padding:14px 16px;font:inherit;color:var(--ink);text-align:left;border-bottom:1px solid var(--line);cursor:pointer;min-height:64px}
-.menu button:last-child{border-bottom:0}.menu button:active{background:#F6F8FA}
+.menu{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(20,33,61,.06),0 4px 16px rgba(20,33,61,.04);margin:10px 0}
+.menu button{display:flex;align-items:center;gap:14px;width:100%;border:0;background:var(--card);padding:14px 16px;font:inherit;color:var(--ink);text-align:left;border-bottom:1px solid var(--line);cursor:pointer;min-height:64px}
+.menu button:last-child{border-bottom:0}.menu button:active{background:var(--soft)}
 .menu .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
 .menu .t{flex:1;min-width:0}.menu .t b{display:block;font-size:16px}.menu .t small{color:var(--mut);font-size:13px}
-.menu .chev{color:#A0A8B6}
+.menu .chev{color:var(--mut)}
 .badge{background:var(--acc);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px}
-.c1{background:#E6F4F1;color:#0E7C6B}.c2{background:#EAF0FB;color:#2456B3}.c3{background:#FEF3E2;color:#B45309}.c4{background:#F3ECFB;color:#7C3AED}.c5{background:#FDECEC;color:#C2410C}.c6{background:#EEF1F5;color:#334155}
+.c1{background:#E6F4F1;color:#0E7C6B}.c2{background:#EAF0FB;color:#2456B3}.c3{background:#FEF3E2;color:#B45309}.c4{background:#F3ECFB;color:#7C3AED}.c5{background:#FDECEC;color:#C2410C}.c6{background:var(--soft);color:#334155}
 #s-waste{background:linear-gradient(135deg,#0E7C6B,#0B5E52);color:#fff}
-#s-waste .mut{color:rgba(255,255,255,.8)}#s-waste .wtag{color:#fff}#s-waste .btn.line{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}#s-waste .btn{background:#fff;color:var(--acc-ink)}
+#s-waste .mut{color:rgba(255,255,255,.8)}#s-waste .wtag{color:#fff}#s-waste .btn.line{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}#s-waste .btn{background:#fff;color:#0B5E52}
 #s-waste .wbig{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:2px 0 8px}
 .wnext{background:linear-gradient(135deg,#0E7C6B,#0B5E52)}.wnext .when{font-family:inherit;font-weight:800;letter-spacing:-.01em}
-.wday,.ev .d{background:#EEF1F5}
+.wday,.ev .d{background:var(--soft)}
 .ev.sky .d{background:#14315A;color:#fff}
 .today{display:flex;gap:14px;align-items:center}.today .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
-#install{background:#fff!important;color:var(--ink);box-shadow:0 10px 30px rgba(20,33,61,.18)}#install .mut{color:var(--mut)}#install-x{color:var(--mut)}
+#install{background:var(--card)!important;color:var(--ink);box-shadow:0 10px 30px rgba(20,33,61,.18)}#install .mut{color:var(--mut)}#install-x{color:var(--mut)}
 header.app .hdate{text-transform:none}
 #s-dzis{text-transform:none!important}
 #s-waste .wtag i,.wnext .bin i{box-shadow:0 0 0 2px rgba(255,255,255,.85)}
@@ -140,14 +140,74 @@ nav.bar button.fab .i{width:26px;height:26px;padding:8px;margin-top:-16px}
 #f-branze,#v-kal>.flex-wrap{flex-wrap:nowrap;overflow-x:auto;margin-left:-16px;margin-right:-16px;padding:2px 16px 6px;scrollbar-width:none}
 #f-branze::-webkit-scrollbar,#v-kal>.flex-wrap::-webkit-scrollbar{display:none}
 #f-branze .btn,#v-kal>.flex-wrap .btn{white-space:nowrap;flex:none}
-.back{display:none;width:38px;height:38px;border-radius:11px;border:0;background:#fff;color:var(--ink);place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer;flex:none}
+.back{display:none;width:38px;height:38px;border-radius:11px;border:0;background:var(--card);color:var(--ink);place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer;flex:none}
 header.app.sub .back{display:grid}header.app.sub .logo{display:none}
 .back svg{transform:rotate(180deg)}
 .tabs{display:flex;gap:6px;overflow-x:auto;margin:0 -16px 10px;padding:2px 16px 4px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:none;white-space:nowrap;font:inherit;font-size:14px;font-weight:600;border:1px solid #CBD2DC;background:#fff;color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}
+.tabs button{flex:none;white-space:nowrap;font:inherit;font-size:14px;font-weight:600;border:1px solid var(--bd);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}
 .tabs button.on{background:var(--pri);border-color:var(--pri);color:#fff}
 header.app .logo{background:linear-gradient(145deg,#1C4170,#14315A);position:relative;overflow:hidden}header.app .logo::after{content:"";position:absolute;right:-9px;bottom:-9px;width:22px;height:22px;border-radius:50%;background:#0E7C6B;z-index:0}header.app .logo{z-index:0}header.app .logo span{position:relative;z-index:1}
 .letter{font-size:15px;line-height:1.55;color:var(--ink)}
+
+
+.lok-teaser{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;margin:10px 0}
+.lok-teaser .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}.lok-teaser b{display:block;font-size:15px}.lok-teaser small{color:var(--mut);font-size:13px}.lok-teaser .chev{color:var(--mut)}
+.ico-l{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;flex:none}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--soft);border-radius:12px;padding:3px;margin-top:8px}
+.seg button{border:0;background:none;font:inherit;font-size:14px;font-weight:600;color:var(--mut);padding:9px 4px;border-radius:10px;cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.step{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-bottom:1px solid var(--line)}.step:first-child{padding-top:0}
+.term{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.term:last-child{border-bottom:0}
+.term .dd{width:52px;text-align:center;flex:none;border-radius:12px;background:var(--soft);padding:6px 0}.term .dd b{display:block;font-size:20px;line-height:1}.term .dd span{font-size:11px;text-transform:uppercase;color:var(--mut)}
+.term .soon{color:var(--acc);font-weight:700;font-size:13px}
+.radny{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.radny:last-child{border-bottom:0}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:700;flex:none;background:var(--soft);color:var(--ink)}
+.flow{display:grid;gap:6px;margin-top:12px}.flow-l{font-size:13px;color:var(--mut);margin-top:6px}
+.bar{display:flex;height:34px;border-radius:10px;overflow:hidden;background:var(--soft)}
+.bar .in{background:var(--acc);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;padding-left:10px;white-space:nowrap}
+.bar .out{background:repeating-linear-gradient(135deg,var(--soft),var(--soft) 6px,var(--line) 6px,var(--line) 12px)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:13px;color:var(--mut)}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}.legend .lin{background:var(--acc)}.legend .lout{background:var(--line)}
+.lk-val{font-size:14px;color:var(--mut);margin:4px 0 8px}.lk-val b{color:var(--ink);font-size:18px}
+.lk-out{background:var(--acc2);border-radius:14px;padding:12px 14px;margin:6px 0 10px;font-size:15px}.lk-out b{font-size:22px;display:block;color:var(--acc-ink)}
+input[type=range]{padding:0;min-height:34px;border:0;accent-color:var(--acc);background:none;box-shadow:none}
+.okr{display:flex;gap:6px;overflow-x:auto;margin:8px -16px 4px;padding:2px 16px;scrollbar-width:none}.okr::-webkit-scrollbar{display:none}
+.okr button{flex:none;font:inherit;font-size:14px;font-weight:600;border:1px solid var(--bd);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}.okr button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+@media (min-width:760px){
+ header.app{padding-left:max(16px,calc(50% - 360px));padding-right:max(16px,calc(50% - 360px))}
+ nav.bar{left:50%;right:auto;width:720px;transform:translateX(-50%);border:1px solid var(--line);border-bottom:0;border-radius:20px 20px 0 0}
+ .qa{grid-template-columns:repeat(4,1fr)}
+ main{padding-top:14px}
+ .toast{bottom:100px}
+}
+/* ===== tryb ciemny ===== */
+:root{--soft:#EEF1F5;--bd:#CBD2DC;--navc:#7A8496;--hdrbg:rgba(244,246,249,.92);--navbg:rgba(255,255,255,.96);--toast:#14213D;--warnbg:#FFF7E0;--warnbd:#F0D98A;--errbg:#FBEBEB;--infobg:#E7F1FB;--okbg:#E5F4E4;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0D131D;--card:#161F2E;--soft:#212C3F;--ink:#E7ECF4;--mut:#98A3B5;--line:#263247;--bd:#34425B;--pri:#3D6DB5;--acc:#2DB39C;--acc2:#123631;--acc-ink:#8BE3D3;--navc:#8792A5;--hdrbg:rgba(13,19,29,.9);--navbg:rgba(19,27,40,.96);--toast:#2A3850;--warnbg:#3A2F12;--warnbd:#6B5517;--errbg:#3B1D1D;--infobg:#17294A;--okbg:#14301F;color-scheme:dark}
+:root:not([data-theme=light]) .card,:root:not([data-theme=light]) .qa button,:root:not([data-theme=light]) .menu{box-shadow:none!important;border:1px solid var(--line)!important}
+:root:not([data-theme=light]) .c1{background:#12362F;color:#5DD3BE}
+:root:not([data-theme=light]) .c2{background:#18284A;color:#8DB1F2}
+:root:not([data-theme=light]) .c3{background:#3A2A10;color:#F5B655}
+:root:not([data-theme=light]) .c4{background:#2C1F45;color:#C4A2F6}
+:root:not([data-theme=light]) .c5{background:#3D1D14;color:#F69A74}
+:root:not([data-theme=light]) .c6{background:#222D3F;color:#B6C1D3}
+:root:not([data-theme=light]) .ev.sky .d{background:#22355A}
+:root:not([data-theme=light]) .wnext,:root:not([data-theme=light]) #s-waste{background:linear-gradient(135deg,#0F5F53,#0A463E)!important}
+:root:not([data-theme=light]) .ib,:root:not([data-theme=light]) .back{box-shadow:none;border:1px solid var(--line)}
+:root:not([data-theme=light]) #map{filter:brightness(.8) contrast(1.1)}
+:root:not([data-theme=light]) .btn.line{background:transparent}
+}
+:root[data-theme=dark]{--bg:#0D131D;--card:#161F2E;--soft:#212C3F;--ink:#E7ECF4;--mut:#98A3B5;--line:#263247;--bd:#34425B;--pri:#3D6DB5;--acc:#2DB39C;--acc2:#123631;--acc-ink:#8BE3D3;--navc:#8792A5;--hdrbg:rgba(13,19,29,.9);--navbg:rgba(19,27,40,.96);--toast:#2A3850;--warnbg:#3A2F12;--warnbd:#6B5517;--errbg:#3B1D1D;--infobg:#17294A;--okbg:#14301F;color-scheme:dark}
+:root[data-theme=dark] .card,:root[data-theme=dark] .qa button,:root[data-theme=dark] .menu{box-shadow:none!important;border:1px solid var(--line)!important}
+:root[data-theme=dark] .c1{background:#12362F;color:#5DD3BE}
+:root[data-theme=dark] .c2{background:#18284A;color:#8DB1F2}
+:root[data-theme=dark] .c3{background:#3A2A10;color:#F5B655}
+:root[data-theme=dark] .c4{background:#2C1F45;color:#C4A2F6}
+:root[data-theme=dark] .c5{background:#3D1D14;color:#F69A74}
+:root[data-theme=dark] .c6{background:#222D3F;color:#B6C1D3}
+:root[data-theme=dark] .ev.sky .d{background:#22355A}
+:root[data-theme=dark] .wnext,:root[data-theme=dark] #s-waste{background:linear-gradient(135deg,#0F5F53,#0A463E)!important}
+:root[data-theme=dark] .ib,:root[data-theme=dark] .back{box-shadow:none;border:1px solid var(--line)}
+:root[data-theme=dark] #map{filter:brightness(.8) contrast(1.1)}
+:root[data-theme=dark] .btn.line{background:transparent}
 </style>
 </head>
 <body>
@@ -163,14 +223,17 @@ header.app .logo{background:linear-gradient(145deg,#1C4170,#14315A);position:rel
   <div class="card" id="s-waste"></div>
   <div class="qa">
    <button data-go="zglos"><span class="ico c5"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span><span><b>Zgłoś problem</b><small>dziura, latarnia, potrzeba</small></span></button>
-   <button data-go="sprawy"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></span><span><b>Moje sprawy</b><small>pisma i terminy</small></span></button>
+   <button data-go="urzad"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6M9 10.5h.01M15 10.5h.01"/></svg></span><span><b>Załatw w Urzędzie</b><small>godziny, terminy, sprawy</small></span></button>
+   <button data-go="rada"><span class="ico c4"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span><span><b>Twoi radni</b><small>kto Cię reprezentuje</small></span></button>
    <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><b>Ważne telefony</b><small>awarie i alarmowe</small></span></button>
-   <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span><b>Firmy sąsiadów</b><small>kupuj lokalnie</small></span></button>
   </div>
+  <div class="sec"><h3>Ważne terminy</h3><button data-go="urzad">Urząd</button></div>
+  <div class="card" id="s-terminy"></div>
   <div class="sec"><h3>Wydarzenia</h3><button data-go="kal">Wszystkie</button></div>
   <div id="s-zap" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px"></div>
-  <div class="sec"><h3>Moje sprawy</h3><button data-go="sprawy">Otwórz</button></div><div class="card" id="s-sprawy"></div>
-  <div class="sec"><h3>Sąsiedzi polecają</h3><button data-go="firmy">Katalog</button></div>
+  <div id="s-sprawy-wrap"><div class="sec"><h3>Moje sprawy</h3><button data-go="sprawy">Otwórz</button></div><div class="card" id="s-sprawy"></div></div>
+  <div class="sec"><h3>Kupuj od sąsiada</h3><button data-go="firmy">Katalog</button></div>
+  <button class="card lok-teaser" data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span class="grow"><b>Ze 100 zł wydanych u sąsiada więcej zostaje w Kobyłce</b><small>Zobacz, jak pieniądze krążą po mieście</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   <div id="s-firmy" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-padding-left:16px"></div>
   <h3>Dziś</h3>
   <div class="card today"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg></span><div class="grow"><b id="s-dzis" style="text-transform:capitalize"></b><div class="mut" id="s-sun"></div><div class="mut">Księżyc: <span id="s-moon"></span></div></div><button class="btn sm line" data-go="odkryj">Odkrywaj</button></div>
@@ -202,7 +265,8 @@ header.app .logo{background:linear-gradient(145deg,#1C4170,#14315A);position:rel
 <!-- FIRMY -->
 <section class="view" id="v-firmy">
   <h2>Kupuj od sąsiada</h2>
-  <p class="mut">Firmy i usługi z Kobyłki. Zadzwoń, napisz, odwiedź. Pieniądze zostają w naszym mieście.</p>
+  <p class="mut">Firmy i usługi z Kobyłki. Zadzwoń, napisz, odwiedź.</p>
+  <button class="card lok-teaser" data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span class="grow"><b>48 zł zamiast 14 zł</b><small>Tyle ze 100 zł zostaje w lokalnej gospodarce, gdy kupujesz u sąsiada, a nie w sieci</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   <input id="f-szukaj" placeholder="Szukaj: fryzjer, hydraulik, pizza…">
   <div class="flex-wrap" id="f-branze" style="margin:8px 0"></div>
   <div id="f-lista"></div>
@@ -274,17 +338,83 @@ header.app .logo{background:linear-gradient(145deg,#1C4170,#14315A);position:rel
 <!-- MENU -->
 <section class="view" id="v-menu">
   <h2>Więcej</h2>
+  <h3>Miasto</h3>
+  <div class="menu">
+   <button data-go="urzad"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6M9 10.5h.01M15 10.5h.01"/></svg></span><span class="t"><b>Załatw w Urzędzie</b><small>Godziny, terminy płatności, najczęstsze sprawy</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="rada"><span class="ico c4"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span><span class="t"><b>Rada Miasta i Twoi radni</b><small>Kto Cię reprezentuje, sesje, jak radny może pomóc</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span class="t"><b>Ważne telefony i adresy</b><small>Awarie, PSZOK, alarmowe</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="odkryj"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="t"><b>Odkrywaj Kobyłkę</b><small>Mapy, wtedy i dziś, historia, niebo</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+  </div>
+  <h3>Lokalnie</h3>
+  <div class="menu">
+   <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span class="t"><b>Firmy sąsiadów</b><small>Usługi i sklepy z Kobyłki</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span class="t"><b>Twoje pieniądze w Kobyłce</b><small>Zakupy u sąsiada i PIT dla miasta</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+  </div>
+  <h3>Ty</h3>
   <div class="menu">
    <button data-go="sprawy"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></span><span class="t"><b>Moje sprawy</b><small>Pisma do Urzędu, terminy, radni</small></span><span id="m-sprawy"></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-   <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span class="t"><b>Firmy sąsiadów</b><small>Usługi i sklepy z Kobyłki</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-   <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span class="t"><b>Ważne telefony i adresy</b><small>Awarie, Urząd, PSZOK, alarmowe</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-   <button data-go="odkryj"><span class="ico c4"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span><span class="t"><b>Odkrywaj Kobyłkę</b><small>Mapy, historia, niebo w Twoim dniu</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="odpady"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="t"><b>Mój adres</b><small id="m-adres">Ustaw ulicę: wywóz i Twój okręg</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   </div>
+  <div class="card"><b>Wygląd</b><div class="seg" id="theme-seg" role="radiogroup" aria-label="Wygląd"><button data-th="auto">Automatyczny</button><button data-th="light">Jasny</button><button data-th="dark">Ciemny</button></div><div class="mut" style="margin-top:6px">Automatyczny dopasowuje się do ustawień telefonu.</div></div>
+  <h3>Aplikacja</h3>
   <div class="menu">
-   <button id="m-inst"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></span><span class="t"><b>Zainstaluj aplikację</b><small id="m-inst-txt">Ikona na ekranie telefonu</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-   <button data-polec><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg></span><span class="t"><b>Poleć sąsiadom</b><small>Wyślij link albo pokaż kod QR</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-   <button data-go="wiecej" data-scroll="w-dane"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg></span><span class="t"><b>Twoje dane i o aplikacji</b><small>Co zostaje w telefonie</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button id="m-inst"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="t"><b>Zainstaluj aplikację</b><small id="m-inst-txt">Ikona na ekranie telefonu</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-polec><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span><span class="t"><b>Poleć sąsiadom</b><small>Wyślij link albo pokaż kod QR</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+   <button data-go="wiecej" data-scroll="w-dane"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13l2.5-8h11L20 13v6H4z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></span><span class="t"><b>Twoje dane i o aplikacji</b><small>Co zostaje w telefonie</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   </div>
+</section>
+
+<section class="view" id="v-urzad">
+  <h2>Załatw w Urzędzie</h2>
+  <div class="card"><div class="row"><span class="ico-l c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5 20V9l7-5 7 5v11"/><path d="M9 20v-6h6v6M9 10.5h.01M15 10.5h.01"/></svg></span><div class="grow"><b>Urząd Miasta Kobyłka</b><div class="mut" id="u-adres"></div></div></div>
+   <div id="u-godz" style="margin-top:10px"></div>
+   <div class="flex-wrap" style="margin-top:10px" id="u-akcje"></div></div>
+  <h3>Terminy płatności</h3>
+  <div class="card" id="u-terminy"></div>
+  <h3>Najczęstsze sprawy</h3>
+  <div id="u-sprawy"></div>
+  <div class="card night"><b>Sprawa, której tu nie ma?</b><p class="mut">Opisz ją w zakładce Zgłoś. Aplikacja przygotuje pismo do Urzędu i przypomni o terminie odpowiedzi.</p><button class="btn sm gold" data-go="zglos">Zgłoś sprawę</button></div>
+</section>
+
+<section class="view" id="v-rada">
+  <h2>Rada Miasta</h2>
+  <p class="mut">21 radnych wybranych w okręgach. Radni stanowią prawo miejscowe, uchwalają budżet i kontrolują burmistrza. Możesz zwrócić się do każdego z nich, najlepiej do radnych ze swojego okręgu.</p>
+  <div class="card" id="r-twoi"></div>
+  <h3>Jak radny może pomóc</h3>
+  <div class="card">
+   <div class="step"><b>Interpelacja lub zapytanie</b><span class="mut">Radny pyta burmistrza na piśmie o Twoją sprawę. Odpowiedź musi przyjść w ciągu 14 dni i jest publiczna.</span></div>
+   <div class="step"><b>Wniosek na komisji lub sesji</b><span class="mut">Sprawę można wnieść pod obrady komisji Rady, np. przy pracach nad budżetem.</span></div>
+   <div class="step"><b>Petycja</b><span class="mut">Grupa mieszkańców może złożyć petycję. Rozpatruje ją Komisja Skarg, Wniosków i Petycji, termin to 3 miesiące.</span></div>
+   <button class="btn sm gold" data-go="zglos" style="margin-top:8px">Przygotuj sprawę dla radnego</button>
+  </div>
+  <h3>Sesje Rady</h3>
+  <div class="card" id="r-sesje"></div>
+  <h3>Wszyscy radni</h3>
+  <div id="r-lista"></div>
+</section>
+
+<section class="view" id="v-lokalnie">
+  <h2>Twoje pieniądze w Kobyłce</h2>
+  <p class="mut">Każda złotówka wydana u sąsiada może zarobić dla miasta kilka razy: na pensję dla mieszkańca, u lokalnego dostawcy, w podatkach na drogi i szkoły.</p>
+  <div class="card"><b>Gdzie trafia 100 zł wydane w sklepie</b>
+   <div class="flow"><div class="flow-l">Firma z Kobyłki</div><div class="bar"><span class="in" style="width:48%">48 zł</span><span class="out" style="width:52%"></span></div>
+   <div class="flow-l">Duża sieć lub sklep internetowy</div><div class="bar"><span class="in" style="width:14%">14 zł</span><span class="out" style="width:86%"></span></div></div>
+   <div class="legend"><span><i class="lin"></i>wraca do lokalnej gospodarki</span><span><i class="lout"></i>wypływa poza miasto</span></div>
+   <p class="mut" style="margin-top:8px">Średnie z badań Civic Economics w miastach USA (sklepy niezależne a sieciowe). W restauracjach i usługach różnica bywa jeszcze większa, bo większa część ceny to pensje miejscowych pracowników. Polskich badań na poziomie miast brakuje, więc traktuj to jako rząd wielkości, nie dokładną liczbę dla Kobyłki.</p></div>
+  <div class="card"><b>Policz swój wpływ</b>
+   <label for="lk-kw">Ile miesięcznie wydajesz u lokalnych firm?</label>
+   <input type="range" id="lk-kw" min="0" max="3000" step="50" value="400"><div class="lk-val"><b id="lk-kw-v"></b> zł miesięcznie</div>
+   <div class="lk-out" id="lk-out"></div>
+   <label for="lk-n">A gdyby tyle samo przeniosło do lokalnych firm</label>
+   <input type="range" id="lk-n" min="100" max="5000" step="100" value="1000"><div class="lk-val"><b id="lk-n-v"></b> rodzin z Kobyłki</div>
+   <div class="lk-out" id="lk-out2"></div></div>
+  <div class="card"><div class="row"><span class="ico-l c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><div class="grow"><b>Rozlicz PIT w Kobyłce</b></div></div>
+   <p style="margin:8px 0 4px">Miasto dostaje udział w podatku dochodowym swoich mieszkańców: od 2025 roku to 7% ich dochodu. Liczy się adres zamieszkania wpisany w zeznaniu PIT, nie meldunek.</p>
+   <div class="lk-out" id="lk-pit"></div>
+   <label for="lk-doch">Twój roczny dochód (do policzenia)</label>
+   <input type="range" id="lk-doch" min="20000" max="300000" step="5000" value="80000"><div class="lk-val"><b id="lk-doch-v"></b> zł rocznie</div>
+   <p class="mut">Jeśli mieszkasz w Kobyłce, a w PIT podajesz inny adres, ta kwota zasila budżet innej gminy. Wystarczy wpisać adres w Kobyłce w zeznaniu albo złożyć w urzędzie skarbowym formularz ZAP-3.</p></div>
+  <button class="btn wide gold" data-go="firmy">Zobacz firmy sąsiadów</button>
 </section>
 
 <!-- WIĘCEJ -->
@@ -359,12 +489,70 @@ function skyTick(){const t=Date.now();const m=moon(t);if($('#v-start').classList
  const next=EVS.find(e=>e.kind==='niebo'&&e.d>=today());$('#hsub').textContent=next?('Następne na niebie: '+next.title.replace(/^\S+\s/,'')+', '+fmtD(next.d)):'Niebo nad Kobyłką w tej chwili';}
 
 /* ===== nawigacja ===== */
-function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',TAB[v]==='menu'&&v!=='menu');}window.scrollTo(0,0);
+function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',TAB[v]==='menu'&&v!=='menu');}window.scrollTo(0,0);if(DANE){if(v==='rada')renderRada();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
  if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();} try{history.replaceState(null,'','#'+v);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go);if(b.dataset.scroll){const t=document.getElementById(b.dataset.scroll);if(t)setTimeout(()=>t.scrollIntoView({block:'start'}),30);}}});
-const TAB={start:'start',odpady:'odpady',zglos:'zglos',kal:'kal',menu:'menu',sprawy:'menu',firmy:'menu',wiecej:'menu',odkryj:'menu'};
+const TAB={start:'start',odpady:'odpady',zglos:'zglos',kal:'kal',menu:'menu',sprawy:'menu',firmy:'menu',wiecej:'menu',odkryj:'menu',urzad:'menu',rada:'menu',lokalnie:'menu'};
 window.addEventListener('scroll',()=>{const h=document.querySelector('header.app');if(h)h.classList.toggle('sc',scrollY>4);},{passive:true});
 (()=>{const d=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});const e=document.getElementById('hdate');if(e)e.textContent=d.charAt(0).toUpperCase()+d.slice(1);})();
+
+
+/* ===== motyw ===== */
+function setTheme(t){store('theme',t);if(t==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);
+ $$('#theme-seg button').forEach(b=>b.classList.toggle('on',b.dataset.th===t));}
+$$('#theme-seg button').forEach(b=>b.onclick=()=>setTheme(b.dataset.th));setTheme(store('theme')||'auto');
+/* ===== terminy płatności ===== */
+function nextDates(md,n){const out=[],t=today();const y=+t.slice(0,4);for(const yy of[y,y+1])for(const [m,d,lab] of md){const ds=`${yy}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(ds>=t)out.push({d:ds,lab});}return out.sort((a,b)=>a.d<b.d?-1:1).slice(0,n);}
+function terminyPlatnosci(){const L=[];
+ nextDates([[3,15,'Podatek od nieruchomości, I rata'],[5,15,'Podatek od nieruchomości, II rata'],[9,15,'Podatek od nieruchomości, III rata'],[11,15,'Podatek od nieruchomości, IV rata']],4).forEach(x=>L.push(x));
+ const op=DANE&&DANE.odpady&&DANE.odpady.oplata;if(op&&Array.isArray(op.terminy_md))nextDates(op.terminy_md.map(x=>[x[0],x[1],'Opłata za odpady'+(x[2]?', '+x[2]:'')]),4).forEach(x=>L.push(x));
+ const se=DANE&&DANE.rada&&DANE.rada.sesje_daty;if(Array.isArray(se))se.filter(d=>d>=today()).slice(0,2).forEach(d=>L.push({d,lab:'Sesja Rady Miasta',sesja:1}));
+ return L.sort((a,b)=>a.d<b.d?-1:1);}
+function termRow(x){const dt=new Date(x.d+'T12:00'),n=Math.round((dt-new Date(today()+'T12:00'))/864e5);
+ return `<div class="term"><div class="dd"><b>${dt.getDate()}</b><span>${dt.toLocaleDateString('pl-PL',{month:'short'})}</span></div><div class="grow"><b style="font-size:15px">${x.lab}</b><div class="${n<=7?'soon':'mut'}">${n===0?'dziś':n===1?'jutro':'za '+n+' dni'}</div></div></div>`;}
+function renderTerminy(){const L=terminyPlatnosci();
+ const seen=new Set(),S=L.filter(x=>{const k=x.lab.split(',')[0];if(seen.has(k))return false;seen.add(k);return true;});$('#s-terminy').innerHTML=S.slice(0,3).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Raty podatku od nieruchomości dotyczą osób fizycznych. Kwotę podaje decyzja z Urzędu.</p>';
+ $('#u-terminy').innerHTML=L.slice(0,6).map(termRow).join('')+'<p class="mut" style="margin:8px 0 0">Podatek od nieruchomości: jeśli kwota nie przekracza 100 zł, płacisz całość do 15 marca.</p>'+
+  ((DANE&&DANE.odpady&&DANE.odpady.oplata&&DANE.odpady.oplata.opis)?`<p class="mut">${DANE.odpady.oplata.opis}</p>`:'');}
+/* ===== urząd ===== */
+const USPRAWY=[
+ ['Dowód osobisty','Wniosek złożysz w dowolnym urzędzie gminy albo przez internet (gov.pl, z profilem zaufanym). Odbiór osobiście w urzędzie wskazanym we wniosku.','https://www.gov.pl/web/gov/uzyskaj-dowod-osobisty'],
+ ['Zameldowanie','W Urzędzie Miasta albo przez internet na gov.pl. Wymaga dokumentu potwierdzającego prawo do lokalu.','https://www.gov.pl/web/gov/zamelduj-sie-na-pobyt-staly-lub-czasowy-dluzszy-niz-3-miesiace'],
+ ['Akty stanu cywilnego','Odpisy aktów urodzenia, małżeństwa, zgonu: w Urzędzie Stanu Cywilnego albo przez internet.','https://www.gov.pl/web/gov/uzyskaj-odpis-aktu-stanu-cywilnego-urodzenia-malzenstwa-zgonu'],
+ ['Podatek od nieruchomości','Gdy kupisz, wybudujesz albo sprzedasz nieruchomość, złóż informację w Urzędzie w ciągu 14 dni. Urząd wyda decyzję z kwotą.',null],
+ ['Deklaracja śmieciowa','Przy przeprowadzce lub zmianie liczby mieszkańców złóż nową deklarację o opłacie za odpady.',null],
+ ['Wycinka drzewa na posesji','Wycinkę większego drzewa trzeba zgłosić w Urzędzie. Obowiązek zależy od gatunku i obwodu pnia. Urząd ma 21 dni na oględziny i ewentualny sprzeciw.',null],
+ ['Karta Dużej Rodziny','Dla rodzin z co najmniej trojgiem dzieci. Wniosek w Urzędzie albo przez internet.',null],
+ ['Zajęcie pasa drogowego, zjazd','Remont ogrodzenia, kontener, nowy zjazd na posesję przy drodze gminnej wymagają zgody zarządcy drogi.',null]];
+function renderUrzad(){const u=(DANE&&DANE.urzad)||{};
+ $('#u-adres').textContent=u.adres||'ul. Wołomińska 1, 05-230 Kobyłka';
+ const g=u.godziny;$('#u-godz').innerHTML=g?(Array.isArray(g)?g.map(x=>`<div class="row" style="justify-content:space-between;padding:3px 0"><span>${x[0]}</span><b>${x[1]}</b></div>`).join(''):`<div>${g}</div>`)+(u.godziny_uwagi?`<div class="mut">${u.godziny_uwagi}</div>`:''):'<div class="mut">Godziny pracy sprawdzisz na kobylka.pl.</div>';
+ $('#u-akcje').innerHTML=`${u.tel?`<a class="btn sm" href="tel:${u.tel.replace(/\s/g,'')}">Zadzwoń</a>`:''}${u.email?`<a class="btn sm line" href="mailto:${u.email}">E-mail</a>`:''}<a class="btn sm line" href="https://epuap.gov.pl">ePUAP</a><a class="btn sm line" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Urząd Miasta Kobyłka, Wołomińska 1')}">Dojazd</a>`;
+ $('#u-sprawy').innerHTML='<div class="menu">'+USPRAWY.map((x,i)=>`<button data-us="${i}"><span class="t"><b>${x[0]}</b><small class="us-d" id="us-${i}" hidden>${x[1]}${x[2]?`<br><a href="${x[2]}" target="_blank" rel="noopener">Załatw przez internet</a>`:''}</small></span><span class="chev" style="transition:transform .2s">${'<svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'}</span></button>`).join('')+'</div>';
+ $$('[data-us]').forEach(b=>b.onclick=e=>{if(e.target.closest('a'))return;const d=$('#us-'+b.dataset.us);d.hidden=!d.hidden;b.querySelector('.chev').style.transform=d.hidden?'':'rotate(90deg)';});}
+/* ===== rada ===== */
+function adresMenu(){const u=store('ulica'),x=u&&rejonUlicy(u);const e=$('#m-adres');if(e)e.textContent=x?`${x.u} · ${x.r.nazwa}`+(okregUlicy()?` · okręg ${okregUlicy()}`:''):'Ustaw ulicę: wywóz i Twój okręg';}
+function okregUlicy(){const u=store('ulica');const O=DANE&&DANE.rada&&DANE.rada.okregi;if(!u||!Array.isArray(O))return null;const n=nrm(u);const f=O.find(o=>(o.ulice||[]).some(x=>nrm(x)===n));return f?f.nr:null;}
+let OKR=null;
+function renderRada(){const R=(DANE&&DANE.radni&&DANE.radni.length?DANE.radni:(window.RADNI||[]));const nums=[...new Set(R.map(r=>r.okreg))].sort((a,b)=>a-b);
+ const auto=okregUlicy();if(OKR===null)OKR=auto||store('okreg')||null;
+ const ini=n=>n.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('');
+ const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'radny okręgu nr '+r.okreg}</div></div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:''}</div>`;
+ const pick=`<div class="okr">${nums.map(n=>`<button data-ok="${n}" class="${n===OKR?'on':''}">Okręg ${n}</button>`).join('')}</div>`;
+ const twoi=OKR?R.filter(r=>r.okreg===OKR):[];
+ $('#r-twoi').innerHTML=`<b>Twoi radni</b><div class="mut">${auto&&OKR===auto?`Twoja ulica ${store('ulica')} leży w okręgu nr ${auto}.`:(DANE&&DANE.rada&&DANE.rada.okregi?'Ustaw ulicę w zakładce Odpady albo wybierz okręg.':'Wybierz swój okręg wyborczy.')}</div>${pick}${twoi.map(card).join('')}`;
+ $$('#r-twoi [data-ok]').forEach(b=>b.onclick=()=>{OKR=+b.dataset.ok;store('okreg',OKR);renderRada();});
+ $('#r-lista').innerHTML=nums.map(n=>`<div class="card"><b>Okręg nr ${n}</b>${R.filter(r=>r.okreg===n).map(card).join('')}</div>`).join('');
+ const se=(DANE&&DANE.rada)||{};
+ $('#r-sesje').innerHTML=`<div>Sesje są jawne. Możesz przyjść albo obejrzeć transmisję.</div>${Array.isArray(se.sesje_daty)&&se.sesje_daty.some(d=>d>=today())?`<div style="margin-top:6px">Najbliższa sesja: <b>${fmtD(se.sesje_daty.find(d=>d>=today()))}</b></div>`:''}<div class="flex-wrap" style="margin-top:10px">${se.transmisje?`<a class="btn sm" href="${se.transmisje}" target="_blank" rel="noopener">Transmisje i nagrania</a>`:''}${se.biuro_tel?`<a class="btn sm line" href="tel:${se.biuro_tel.replace(/\s/g,'')}">Biuro Rady</a>`:''}${se.biuro_email?`<a class="btn sm line" href="mailto:${se.biuro_email}">E-mail do Biura Rady</a>`:''}</div>${se.dyzury?`<p class="mut">${se.dyzury}</p>`:''}`;}
+/* ===== lokalnie ===== */
+const zl=v=>Math.round(v).toLocaleString('pl-PL');
+function lok(){const kw=+$('#lk-kw').value,n=+$('#lk-n').value,doch=+$('#lk-doch').value;
+ $('#lk-kw-v').textContent=zl(kw);$('#lk-n-v').textContent=zl(n);$('#lk-doch-v').textContent=zl(doch);
+ const rok=kw*12;$('#lk-out').innerHTML=`<b>ok. ${zl(rok*.48)} zł rocznie</b>wraca do lokalnej gospodarki z ${zl(rok)} zł Twoich zakupów. W sieci byłoby to ok. ${zl(rok*.14)} zł.`;
+ const sum=rok*n,extra=sum*(.48-.14);$('#lk-out2').innerHTML=`<b>+${extra>=1e6?(extra/1e6).toLocaleString('pl-PL',{maximumFractionDigits:1})+' mln':zl(extra)} zł rocznie</b>więcej zostaje w Kobyłce, gdy ${zl(n)} rodzin przeniesie po ${zl(kw)} zł miesięcznie z sieci do lokalnych firm.`;
+ $('#lk-pit').innerHTML=`<b>ok. ${zl(doch*.07)} zł rocznie</b>trafia do budżetu Kobyłki z Twojego PIT przy dochodzie ${zl(doch)} zł. Przez 4 lata kadencji to ok. ${zl(doch*.07*4)} zł.`;}
+['lk-kw','lk-n','lk-doch'].forEach(id=>$('#'+id).addEventListener('input',lok));lok();
 
 /* ===== odpady ===== */
 const FRAK=[{k:'bio',n:'Bio',c:'#8B5A2B'},{k:'zmiesz',n:'Zmieszane',c:'#374151'},{k:'niesegreg',n:'Zmieszane',c:'#374151'},{k:'metal',n:'Metale i tworzywa',c:'#E5B700'},{k:'tworzyw',n:'Metale i tworzywa',c:'#E5B700'},{k:'papier',n:'Papier',c:'#2563EB'},{k:'szk',n:'Szkło',c:'#16A34A'},{k:'gabaryt',n:'Gabaryty',c:'#9333EA'},{k:'choink',n:'Choinki',c:'#15803D'},{k:'popi',n:'Popiół',c:'#9CA3AF'}];
@@ -440,7 +628,7 @@ function evHTML(e){const d=new Date(e.d+'T12:00');return `<div class="ev ${e.kin
 function kalendarz(){const a=evAll().filter(e=>FILTR==='wszystko'||e.kind===FILTR);$('#k-lista').innerHTML=a.slice(0,60).map(evHTML).join('')||'<p class="empty">Brak wydarzeń.</p>';
  $('#s-ev').innerHTML=evAll().filter(e=>e.kind==='niebo').slice(0,3).map(evHTML).join('')||'<p class="mut">Brak.</p>';
  const z=evAll().filter(e=>e.kind==='miasto'&&!/^.{0,3}(Nów|Pełnia)/.test(e.title)).slice(0,10);
- $('#s-zap').innerHTML=z.map((e,i)=>{const d=new Date(e.d+'T12:00');return `<div class="card" style="min-width:230px;max-width:260px;scroll-snap-align:start;margin:0;background:#fff;display:flex;flex-direction:column"><div class="mut" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:700;color:var(--acc)">${d.toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})}${e.t?' · '+e.t:''}</div><b style="display:block;margin:4px 0;font-size:16px">${e.title.replace(/^\S+\s/,'')}</b><div class="mut">${e.miejsce||e.desc||''}</div><div class="flex-wrap" style="margin-top:8px"><button class="btn sm" data-ev="${i}">Do kalendarza</button>${e.url?`<a class="btn sm line" href="${e.url}">Więcej</a>`:''}</div></div>`;}).join('')||'<p class="mut">Brak zapowiedzi.</p>';
+ $('#s-zap').innerHTML=z.map((e,i)=>{const d=new Date(e.d+'T12:00');return `<div class="card" style="min-width:230px;max-width:260px;scroll-snap-align:start;margin:0;background:var(--card);display:flex;flex-direction:column"><div class="mut" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:700;color:var(--acc)">${d.toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})}${e.t?' · '+e.t:''}</div><b style="display:block;margin:4px 0;font-size:16px">${e.title.replace(/^\S+\s/,'')}</b><div class="mut">${e.miejsce||e.desc||''}</div><div class="flex-wrap" style="margin-top:8px"><button class="btn sm" data-ev="${i}">Do kalendarza</button>${e.url?`<a class="btn sm line" href="${e.url}">Więcej</a>`:''}</div></div>`;}).join('')||'<p class="mut">Brak zapowiedzi.</p>';
  $$('#s-zap [data-ev]').forEach(b=>b.onclick=()=>{const e=z[+b.dataset.ev];save('wydarzenie.ics',icsOf([Object.assign({},e,{alarm:'PT2H'})],'Kobyłka'),'text/calendar');});}
 $$('[data-f]').forEach(b=>b.onclick=()=>{FILTR=b.dataset.f;$$('[data-f]').forEach(x=>x.classList.toggle('line',x!==b));kalendarz();});
 function icsOf(list,name){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Moja Kobylka//PL','X-WR-CALNAME:'+name];const st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
@@ -514,7 +702,7 @@ function stan(s){if(s.status==='zlozone'&&s.termin&&s.termin<today())return['zal
 function renderSprawy(){const L=SPRAWY;
  $('#sp-lista').innerHTML=L.length?L.map(s=>{const [k,n]=stan(s),cat=CATS.find(c=>c.id===s.cat)||{};return `<div class="card" data-open="${s.id}" style="cursor:pointer"><div class="row"><b style="font-size:22px">${cat.ik||'✉'}</b><div class="grow"><b>${cat.n||''}</b> <span class="chip st-${k}">${n}</span><div class="mut">${s.opis.slice(0,90)}</div>${s.termin&&s.status==='zlozone'?`<div class="mut">Odpowiedź do: <b>${fmtD(s.termin)}</b></div>`:''}</div></div><div id="op-${s.id}"></div></div>`;}).join(''):'<div class="card empty">Nie masz jeszcze spraw. <button class="btn sm" data-go="zglos">Zgłoś pierwszą</button></div>';
  $$('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('button,a,textarea,input,select'))return;otworz(el.dataset.open);});
- const open=L.filter(s=>s.status!=='zalatwione');$('#s-sprawy').innerHTML=open.length?open.slice(0,3).map(s=>{const [k,n]=stan(s);return `<div class="waste"><div class="grow"><b>${(CATS.find(c=>c.id===s.cat)||{}).n||''}</b> <span class="chip st-${k}">${n}</span><div class="mut">${s.opis.slice(0,60)}</div></div></div>`;}).join('')+'<button class="btn sm line" data-go="sprawy">Wszystkie sprawy</button>':'<p class="mut">Brak otwartych spraw.</p>';}
+ const open=L.filter(s=>s.status!=='zalatwione');{const w=$('#s-sprawy-wrap');if(w)w.hidden=!open.length;}$('#s-sprawy').innerHTML=open.length?open.slice(0,3).map(s=>{const [k,n]=stan(s);return `<div class="waste"><div class="grow"><b>${(CATS.find(c=>c.id===s.cat)||{}).n||''}</b> <span class="chip st-${k}">${n}</span><div class="mut">${s.opis.slice(0,60)}</div></div></div>`;}).join('')+'<button class="btn sm line" data-go="sprawy">Wszystkie sprawy</button>':'<p class="mut">Brak otwartych spraw.</p>';}
 function otworz(id){const s=SPRAWY.find(x=>x.id===id);if(!s)return;$$('[id^="op-"]').forEach(x=>x.innerHTML='');const box=$('#op-'+id);if(!box)return;
  const tx=pismo(s),[k]=stan(s),mail=URZAD.email;
  box.innerHTML=`<h3>Pismo</h3><div class="pismo">${tx.replace(/</g,'&lt;')}</div>${s.foto?`<img class="photo" src="${s.foto}" alt="Zdjęcie">`:''}
@@ -617,11 +805,11 @@ async function init(){
  RADNI=(d&&d.radni&&d.radni.length)?d.radni:[{id:'edyta-zbiec',imie:'Edyta Zbieć'}];
  EVS=e.map(x=>({d:x.d,t:x.allday?'':x.t,title:x.title,desc:x.desc,kind:x.cat==='niebo'?'niebo':'miasto',allday:x.allday,alarm:x.alarm?('-'+x.alarm).slice(1):null}));
  if(d&&d.wydarzenia)EVS=EVS.concat(d.wydarzenia.map(x=>({d:x.data,t:x.godzina||'',title:'🎭 '+x.tytul,desc:x.opis||'',miejsce:x.miejsce||'',url:x.url||x.zrodlo,kind:'miasto'})));
- cats();odpady();kalendarz();wiecej();firmy();skyTick();setInterval(skyTick,60000);
+ cats();odpady();kalendarz();wiecej();firmy();renderTerminy();renderUrzad();renderRada();adresMenu();skyTick();setInterval(skyTick,60000);
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  SPRAWY=store('sprawy')||[];renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
- if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu'].includes(h))go(h);
+ if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=store('sprawy')||[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
