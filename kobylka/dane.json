@@ -804,127 +804,148 @@
    "id": "agnieszka-kibart",
    "imie": "Agnieszka Kibart",
    "okreg": 1,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "agnieszka.kibart@kobylka.pl"
   },
   {
    "id": "artur-grzegorz-rola",
    "imie": "Artur Grzegorz Rola",
    "okreg": 1,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "artur.rola@kobylka.pl"
   },
   {
    "id": "michal-tabor",
    "imie": "Michał Tabor",
    "okreg": 1,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "michal.tabor@kobylka.pl"
   },
   {
    "id": "magdalena-dybka",
    "imie": "Magdalena Dybka",
    "okreg": 1,
-   "funkcja": "przewodnicząca Komisji Skarg, Wniosków i Petycji"
+   "funkcja": "przewodnicząca Komisji Skarg, Wniosków i Petycji",
+   "email": "magdalena.dybka@kobylka.pl"
   },
   {
    "id": "rafal-mianowicz",
    "imie": "Rafał Mianowicz",
    "okreg": 1,
-   "funkcja": "wiceprzewodniczący Komisji Skarg, Wniosków i Petycji"
+   "funkcja": "wiceprzewodniczący Komisji Skarg, Wniosków i Petycji",
+   "email": "rafal.mianowicz@kobylka.pl"
   },
   {
    "id": "monika-janczara",
    "imie": "Monika Janczara",
    "okreg": 2,
-   "funkcja": "II Wiceprzewodnicząca Rady"
+   "funkcja": "II Wiceprzewodnicząca Rady",
+   "email": "monika.janczara@kobylka.pl"
   },
   {
    "id": "mateusz-walicki",
    "imie": "Mateusz Walicki",
    "okreg": 2,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "mateusz.walicki@kobylka.pl"
   },
   {
    "id": "aleksandra-korzeniewska",
    "imie": "Aleksandra Korzeniewska",
    "okreg": 2,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "aleksandra.korzeniewska@kobylka.pl"
   },
   {
    "id": "andrzej-zbyszynski",
    "imie": "Andrzej Zbyszyński",
    "okreg": 2,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "andrzej.zbyszynski@kobylka.pl"
   },
   {
    "id": "jacek-lis",
    "imie": "Jacek Lis",
    "okreg": 2,
-   "funkcja": "I Wiceprzewodniczący Rady"
+   "funkcja": "I Wiceprzewodniczący Rady",
+   "email": "jacek.lis@kobylka.pl"
   },
   {
    "id": "barbara-filipczak",
    "imie": "Barbara Filipczak",
    "okreg": 2,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "barbara.filipczak@kobylka.pl"
   },
   {
    "id": "klaudia-zebrowska",
    "imie": "Klaudia Żebrowska",
    "okreg": 3,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "klaudia.zebrowska@kobylka.pl"
   },
   {
    "id": "sylwia-jazwinska",
    "imie": "Sylwia Jaźwińska",
    "okreg": 3,
-   "funkcja": "Przewodnicząca Rady"
+   "funkcja": "Przewodnicząca Rady",
+   "email": "sylwia.jazwinska@kobylka.pl"
   },
   {
    "id": "lukasz-blonski",
    "imie": "Łukasz Błoński",
    "okreg": 3,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "lukasz.blonski@kobylka.pl"
   },
   {
    "id": "edyta-zbiec",
    "imie": "Edyta Zbieć",
    "okreg": 3,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "edyta.zbiec@kobylka.pl"
   },
   {
    "id": "marcin-zdunek",
    "imie": "Marcin Zdunek",
    "okreg": 3,
-   "funkcja": "przewodniczący Komisji Rewizyjnej"
+   "funkcja": "przewodniczący Komisji Rewizyjnej",
+   "email": "marcin.zdunek@kobylka.pl"
   },
   {
    "id": "andrzej-michalik",
    "imie": "Andrzej Michalik",
    "okreg": 4,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "andrzej.michalik@kobylka.pl"
   },
   {
    "id": "pawel-kostrzewa",
    "imie": "Paweł Kostrzewa",
    "okreg": 4,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "pawel.kostrzewa@kobylka.pl"
   },
   {
    "id": "lukasz-rostek",
    "imie": "Łukasz Rostek",
    "okreg": 4,
-   "funkcja": "mandat po wygaśnięciu mandatu W. Reutta"
+   "funkcja": "mandat po wygaśnięciu mandatu W. Reutta",
+   "email": "lukasz.rostek@kobylka.pl"
   },
   {
    "id": "katarzyna-chmiel",
    "imie": "Katarzyna Chmiel",
    "okreg": 4,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "katarzyna.chmiel@kobylka.pl"
   },
   {
    "id": "zbigniew-turek",
    "imie": "Zbigniew Turek",
    "okreg": 4,
-   "funkcja": "BRAK"
+   "funkcja": "BRAK",
+   "email": "zbigniew.turek@kobylka.pl"
   }
  ],
  "pszok": "ul. Łokietka 80, tel. 531 690 107. Wt–śr 7–13, czw–pt 12–18 (IV–IX pt do 20), sob 8–16, pn nieczynny.",
