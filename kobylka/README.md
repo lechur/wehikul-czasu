@@ -1,6 +1,6 @@
 # Aplikacja mieszkańca Kobyłki
 
-Odpady (oficjalne kalendarze Urzędu, aktualizowane codziennie), wydarzenia, zgłoszenia i pisma do Urzędu Miasta, przekazywanie spraw radnym, mapy i niebo nad Kobyłką.
+Odpady (oficjalne kalendarze Urzędu, aktualizowane ręcznie; terminy opublikowane do końca 2026 r.), wydarzenia, zgłoszenia i pisma do Urzędu Miasta, przekazywanie spraw radnym, mapy i niebo nad Kobyłką.
 
 Inicjatywa radnej Edyty Zbieć, otwarta dla wszystkich radnych Rady Miasta Kobyłka. To nie jest usługa Urzędu Miasta.
 
