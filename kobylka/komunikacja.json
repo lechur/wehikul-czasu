@@ -1,0 +1,47 @@
+{
+ "stan": "2026-11-14",
+ "zrodlo": "https://www.kobylka.pl/strona-3661-komunikacja_rozklady_jazdy.html",
+ "bilety": [
+  "Bilet jednorazowy na linie L: 4 zł, ulgowy 2 zł",
+  "Bilet miesięczny: 90 zł, ulgowy 45 zł",
+  "W liniach L ważne są bilety ZTM na strefy 1 i 2",
+  "Z Kartą Mieszkańca Kobyłki przejazd liniami L jest bezpłatny"
+ ],
+ "linie": [
+  {
+   "id": "L26",
+   "opis": "linia lokalna",
+   "kierunki": []
+  },
+  {
+   "id": "L27",
+   "opis": "linia lokalna",
+   "kierunki": []
+  },
+  {
+   "id": "L37",
+   "opis": "linia lokalna",
+   "kierunki": []
+  },
+  {
+   "id": "L40",
+   "opis": "linia lokalna",
+   "kierunki": []
+  },
+  {
+   "id": "L44",
+   "opis": "linia lokalna",
+   "kierunki": []
+  },
+  {
+   "id": "N62",
+   "opis": "linia nocna ZTM",
+   "kierunki": []
+  }
+ ],
+ "pociagi": {
+  "wazny": "25 października – 12 grudnia 2026",
+  "zrodlo": "https://www.mazowieckie.com.pl/pl/podstawowe-informacje/rozklad-jazdy-pociagow-km-wazny-w-dniach-25-x-12-xii-2026r",
+  "stacje": {}
+ }
+}

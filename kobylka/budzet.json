@@ -1,0 +1,267 @@
+{
+ "stan": "2026-11-14",
+ "rok": 2026,
+ "uchwala": {
+  "nr": "XXI/230/2025",
+  "data": "18 grudnia 2025 r.",
+  "url": "https://kobylka.bipgmina.pl/wiadomosci/5018/wiadomosc/858842/uchwala_nr_xxi2302025_rady_miasta_kobylka_z_dnia_18_grudnia_2025"
+ },
+ "dochody": 219505204.88,
+ "wydatki": 223002076.85,
+ "wydatki_biezace": 187614724.15,
+ "wydatki_majatkowe": 35387352.7,
+ "dlug_koniec_roku": 103770239.25,
+ "dlug_opis": "wg Wieloletniej Prognozy Finansowej z grudnia 2025 r.",
+ "mieszkancy": {
+  "liczba": 26021,
+  "rok": 2024,
+  "opis": "26 021 mieszkańców wg Raportu o stanie gminy za 2024 r."
+ },
+ "dochody_zrodla": [
+  {
+   "nazwa": "Udział w PIT",
+   "kwota": 139865339.0
+  },
+  {
+   "nazwa": "Udział w CIT",
+   "kwota": 1480964.0
+  },
+  {
+   "nazwa": "Podatek od nieruchomości",
+   "kwota": 18250000.0
+  },
+  {
+   "nazwa": "Inne podatki i opłaty",
+   "kwota": 5050000.0
+  },
+  {
+   "nazwa": "Opłata za odbiór odpadów",
+   "kwota": 11600000.0
+  },
+  {
+   "nazwa": "Subwencja z budżetu państwa",
+   "kwota": 12580588.0
+  },
+  {
+   "nazwa": "Dotacje na inwestycje",
+   "kwota": 9093928.0
+  },
+  {
+   "nazwa": "Sprzedaż gruntów miasta",
+   "kwota": 4852500.0
+  },
+  {
+   "nazwa": "Dotacje na zadania bieżące, opłaty, najem i inne",
+   "kwota": 16731885.88
+  }
+ ],
+ "wydatki_dzialy": [
+  {
+   "dzial": "010",
+   "nazwa": "Rolnictwo i łowiectwo",
+   "kwota": 300
+  },
+  {
+   "dzial": "400",
+   "nazwa": "Wytwarzanie i zaopatrywanie w energię elektryczną, gaz i wodę",
+   "kwota": 2600000
+  },
+  {
+   "dzial": "600",
+   "nazwa": "Transport i łączność",
+   "kwota": 19439305.87
+  },
+  {
+   "dzial": "700",
+   "nazwa": "Gospodarka mieszkaniowa",
+   "kwota": 3606500
+  },
+  {
+   "dzial": "710",
+   "nazwa": "Działalność usługowa",
+   "kwota": 260000
+  },
+  {
+   "dzial": "750",
+   "nazwa": "Administracja publiczna",
+   "kwota": 22782906.25
+  },
+  {
+   "dzial": "751",
+   "nazwa": "Urzędy naczelnych organów władzy państwowej, kontroli i ochrony prawa oraz sądownictwa",
+   "kwota": 5134
+  },
+  {
+   "dzial": "752",
+   "nazwa": "Obrona narodowa",
+   "kwota": 3733
+  },
+  {
+   "dzial": "754",
+   "nazwa": "Bezpieczeństwo publiczne i ochrona przeciwpożarowa",
+   "kwota": 753027.68
+  },
+  {
+   "dzial": "757",
+   "nazwa": "Obsługa długu publicznego",
+   "kwota": 6526300
+  },
+  {
+   "dzial": "758",
+   "nazwa": "Różne rozliczenia",
+   "kwota": 2452508
+  },
+  {
+   "dzial": "801",
+   "nazwa": "Oświata i wychowanie",
+   "kwota": 101801848.27
+  },
+  {
+   "dzial": "851",
+   "nazwa": "Ochrona zdrowia",
+   "kwota": 899879.93
+  },
+  {
+   "dzial": "852",
+   "nazwa": "Pomoc społeczna",
+   "kwota": 8020572
+  },
+  {
+   "dzial": "853",
+   "nazwa": "Pozostałe zadania w zakresie polityki społecznej",
+   "kwota": 247000
+  },
+  {
+   "dzial": "854",
+   "nazwa": "Edukacyjna opieka wychowawcza",
+   "kwota": 672500
+  },
+  {
+   "dzial": "855",
+   "nazwa": "Rodzina",
+   "kwota": 17362190
+  },
+  {
+   "dzial": "900",
+   "nazwa": "Gospodarka komunalna i ochrona środowiska",
+   "kwota": 25532075.56
+  },
+  {
+   "dzial": "921",
+   "nazwa": "Kultura i ochrona dziedzictwa narodowego",
+   "kwota": 4892514.09
+  },
+  {
+   "dzial": "926",
+   "nazwa": "Kultura fizyczna",
+   "kwota": 4737200
+  }
+ ],
+ "wydatki_dzialy_opis": "Podział na działy pochodzi z projektu budżetu z listopada 2025 r.; uchwalony budżet różni się od niego o 0,4 mln zł.",
+ "inwestycje": [
+  {
+   "nazwa": "Budowa żłobka publicznego",
+   "kwota": 9300000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa sieci kanalizacji sanitarnej ul. Kazimierza Wielkiego i Bolesława Chrobrego",
+   "kwota": 3800000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa drogi ul. Wesołej i ul. Spacerowej",
+   "kwota": 3000000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa oświetlenia ul. Nadarzyńskiej",
+   "kwota": 2950000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa sieci wodociągowej ul. Kazimierza Wielkiego i Bolesława Chrobrego",
+   "kwota": 2600000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa drogi ul. Majdańskiej",
+   "kwota": 2500000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Rewitalizacja Pałacyku przy ul. Rumuńskiej 2",
+   "kwota": 1312165,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa drogi ul. Natolińskiej",
+   "kwota": 1200000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Wykup gruntów",
+   "kwota": 1000000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Wymiana nawierzchni boiska sportowego OSiR",
+   "kwota": 1000000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Budowa boiska wielofunkcyjnego ul. Przyjacielskiej",
+   "kwota": 800000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Modernizacja Ronda Cudu nad Wisłą oraz ul. Królewskiej i 3 Maja",
+   "kwota": 700000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Modernizacja i rozbudowa oświetlenia ulicznego",
+   "kwota": 656000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Przebudowa budynku przy al. Jana Pawła II",
+   "kwota": 500000,
+   "miejsce": ""
+  },
+  {
+   "nazwa": "Modernizacja ul. Szymanowskiego",
+   "kwota": 400000,
+   "miejsce": ""
+  }
+ ],
+ "po_zmianach": {
+  "data": "26 października 2026 r.",
+  "dochody": 236915050.24,
+  "wydatki": 246933158.6,
+  "wydatki_majatkowe": 41826605.52,
+  "url": "https://kobylka.bipgmina.pl/wiadomosci/4950/wiadomosc/911125/uchwala_nr_xxxi3212026_rady_miasta_kobylka_z_dnia_26_pazdziernik"
+ },
+ "wykonanie_2025": {
+  "dochody": 216898179.23,
+  "wydatki": 225523685.96,
+  "wydatki_majatkowe": 43558988.3,
+  "dlug": 100487323.83
+ },
+ "procedura": {
+  "uchwala": "uchwała Nr XXXVIII/345/17 Rady Miasta Kobyłka z 28 sierpnia 2017 r.",
+  "url": "https://kobylka.bipgmina.pl/struktura/1/1227/dokumenty/4950/wiadomosc/390874/uchwala_w_sprawie_trybu_prac_nad_projektem_uchwaly_budzetowej_mi",
+  "termin_dzien": "11-30",
+  "termin_wnioskow": "Do 30 listopada komisje Rady składają wnioski do projektu budżetu. Wniosek o nowy wydatek musi wskazywać, skąd wziąć pieniądze, i nie może zwiększać deficytu."
+ },
+ "zrodla": [
+  "https://kobylka.bipgmina.pl/wiadomosci/dzial/1897",
+  "https://kobylka.bipgmina.pl/wiadomosci/5018/budzet_miasta_kobylka",
+  "https://kobylka.bipgmina.pl/wiadomosci/4950/wiadomosc/857844/uchwala_nr_xxi2302025__rady_miasta_kobylka__z_dnia_18_grudnia_20",
+  "https://bip-v1-files.idcom-jst.pl/sites/46729/wiadomosci/857844/files/urm.xxi.230.2025._uchwala_budzetowa_miasta_kobylka_na_2026_z_nowym_zalacznikiem.pdf",
+  "https://kobylka.bipgmina.pl/wiadomosci/8379/wiadomosc/851551/projekt_budzetu_na_2026_rok",
+  "https://bip-v1-files.idcom-jst.pl/sites/46729/wiadomosci/851551/files/zbmk_1912025_projektbudzet2026_dla_rm.pdf",
+  "https://bip-v1-files.idcom-jst.pl/sites/46729/wiadomosci/911125/files/urm_xxxi.321.2026.10.26_uchwalabudzet-autopoprawka.pdf",
+  "https://bip-v1-files.idcom-jst.pl/sites/46729/wiadomosci/857843/files/xxi_229_2025_wpf_na_lata_2026-2045.pdf"
+ ]
+}

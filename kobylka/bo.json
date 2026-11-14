@@ -1,0 +1,580 @@
+{
+ "stan": "2026-11-14",
+ "dziala": true,
+ "portal": "https://budzet.kobylka.pl",
+ "podsumowanie": "Kobyłka prowadzi budżet obywatelski od 2022 r. Co roku mieszkańcy dzielą 500 000 zł. Ostatnie głosowanie zakończyło się w październiku 2026 r.: wybrano 7 projektów do realizacji w 2027 r. Następnej edycji Urząd jeszcze nie ogłosił; w 2026 r. nabór trwał w kwietniu i maju.",
+ "zasady": {
+  "uchwala": "uchwała Nr LIX/496/2023 Rady Miasta Kobyłka z 23 stycznia 2023 r., ze zmianami z 2023 i 2025 r.",
+  "url": "https://budzet.kobylka.pl/attch/budget/budget-7-271-1769163094.pdf",
+  "kto": "Każdy mieszkaniec Kobyłki, najwyżej 2 projekty na osobę. Osoby poniżej 13 lat za zgodą opiekuna.",
+  "podpisy": "lista poparcia co najmniej 15 mieszkańców, nie licząc autorów",
+  "limity": "projekt twardy (inwestycja, remont, zakup) do 150 000 zł, projekt miękki (wydarzenia, zajęcia) do 20 000 zł",
+  "glosowanie": "Każdy mieszkaniec ma 1 głos na projekt twardy i 1 na miękki. Głosuje się w portalu albo na karcie papierowej.",
+  "wymogi": [
+   "zadanie własne gminy, jedno zadanie w projekcie",
+   "do wykonania w jednym roku",
+   "bezpłatne i dostępne dla wszystkich mieszkańców",
+   "na terenie należącym do Miasta",
+   "bez celów komercyjnych i bez wskazywania wykonawcy"
+  ],
+  "harmonogram": [
+   {
+    "etap": "Nabór projektów",
+    "termin": "kwiecień – początek maja (w 2026 r.: 7 kwietnia – 11 maja)"
+   },
+   {
+    "etap": "Ocena w Urzędzie i odwołania",
+    "termin": "maj – lipiec"
+   },
+   {
+    "etap": "Głosowanie mieszkańców",
+    "termin": "sierpień – wrzesień (w 2026 r.: 4 sierpnia – 30 września)"
+   },
+   {
+    "etap": "Wyniki",
+    "termin": "połowa października (w 2026 r.: 16 października)"
+   },
+   {
+    "etap": "Realizacja",
+    "termin": "w roku następującym po głosowaniu"
+   }
+  ],
+  "formularz_url": "https://budzet.kobylka.pl/pl/wnioskuj",
+  "lista_poparcia_url": "https://budzet.kobylka.pl/attch/budget/budget-7-275-1769163094.pdf"
+ },
+ "edycje": [
+  {
+   "rok": 2022,
+   "pula": 500000,
+   "wybrane": 9,
+   "wartosc": 496581,
+   "url": "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum/wyniki-koncowe/3"
+  },
+  {
+   "rok": 2023,
+   "pula": 500000,
+   "wybrane": 11,
+   "wartosc": 497903,
+   "url": "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum/wyniki-koncowe/4"
+  },
+  {
+   "rok": 2024,
+   "pula": 500000,
+   "wybrane": 7,
+   "wartosc": 500000,
+   "url": "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum/wyniki-koncowe/5"
+  },
+  {
+   "rok": 2025,
+   "pula": 500000,
+   "wybrane": 5,
+   "wartosc": 489200,
+   "url": "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum/wyniki-koncowe/6"
+  },
+  {
+   "rok": 2026,
+   "pula": 500000,
+   "wybrane": 7,
+   "wartosc": 482500,
+   "url": "https://budzet.kobylka.pl/pl/budzet/wyniki-koncowe/7"
+  }
+ ],
+ "projekty": [
+  {
+   "edycja": 2026,
+   "tytul": "Miejsce integracji mieszkańców w dzielnicy Zalasek",
+   "opis": "Ogrodzenie i oświetlenie (7 punktów) terenu przy ul. Kordeckiego jako miejsca spotkań i rekreacji; dz. 37/2.",
+   "kwota": 146000,
+   "typ": "twardy",
+   "miejsce": "ul. ks. A. Kordeckiego",
+   "lat": 52.34957,
+   "lon": 21.18926,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/143"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "Ogródek sensoryczny jak z bajki – adaptacja przestrzeni przy ul. Dworkowej",
+   "opis": "Ogródek sensoryczny przed przedszkolem: piaskownica, nasadzenia, domki dla owadów, elementy dotykowe i muzyczne.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "ul. Dworkowa 5",
+   "lat": 52.33111,
+   "lon": 21.16861,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/124"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "Quad ratowniczy z osprzętem i przyczepą dla OSP Kobyłka",
+   "opis": "Zakup quada ratowniczego, przyczepy transportowej i osprzętu dla OSP na tereny trudno dostępne (lasy, poszukiwania).",
+   "kwota": 107000,
+   "typ": "twardy",
+   "miejsce": "OSP Kobyłka, ul. Ks. Marmo 13",
+   "lat": 52.33737,
+   "lon": 21.19974,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/133"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "FIT PROJEKT",
+   "opis": "Bezpłatne treningi (pilates, prozdrowotne, siłowo-kondycyjne) z trenerem medycznym; latem plener, jesienią sala.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "OSiR Wicher / Plac 15 Sierpnia / wynajęta sala",
+   "lat": 52.32834,
+   "lon": 21.19244,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/137"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "Kijki idą po złoto 2",
+   "opis": "Kontynuacja bezpłatnych treningów nordic walking dla mieszkańców, 75 zajęć w 2027 r.",
+   "kwota": 19500,
+   "typ": "miękki",
+   "miejsce": "Kobyłka, teren leśny lub o miękkim podłożu (bez adresu)",
+   "lat": null,
+   "lon": null,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/127"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "Nauka pływania dla dzieci z terenu Kobyłki",
+   "opis": "Bezpłatne zajęcia pływania dla dzieci 9-12 lat, grupy do 10 osób, 32 zajęcia, dwóch instruktorów.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "pływalnia (bez adresu)",
+   "lat": null,
+   "lon": null,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/128"
+  },
+  {
+   "edycja": 2026,
+   "tytul": "Piknik integracyjny na Przyjacielskiej",
+   "opis": "Piknik dla mieszkańców z konkursami, zabawami i poczęstunkiem; promocja nowej infrastruktury do ćwiczeń i zabaw.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "ul. Przyjacielska",
+   "lat": 52.3453,
+   "lon": 21.17053,
+   "status": "wybrany, realizacja w 2027 r.",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/140"
+  },
+  {
+   "edycja": 2025,
+   "tytul": "Fit Projekt",
+   "opis": "Bezpłatne, ogólnodostępne treningi sportowo-rekreacyjne, latem w OSiR Wicher, jesienią i zimą na wynajętej sali (ok. 60 h).",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "OSiR Wicher, ul. Napoleona 2a",
+   "lat": 52.32834,
+   "lon": 21.19241,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/112"
+  },
+  {
+   "edycja": 2025,
+   "tytul": "Kijki idą po złoto",
+   "opis": "Bezpłatne treningi nordic walking w trzech grupach (rekreacyjna, średnia, sportowa) i przygotowanie do zawodów.",
+   "kwota": 19200,
+   "typ": "miękki",
+   "miejsce": "Kobyłka, teren leśny/park (bez adresu)",
+   "lat": null,
+   "lon": null,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/111"
+  },
+  {
+   "edycja": 2025,
+   "tytul": "Kobyłkowski Ninja – tor przeszkód dla wszystkich",
+   "opis": "Profesjonalny tor przeszkód w stylu Ninja Warrior dla mieszkańców w różnym wieku, także na zajęcia WF.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "Obiekty sportowe OSiR, ul. Napoleona 2a",
+   "lat": 52.32812,
+   "lon": 21.19434,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/117"
+  },
+  {
+   "edycja": 2025,
+   "tytul": "GameBook – nowoczesna i otwarta biblioteka przy Dworkowej",
+   "opis": "Doposażenie biblioteki szkolnej SP nr 1 w multimedialne centrum edukacyjne: książki, gry, roboty mBot2, monitor.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "SP nr 1, ul. Dworkowa 5 (Maciołki)",
+   "lat": 52.3312,
+   "lon": 21.16785,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/104"
+  },
+  {
+   "edycja": 2025,
+   "tytul": "Modernizacja ogrodu społecznego \"Czarna Kawka\"",
+   "opis": "Stół do tenisa stołowego, stół do szachów i chińczyka, siłownia plenerowa, ogrodzenie i kamera w ogrodzie społecznym.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "róg ul. Dojazdowej i ul. Czarna Kawka",
+   "lat": 52.34383,
+   "lon": 21.21683,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/105"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Monitor wielofunkcyjny – zakup i montaż",
+   "opis": "Zakup i montaż ekranu LED w hali sportowo-widowiskowej (wydarzenia sportowe, edukacyjne, tablica wyników).",
+   "kwota": 120000,
+   "typ": "twardy",
+   "miejsce": "Hala przy SP nr 3, ul. Załuskiego 57",
+   "lat": 52.34244,
+   "lon": 21.21345,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/96"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Górka saneczkowa ze zjeżdżalniami oraz tyrolką",
+   "opis": "Budowa górki saneczkowej (5 m wysokości, zjazd 30 m) ze zjeżdżalniami i tyrolką, użytkowanej cały rok.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "ul. Przyjacielska",
+   "lat": 52.34588,
+   "lon": 21.17267,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/101"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Maciołki – wesoły plac zabaw",
+   "opis": "Doposażenie placu zabaw na Maciołkach w nowe atrakcje, odświeżenie urządzeń i zadaszone miejsce wypoczynku.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "ul. Popiełuszki / ul. Ceramiczna",
+   "lat": 52.32394,
+   "lon": 21.16593,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/95"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Fit Projekt",
+   "opis": "Bezpłatne treningi fitness od maja do grudnia 2025 (ok. 62 h), latem plener, jesienią wynajęta sala.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "OSiR Wicher, ul. Napoleona 2a",
+   "lat": 52.32864,
+   "lon": 21.19256,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/83"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "III edycja – W górę w trójce – ścianka wspinaczkowa",
+   "opis": "Dwa razy w tygodniu zajęcia na ściance wspinaczkowej z instruktorem, bezpłatne, dla rodzin i mieszkańców.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "Hala SP nr 3, ul. Załuskiego 57",
+   "lat": 52.34247,
+   "lon": 21.21368,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/99"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Kurs pierwszej pomocy dla mieszkańców miasta Kobyłka",
+   "opis": "Bezpłatne szkolenia z pierwszej pomocy (12 spotkań po 4 h), zakup fantomów i defibrylatora treningowego AED.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "MOK, al. Jana Pawła II 22 lub Miejska Biblioteka",
+   "lat": 52.33762,
+   "lon": 21.20881,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/79"
+  },
+  {
+   "edycja": 2024,
+   "tytul": "Kijki w Kobyłce, czyli nordikowo i fitnessowo",
+   "opis": "Cykl treningów nordic walking z ćwiczeniami fitness, z grupą dla seniorów i początkujących (marzec-grudzień 2025).",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "Kobyłka, teren leśny",
+   "lat": 52.35504,
+   "lon": 21.2005,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/80"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Sercem w Kobyłce: defibrylatory AED w wybranych miejscach publicznych",
+   "opis": "Całodobowe kapsuły z defibrylatorami AED w czterech miejscach plus szkolenia z RKO i defibrylacji.",
+   "kwota": 44940,
+   "typ": "twardy",
+   "miejsce": "MOK, OSiR Wicher, b. biblioteka ul. Fałata, przychodnia MSP ZOZ",
+   "lat": null,
+   "lon": null,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Kobyłka w sieci",
+   "opis": "Zakup kamer 4K, audio i oprogramowania vMix do bezpłatnych transmisji wydarzeń sportowych, kulturalnych i edukacyjnych.",
+   "kwota": 148163,
+   "typ": "twardy",
+   "miejsce": "OSiR Wicher, MOK i szkoły",
+   "lat": 52.34239,
+   "lon": 21.2133,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Doposażenie placu zabaw w dzielnicy Nadarzyn",
+   "opis": "Rozbudowa placu zabaw i siłowni plenerowej z projektu 2022 o nowe urządzenia i strefę odpoczynku dla dorosłych.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "ul. Nadarzyn",
+   "lat": 52.32569,
+   "lon": 21.19999,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Altana w ogrodzie społecznym Czarna Kawka w Plenerze",
+   "opis": "Zakup i montaż drewnianej altany (4,4 x 3,9 m) ze stołem i ławkami na spotkania integracyjne.",
+   "kwota": 36000,
+   "typ": "twardy",
+   "miejsce": "ul. Dojazdowa / róg ul. Czarna Kawka",
+   "lat": 52.34376,
+   "lon": 21.2186,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Fit Projekt",
+   "opis": "Bezpłatne treningi sportowo-rekreacyjne, latem w OSiR Wicher, jesienią na wynajętej sali (56 zajęć, czerwiec-grudzień 2024).",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "OSiR Wicher, ul. Napoleona 2a; sala ZSP nr 1, ul. Jezuicka 1",
+   "lat": 52.32827,
+   "lon": 21.19241,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Kijki w Kobyłce, czyli aktywnie, zdrowo i antystresowo",
+   "opis": "70 bezpłatnych treningów fitness walking w lesie, trzy spotkania ze specjalistami i zawody.",
+   "kwota": 18900,
+   "typ": "miękki",
+   "miejsce": "Kobyłka, teren leśny",
+   "lat": 52.35511,
+   "lon": 21.20584,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Truskawkowy Piknik Integracyjny",
+   "opis": "Piknik dla mieszkańców Maciołek z konkursami, zabawami dla dzieci, poczęstunkiem i wspólnym śpiewaniem.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "Maciołki, plac zabaw przy ul. Ceramicznej",
+   "lat": 52.33143,
+   "lon": 21.16885,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Festiwal Muzyki Szanty na terenie Starego Basenu",
+   "opis": "Wydarzenie integracyjno-kulturalne: występy zespołów szantowych, konkursy i poczęstunek.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "Stary Basen, ul. Turowska",
+   "lat": 52.33038,
+   "lon": 21.2055,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Międzyszkolny turniej piłki nożnej",
+   "opis": "Turniej piłki nożnej dla uczniów klas 4-8 szkół podstawowych z Kobyłki.",
+   "kwota": 13900,
+   "typ": "miękki",
+   "miejsce": "MKS Wicher Kobyłka",
+   "lat": null,
+   "lon": null,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "II edycja: W górę w trójce – ścianka wspinaczkowa",
+   "opis": "Zajęcia na ściance wspinaczkowej z instruktorem dwa razy w tygodniu, bezpłatne (130 h).",
+   "kwota": 19500,
+   "typ": "miękki",
+   "miejsce": "Hala SP nr 3, ul. Załuskiego 57",
+   "lat": 52.34245,
+   "lon": 21.21334,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2023,
+   "tytul": "Słoneczna sensoplastyka na placu przy Norwida",
+   "opis": "Cykl 4 bezpłatnych zajęć sensoplastycznych dla dzieci 0-6 lat i opiekunów (maj-czerwiec 2024).",
+   "kwota": 6500,
+   "typ": "miękki",
+   "miejsce": "plac zabaw przy ul. Norwida",
+   "lat": 52.34836,
+   "lon": 21.21003,
+   "status": "zrealizowany",
+   "url": "https://kobylka.esesja.pl/zalaczniki/356386/raport_o_stanie_gminy_kobyka_za_2024_3407240.pdf"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Plac zabaw i siłownia plenerowa",
+   "opis": "Ogrodzony, monitorowany plac zabaw dla dzieci z siłownią plenerową dla wszystkich grup wiekowych.",
+   "kwota": 148981,
+   "typ": "twardy",
+   "miejsce": "ul. Nadarzyn",
+   "lat": 52.3255,
+   "lon": 21.20087,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/23"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Friends workout – plac do ćwiczeń fizycznych i umysłowych",
+   "opis": "Plac street workout (ok. 12 urządzeń), stoły do szachów i tenisa stołowego oraz sprzęt dla seniorów.",
+   "kwota": 105000,
+   "typ": "twardy",
+   "miejsce": "dz. 130, obr. 0002, przy placu zabaw (rejon Przyjacielskiej)",
+   "lat": 52.3451,
+   "lon": 21.17137,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/2"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Doposażenie placu zabaw przy ZSP 2",
+   "opis": "Nowa konstrukcja do zabawy, zabawki wolnostojące i żagle przeciwsłoneczne na placu zabaw.",
+   "kwota": 150000,
+   "typ": "twardy",
+   "miejsce": "skrzyż. ul. Orzeszkowej i Narutowicza",
+   "lat": 52.32501,
+   "lon": 21.21579,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/28"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "W górę w Trójce – ścianka wspinaczkowa",
+   "opis": "Zajęcia na ściance wspinaczkowej z instruktorem (130 h) dla mieszkańców, zwłaszcza rodzin.",
+   "kwota": 19500,
+   "typ": "miękki",
+   "miejsce": "SP nr 3 im. K. Wojtyły, ul. Załuskiego 57",
+   "lat": 52.34225,
+   "lon": 21.21284,
+   "status": "brak informacji o realizacji",
+   "url": "Strona projektu 99 (edycja III) wspomina, że wcześniejsza edycja ścianki nie została zrealizowana z powodu trudności z wyłonieniem realizatora - niejasne, której edycji to dotyczy."
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Kobyłkowskie dzieciaki odwiedzają alpaki",
+   "opis": "Wyjazd 98 uczniów klas I-III do gospodarstwa edukacyjnego z warsztatami i ogniskiem.",
+   "kwota": 16300,
+   "typ": "miękki",
+   "miejsce": "gospodarstwo edukacyjne na Mazowszu (bez miejscowości)",
+   "lat": null,
+   "lon": null,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/20"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Aktywna Kobyłka \"Kijki z Kobyłki\" – nordic walking",
+   "opis": "70 treningów nordic walking i fitness w lesie, kwiecień-listopad 2023, dla dorosłych.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "ul. Radzymińska, wejście do lasu przy nowym cmentarzu",
+   "lat": 52.35458,
+   "lon": 21.20132,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/39"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Festiwal Komedii Polskiej im. Jerzego Turka",
+   "opis": "Pierwszy festiwal polskiej komedii w MOK (październik 2023), z aktorami i pokazem filmu, wstęp wolny.",
+   "kwota": 20000,
+   "typ": "miękki",
+   "miejsce": "MOK, ul. Jana Pawła II 22",
+   "lat": 52.33755,
+   "lon": 21.20886,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/42"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Wicher Workout – treningi pod chmurką",
+   "opis": "Bezpłatne zajęcia sportowe na stadionie Wicher dwa razy w tygodniu, czerwiec-sierpień 2023.",
+   "kwota": 4800,
+   "typ": "miękki",
+   "miejsce": "stadion Wicher",
+   "lat": 52.329,
+   "lon": 21.1937,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/18"
+  },
+  {
+   "edycja": 2022,
+   "tytul": "Fit kręgosłup dla kobiet",
+   "opis": "Bezpłatne cotygodniowe zajęcia na kręgosłup z trenerem dla dwóch grup kobiet 30+ do 50+, 10 miesięcy.",
+   "kwota": 12000,
+   "typ": "miękki",
+   "miejsce": "SP nr 3, ul. Załuskiego 57",
+   "lat": 52.34208,
+   "lon": 21.21263,
+   "status": "brak informacji o realizacji",
+   "url": "https://budzet.kobylka.pl/pl/budzet/szczegoly-projektu/19"
+  }
+ ],
+ "sasiedzi": [
+  {
+   "gmina": "Wołomin",
+   "pula": 1500000,
+   "rok": 2026,
+   "url": "https://wolomin.org/startuja-spoleczne-wnioski-do-budzetu-gminy-wolomin-na-2026-rok/"
+  },
+  {
+   "gmina": "Ząbki",
+   "pula": 600000,
+   "rok": 2026,
+   "url": "https://www.zabki.pl/aktualnosci1/aktualnosci/2025-02/zapraszamy-do-skladania-projektow-do-budzetu-obywatelskiego-zabek"
+  },
+  {
+   "gmina": "Marki",
+   "pula": 1000000,
+   "rok": 2026,
+   "url": "https://www.marki.pl/aktualnosc-13589-mareckie_wnioski_obywatelskiemwo_2025"
+  }
+ ],
+ "zrodla": [
+  "https://budzet.kobylka.pl/",
+  "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum",
+  "https://budzet.kobylka.pl/pl/budzet/kampania-informacyjna/7",
+  "https://budzet.kobylka.pl/pl/budzet/wyniki-koncowe/7",
+  "https://budzet.kobylka.pl/pl/budzet/glosowanie/7",
+  "https://budzet.kobylka.pl/pl/budzet-obywatelski-archiwum/wyniki-koncowe/6"
+ ]
+}
