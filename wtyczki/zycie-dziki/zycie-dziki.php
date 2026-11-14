@@ -1,133 +1,65 @@
 <?php
 /**
  * Plugin Name: Życie – Mapa dzików
- * Description: Wspólna mapa obserwacji dzików w powiecie wołomińskim: mapa każdej gminy i całego powiatu. Shortcode [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Przyjmuje anonimowe zgłoszenia ze strony i z Aplikacji mieszkańca Kobyłki. Bez danych osobowych; wpisy znikają po 14 dniach.
- * Version: 1.1.0
+ * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
+ * Version: 2.0.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
 
-const ZPW_DZIKI_DNI = 14;          // jak długo obserwacja jest widoczna
-const ZPW_DZIKI_LIMIT = 5;         // zgłoszeń na godzinę z jednego urządzenia
-const ZPW_DZIKI_ORIGINS = array('https://lechur.github.io', 'https://www.zyciepw.pl', 'https://zyciepw.pl');
-
-function zpw_dziki_table() { global $wpdb; return $wpdb->prefix . 'zycie_dziki'; }
+const ZPW_DZIKI_DNI = 14;
 function zpw_dziki_ile() { return array('1 dzik', '2–5 dzików', 'więcej niż 5 dzików', 'locha z młodymi'); }
 function zpw_dziki_co() { return array('przechodzą', 'żerują, ryją', 'są przy śmietnikach', 'zachowują się agresywnie'); }
-
+function zpw_dziki_api_dir() { return ABSPATH . 'mieszkaniec-api/'; }
+function zpw_dziki_api_url() { return home_url('/mieszkaniec-api/?zasob=dziki'); }
 function zpw_dziki_gminy() {
     static $g = null;
-    if ($g === null) { $g = json_decode((string) file_get_contents(__DIR__ . '/gminy.json'), true); if (!is_array($g)) $g = array(); }
+    if ($g === null) { $g = json_decode((string) file_get_contents(__DIR__ . '/api/gminy.json'), true); if (!is_array($g)) $g = array(); }
     return $g;
 }
-// W której gminie powiatu leży punkt (granice z BDOT10k, GUGiK). Null = poza powiatem.
-function zpw_dziki_gmina($lat, $lon) {
-    foreach (zpw_dziki_gminy() as $slug => $g) {
-        $b = $g['b'];
-        if ($lat < $b[0] || $lat > $b[2] || $lon < $b[1] || $lon > $b[3]) continue;
-        foreach ($g['p'] as $ring) {
-            $in = false; $n = count($ring);
-            for ($i = 0, $j = $n - 1; $i < $n; $j = $i++) {
-                $yi = $ring[$i][0]; $xi = $ring[$i][1]; $yj = $ring[$j][0]; $xj = $ring[$j][1];
-                if ((($yi > $lat) !== ($yj > $lat)) && ($lon < ($xj - $xi) * ($lat - $yi) / ($yj - $yi) + $xi)) $in = !$in;
-            }
-            if ($in) return $slug;
-        }
+
+/**
+ * Instaluje (albo aktualizuje) mini-serwer w folderze /mieszkaniec-api/ obok WordPressa.
+ * Mini-serwer nie ładuje WordPressa i trzyma dane we własnym pliku, więc działa także po wyłączeniu wtyczki.
+ * Dane (data/) i klucz moderacji (config.php) nie są nadpisywane.
+ */
+function zpw_dziki_instaluj_api() {
+    $d = zpw_dziki_api_dir();
+    if (!wp_mkdir_p($d . 'data')) return 'Nie można utworzyć folderu ' . $d;
+    foreach (array('index.php', 'gminy.json') as $f) if (!@copy(__DIR__ . '/api/' . $f, $d . $f)) return 'Nie można zapisać ' . $f;
+    @copy(__DIR__ . '/api/data.htaccess', $d . 'data/.htaccess');
+    if (!is_file($d . 'data/index.html')) @file_put_contents($d . 'data/index.html', '');
+    if (!is_file($d . 'config.php')) {
+        $klucz = wp_generate_password(48, false, false);
+        if (!@file_put_contents($d . 'config.php', "<?php return array('klucz' => '" . $klucz . "');\n")) return 'Nie można zapisać config.php';
     }
-    return null;
+    return '';
+}
+function zpw_dziki_klucz() {
+    $f = zpw_dziki_api_dir() . 'config.php';
+    $c = is_file($f) ? (array) include $f : array();
+    return isset($c['klucz']) ? (string) $c['klucz'] : '';
+}
+register_activation_hook(__FILE__, 'zpw_dziki_instaluj_api');
+
+function zpw_dziki_lista() {
+    $r = wp_remote_get(zpw_dziki_api_url() . '&klucz=' . rawurlencode(zpw_dziki_klucz()), array('timeout' => 15));
+    if (is_wp_error($r) || wp_remote_retrieve_response_code($r) !== 200) return null;
+    $j = json_decode(wp_remote_retrieve_body($r), true);
+    return isset($j['obserwacje']) && is_array($j['obserwacje']) ? $j['obserwacje'] : null;
 }
 
-register_activation_hook(__FILE__, function () {
-    global $wpdb;
-    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-    $t = zpw_dziki_table();
-    dbDelta("CREATE TABLE $t (
-        id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-        lat decimal(7,4) NOT NULL,
-        lon decimal(7,4) NOT NULL,
-        gmina varchar(20) NOT NULL DEFAULT '',
-        ile varchar(40) NOT NULL,
-        co varchar(40) NOT NULL,
-        kiedy datetime NOT NULL,
-        dodano datetime NOT NULL,
-        PRIMARY KEY  (id),
-        KEY kiedy (kiedy),
-        KEY gmina (gmina)
-    ) " . $wpdb->get_charset_collate() . ";");
-    if (!wp_next_scheduled('zpw_dziki_sprzatanie')) wp_schedule_event(time() + 3600, 'daily', 'zpw_dziki_sprzatanie');
-});
-register_deactivation_hook(__FILE__, function () { wp_clear_scheduled_hook('zpw_dziki_sprzatanie'); });
-
-// Stare obserwacje są usuwane z bazy, nie tylko ukrywane.
-add_action('zpw_dziki_sprzatanie', function () {
-    global $wpdb;
-    $wpdb->query($wpdb->prepare('DELETE FROM ' . zpw_dziki_table() . ' WHERE kiedy < %s', gmdate('Y-m-d H:i:s', time() - (ZPW_DZIKI_DNI + 1) * DAY_IN_SECONDS)));
-});
-
-function zpw_dziki_cors() {
-    $o = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
-    if (in_array($o, ZPW_DZIKI_ORIGINS, true)) {
-        header('Access-Control-Allow-Origin: ' . $o);
-        header('Vary: Origin');
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type');
-    }
-}
-
-function zpw_dziki_lista($gmina = '') {
-    global $wpdb;
-    $od = gmdate('Y-m-d H:i:s', time() - ZPW_DZIKI_DNI * DAY_IN_SECONDS);
-    if ($gmina !== '' && isset(zpw_dziki_gminy()[$gmina])) $rows = $wpdb->get_results($wpdb->prepare('SELECT id, lat, lon, gmina, ile, co, kiedy FROM ' . zpw_dziki_table() . ' WHERE kiedy >= %s AND gmina = %s ORDER BY kiedy DESC LIMIT 1000', $od, $gmina), ARRAY_A);
-    else $rows = $wpdb->get_results($wpdb->prepare('SELECT id, lat, lon, gmina, ile, co, kiedy FROM ' . zpw_dziki_table() . ' WHERE kiedy >= %s ORDER BY kiedy DESC LIMIT 2000', $od), ARRAY_A);
-    $out = array();
-    foreach ((array) $rows as $r) {
-        $out[] = array('id' => (int) $r['id'], 'lat' => (float) $r['lat'], 'lon' => (float) $r['lon'], 'gmina' => $r['gmina'], 'ile' => $r['ile'], 'co' => $r['co'], 'kiedy' => gmdate('c', strtotime($r['kiedy'] . ' UTC')));
-    }
-    return $out;
-}
-
-add_action('rest_api_init', function () {
-    add_filter('rest_pre_serve_request', function ($served, $result, $request) {
-        if (strpos($request->get_route(), '/zycie-dziki/') === 0) zpw_dziki_cors();
-        return $served;
-    }, 10, 3);
-
-    register_rest_route('zycie-dziki/v1', '/obserwacje', array(
-        array(
-            'methods' => 'GET',
-            'permission_callback' => '__return_true',
-            'callback' => function (WP_REST_Request $req) {
-                $r = new WP_REST_Response(array('dni' => ZPW_DZIKI_DNI, 'stan' => gmdate('c'), 'obserwacje' => zpw_dziki_lista(sanitize_key((string) $req->get_param('gmina')))));
-                $r->header('Cache-Control', 'public, max-age=60');
-                return $r;
-            },
-        ),
-        array(
-            'methods' => 'POST',
-            'permission_callback' => '__return_true',
-            'callback' => function (WP_REST_Request $req) {
-                global $wpdb;
-                $p = $req->get_json_params();
-                if (!is_array($p)) return new WP_Error('zle_dane', 'Brak danych.', array('status' => 400));
-                $lat = isset($p['lat']) ? (float) $p['lat'] : 0; $lon = isset($p['lon']) ? (float) $p['lon'] : 0;
-                $gmina = zpw_dziki_gmina($lat, $lon);
-                if ($gmina === null) return new WP_Error('poza_powiatem', 'Miejsce jest poza powiatem wołomińskim.', array('status' => 422));
-                $ile = isset($p['ile']) ? (string) $p['ile'] : ''; $co = isset($p['co']) ? (string) $p['co'] : '';
-                if (!in_array($ile, zpw_dziki_ile(), true) || !in_array($co, zpw_dziki_co(), true)) return new WP_Error('zle_dane', 'Nieznana wartość.', array('status' => 422));
-                $ts = isset($p['kiedy']) ? strtotime((string) $p['kiedy']) : time();
-                if (!$ts || $ts > time() + 600 || $ts < time() - 3 * DAY_IN_SECONDS) $ts = time();
-                // Ograniczenie nadużyć: przez godzinę trzymany jest tylko skrót (hash) adresu, nie sam adres IP.
-                $klucz = 'zpw_dz_' . substr(hash('sha256', (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . wp_salt('nonce') . gmdate('Y-m-d-H')), 0, 24);
-                $n = (int) get_transient($klucz);
-                if ($n >= ZPW_DZIKI_LIMIT) return new WP_Error('za_duzo', 'Za dużo zgłoszeń. Spróbuj za godzinę.', array('status' => 429));
-                set_transient($klucz, $n + 1, HOUR_IN_SECONDS);
-                // Miejsce zapisywane z dokładnością ok. 10 m (pinezka stawiana na mapie).
-                $ok = $wpdb->insert(zpw_dziki_table(), array('lat' => round($lat, 4), 'lon' => round($lon, 4), 'gmina' => $gmina, 'ile' => $ile, 'co' => $co, 'kiedy' => gmdate('Y-m-d H:i:s', $ts), 'dodano' => gmdate('Y-m-d H:i:s')), array('%f', '%f', '%s', '%s', '%s', '%s', '%s'));
-                if (!$ok) return new WP_Error('blad', 'Nie udało się zapisać.', array('status' => 500));
-                return new WP_REST_Response(array('ok' => true, 'id' => (int) $wpdb->insert_id, 'gmina' => $gmina), 201);
-            },
-        ),
-    ));
+// Podgląd zdjęcia/filmu dla moderatora (także przed zatwierdzeniem). Klucz mini-serwera nie trafia do przeglądarki.
+add_action('admin_post_zpw_dziki_podglad', function () {
+    if (!current_user_can('moderate_comments')) wp_die('Brak uprawnień.', 403);
+    check_admin_referer('zpw_dziki_podglad');
+    $n = isset($_GET['plik']) ? (string) $_GET['plik'] : '';
+    if (!preg_match('/^[a-f0-9]{24}\.[a-z0-9]{3,4}$/', $n)) wp_die('Brak pliku.', 404);
+    $r = wp_remote_get(zpw_dziki_api_url() . '&plik=' . $n . '&klucz=' . rawurlencode(zpw_dziki_klucz()), array('timeout' => 60));
+    if (is_wp_error($r) || wp_remote_retrieve_response_code($r) !== 200) wp_die('Brak pliku.', 404);
+    nocache_headers();
+    header('Content-Type: ' . wp_remote_retrieve_header($r, 'content-type'));
+    echo wp_remote_retrieve_body($r); exit;
 });
 
 // Moderacja: redaktorzy i administratorzy (uprawnienie moderate_comments).
@@ -135,23 +67,35 @@ add_action('admin_menu', function () {
     add_menu_page('Mapa dzików', 'Mapa dzików', 'moderate_comments', 'zycie-dziki', 'zpw_dziki_admin', 'dashicons-location-alt', 58);
 });
 function zpw_dziki_admin() {
-    global $wpdb;
     if (!current_user_can('moderate_comments')) return;
+    $G = zpw_dziki_gminy();
     if (isset($_POST['zpw_dziki_usun']) && check_admin_referer('zpw_dziki_usun')) {
-        $wpdb->delete(zpw_dziki_table(), array('id' => (int) $_POST['zpw_dziki_usun']), array('%d'));
-        echo '<div class="notice notice-success"><p>Obserwacja usunięta.</p></div>';
+        $r = wp_remote_post(zpw_dziki_api_url() . '&akcja=usun', array('timeout' => 15, 'headers' => array('Content-Type' => 'application/json'), 'body' => wp_json_encode(array('id' => sanitize_text_field(wp_unslash($_POST['zpw_dziki_usun'])), 'klucz' => zpw_dziki_klucz()))));
+        $ok = !is_wp_error($r) && wp_remote_retrieve_response_code($r) === 200;
+        echo '<div class="notice notice-' . ($ok ? 'success' : 'error') . '"><p>' . ($ok ? 'Obserwacja usunięta.' : 'Nie udało się usunąć obserwacji.') . '</p></div>';
     }
+    if (isset($_POST['zpw_dziki_zatw']) && check_admin_referer('zpw_dziki_usun')) {
+        $r = wp_remote_post(zpw_dziki_api_url() . '&akcja=zatwierdz', array('timeout' => 15, 'headers' => array('Content-Type' => 'application/json'), 'body' => wp_json_encode(array('id' => sanitize_text_field(wp_unslash($_POST['zpw_dziki_zatw'])), 'klucz' => zpw_dziki_klucz()))));
+        $ok = !is_wp_error($r) && wp_remote_retrieve_response_code($r) === 200;
+        echo '<div class="notice notice-' . ($ok ? 'success' : 'error') . '"><p>' . ($ok ? 'Zdjęcie/film zatwierdzone – widoczne na mapie.' : 'Nie udało się zatwierdzić.') . '</p></div>';
+    }
+    if (isset($_POST['zpw_dziki_api']) && check_admin_referer('zpw_dziki_narz') && current_user_can('manage_options')) { $e = zpw_dziki_instaluj_api(); echo '<div class="notice notice-' . ($e ? 'error' : 'success') . '"><p>' . esc_html($e ? $e : 'Mini-serwer zainstalowany: ' . home_url('/mieszkaniec-api/')) . '</p></div>'; }
+    if (isset($_POST['zpw_dziki_strony']) && check_admin_referer('zpw_dziki_narz') && current_user_can('publish_pages')) { echo '<div class="notice notice-success"><p>' . esc_html(zpw_dziki_utworz_strony()) . '</p></div>'; }
     $rows = zpw_dziki_lista();
     echo '<div class="wrap"><h1>Mapa dzików – obserwacje z ostatnich ' . (int) ZPW_DZIKI_DNI . ' dni</h1>';
-    if (isset($_POST['zpw_dziki_strony']) && check_admin_referer('zpw_dziki_strony') && current_user_can('publish_pages')) { echo '<div class="notice notice-success"><p>' . esc_html(zpw_dziki_utworz_strony()) . '</p></div>'; }
-    echo '<form method="post" style="margin:10px 0">'; wp_nonce_field('zpw_dziki_strony'); echo '<button class="button button-primary" name="zpw_dziki_strony" value="1">Utwórz strony map (powiat + 12 gmin)</button> <span class="description">Tworzy opublikowane strony /dziki/ i /dziki/&lt;gmina&gt;/. Istniejących nie zmienia.</span></form>';
-    echo '<p>Mapa na stronie: shortcode <code>[zycie_dziki_mapa]</code> (powiat) albo <code>[zycie_dziki_mapa gmina="kobylka"]</code>. Wpisy starsze niż ' . (int) ZPW_DZIKI_DNI . ' dni są usuwane automatycznie. Zgłoszenia nie zawierają danych osobowych.</p>';
-    echo '<table class="widefat striped"><thead><tr><th>Kiedy</th><th>Gmina</th><th>Miejsce</th><th>Ile</th><th>Zachowanie</th><th></th></tr></thead><tbody>';
-    if (!$rows) echo '<tr><td colspan="6">Brak obserwacji.</td></tr>';
+    echo '<form method="post" style="margin:10px 0">'; wp_nonce_field('zpw_dziki_narz');
+    echo '<button class="button button-primary" name="zpw_dziki_strony" value="1">Utwórz strony map (powiat + 12 gmin)</button> <button class="button" name="zpw_dziki_api" value="1">Zainstaluj ponownie mini-serwer</button> <span class="description">Strony: /dziki/ i /dziki/&lt;gmina&gt;/. Istniejących nie zmienia.</span></form>';
+    echo '<p>Shortcode: <code>[zycie_dziki_mapa]</code> (powiat) albo <code>[zycie_dziki_mapa gmina="kobylka"]</code>. Dane trzyma samodzielny mini-serwer <code>' . esc_html(home_url('/mieszkaniec-api/')) . '</code>, do którego zgłaszają też aplikacje mieszkańców. Wpisy starsze niż ' . (int) ZPW_DZIKI_DNI . ' dni znikają same. Zgłoszenia nie zawierają danych osobowych. <strong>Zdjęcia i filmy są widoczne na mapie dopiero po zatwierdzeniu</strong>: nie zatwierdzaj, jeśli widać na nich twarze, tablice rejestracyjne albo cokolwiek poza dzikami.</p>';
+    if ($rows === null) { echo '<div class="notice notice-error"><p>Mini-serwer nie odpowiada. Użyj przycisku „Zainstaluj ponownie mini-serwer”.</p></div></div>'; return; }
+    echo '<table class="widefat striped"><thead><tr><th>Kiedy</th><th>Gmina</th><th>Miejsce</th><th>Ile</th><th>Zachowanie</th><th>Zdjęcie / film</th><th>Źródło</th><th></th></tr></thead><tbody>';
+    if (!$rows) echo '<tr><td colspan="8">Brak obserwacji.</td></tr>';
     foreach ($rows as $r) {
-        echo '<tr><td>' . esc_html(wp_date('j.m.Y H:i', strtotime($r['kiedy']))) . '</td><td>' . esc_html(isset(zpw_dziki_gminy()[$r['gmina']]) ? zpw_dziki_gminy()[$r['gmina']]['n'] : $r['gmina']) . '</td><td><a target="_blank" rel="noopener" href="' . esc_url('https://www.google.com/maps?q=' . $r['lat'] . ',' . $r['lon']) . '">' . esc_html($r['lat'] . ', ' . $r['lon']) . '</a></td><td>' . esc_html($r['ile']) . '</td><td>' . esc_html($r['co']) . '</td><td><form method="post">';
+        echo '<tr><td>' . esc_html(wp_date('j.m.Y H:i', strtotime($r['kiedy']))) . '</td><td>' . esc_html(isset($G[$r['gmina']]) ? $G[$r['gmina']]['n'] : $r['gmina']) . '</td><td><a target="_blank" rel="noopener" href="' . esc_url('https://www.google.com/maps?q=' . $r['lat'] . ',' . $r['lon']) . '">' . esc_html($r['lat'] . ', ' . $r['lon']) . '</a></td><td>' . esc_html($r['ile']) . '</td><td>' . esc_html($r['co']) . '</td><td>';
+        if (!empty($r['plik'])) echo '<a target="_blank" href="' . esc_url(wp_nonce_url(admin_url('admin-post.php?action=zpw_dziki_podglad&plik=' . $r['plik']), 'zpw_dziki_podglad')) . '">' . ($r['media'] === 'film' ? 'Obejrzyj film' : 'Zobacz zdjęcie') . '</a> – ' . (!empty($r['media_ok']) ? 'zatwierdzone' : '<strong>czeka</strong>');
+        echo '</td><td>' . esc_html(isset($r['zrodlo']) ? $r['zrodlo'] : '') . '</td><td><form method="post">';
         wp_nonce_field('zpw_dziki_usun');
-        echo '<button class="button" name="zpw_dziki_usun" value="' . (int) $r['id'] . '" onclick="return confirm(\'Usunąć tę obserwację?\')">Usuń</button></form></td></tr>';
+        if (!empty($r['plik']) && empty($r['media_ok'])) echo '<button class="button button-primary" name="zpw_dziki_zatw" value="' . esc_attr($r['id']) . '">Zatwierdź zdjęcie/film</button> ';
+        echo '<button class="button" name="zpw_dziki_usun" value="' . esc_attr($r['id']) . '" onclick="return confirm(\'Usunąć tę obserwację?\')">Usuń</button></form></td></tr>';
     }
     echo '</tbody></table></div>';
 }
@@ -182,7 +126,7 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
     wp_enqueue_script('leaflet', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', array(), '1.9.4', true);
     $linki = array();
     foreach ($G as $slug => $g) $linki[$slug] = home_url('/dziki/' . $slug . '/');
-    $cfg = wp_json_encode(array('api' => esc_url_raw(rest_url('zycie-dziki/v1/obserwacje')), 'ile' => zpw_dziki_ile(), 'co' => zpw_dziki_co(), 'dni' => ZPW_DZIKI_DNI, 'gmina' => $gm, 'gminy' => $G, 'linki' => $linki, 'powiat' => home_url('/dziki/')));
+    $cfg = wp_json_encode(array('api' => esc_url_raw(zpw_dziki_api_url()), 'ile' => zpw_dziki_ile(), 'co' => zpw_dziki_co(), 'dni' => ZPW_DZIKI_DNI, 'gmina' => $gm, 'gminy' => $G, 'linki' => $linki, 'powiat' => home_url('/dziki/')));
     ob_start(); ?>
 <style>
 .zdz{max-width:980px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14213d}
@@ -208,6 +152,8 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
 .zdz-lab{font-size:13px;font-weight:700;color:#5b6577;text-transform:uppercase;letter-spacing:.05em}
 .zdz-row{display:flex;gap:8px}.zdz-row button{flex:1;border-radius:12px;padding:13px;font-size:16px;font-weight:700;cursor:pointer}
 .zdz-ok{border:0;background:#0e7c6b;color:#fff}.zdz-no{border:1px solid #cbd2dc;background:#fff;color:#14213d}
+.zdz-file{display:block;border:1.5px dashed #9aa3b2;border-radius:12px;padding:12px;text-align:center;font-size:15px;font-weight:600;color:#14315a;cursor:pointer;margin:0 0 10px}.zdz-file.ma{border-style:solid;border-color:#0e7c6b;color:#0b5e52;background:#e6f4f1}
+.zdz .leaflet-popup-content img,.zdz .leaflet-popup-content video{display:block;width:220px;max-width:100%;border-radius:8px;margin-top:6px}
 .zdz-leg{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:#5b6577;margin:10px 0}.zdz-leg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px;border:2px solid #fff;box-shadow:0 0 0 1px #9aa3b2}
 .zdz-note{font-size:14px;color:#5b6577;line-height:1.5}
 .zdz-warn{background:#fff7e0;border-radius:14px;padding:12px 16px;margin:12px 0;font-size:15px}
@@ -225,13 +171,19 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
     <div class="zdz-tools"><button type="button" id="zdz-full" title="Pełny ekran" aria-label="Pełny ekran">⛶</button><button type="button" id="zdz-loc" title="Pokaż moje położenie" aria-label="Pokaż moje położenie">◎</button></div>
     <div class="zdz-cta" id="zdz-cta"><button type="button" id="zdz-start">Widzę dziki – dodaj obserwację</button></div>
     <div class="zdz-sheet" id="zdz-sheet">
-      <div id="zdz-k1">
+      <div id="zdz-k0">
+        <div class="s" style="margin:0 0 8px;color:#14213d;font-weight:600">Gdzie są dziki?</div>
+        <div class="zdz-row"><button type="button" class="zdz-ok" id="zdz-here">◎ Tu, gdzie jestem</button><button type="button" class="zdz-no" id="zdz-pick">Wskażę na mapie</button></div>
+        <div class="zdz-row" style="margin-top:8px"><button type="button" class="zdz-no" id="zdz-cancel0" style="border:0;font-weight:600;padding:8px">Anuluj</button></div>
+      </div>
+      <div id="zdz-k1" hidden>
         <div class="s" style="margin:0 0 8px;color:#14213d;font-weight:600">Pinezka w dobrym miejscu? Przesuń ją palcem albo dotknij mapy ponownie.</div>
         <div class="zdz-row"><button type="button" class="zdz-no" id="zdz-cancel">Anuluj</button><button type="button" class="zdz-ok" id="zdz-next">Tak, dalej</button></div>
       </div>
       <div id="zdz-k2" hidden>
         <div class="zdz-lab">Ile?</div><div class="zdz-seg" id="zdz-ile"></div>
         <div class="zdz-lab">Co robią?</div><div class="zdz-seg" id="zdz-co"></div>
+        <label class="zdz-file" id="zdz-fl"><input type="file" id="zdz-plik" accept="image/*,video/*" hidden><span id="zdz-fn">＋ Dodaj zdjęcie lub film (nieobowiązkowo)</span></label>
         <div class="zdz-row"><button type="button" class="zdz-no" id="zdz-back">Popraw miejsce</button><button type="button" class="zdz-ok" id="zdz-add">Dodaj obserwację</button></div>
         <div class="s" id="zdz-msg" style="margin:8px 0 0"></div>
       </div>
@@ -239,7 +191,7 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
   </div>
   <div class="zdz-leg"><span><i style="background:#d21f1f"></i>dziś i wczoraj</span><span><i style="background:#f08a24"></i>2–7 dni temu</span><span><i style="background:#9aa3b2"></i>8–<?php echo (int) ZPW_DZIKI_DNI; ?> dni temu</span></div>
   <div class="zdz-warn"><b>Dziki blisko ludzi, ranne albo agresywne?</b> Nie podchodź. Zadzwoń pod 112 albo do swojego urzędu gminy.</div>
-  <p class="zdz-note">Zgłoszenia mieszkańców, niezweryfikowane. Dodając obserwację, nie podajesz żadnych danych o sobie: zapisujemy tylko miejsce, czas, liczbę i zachowanie dzików. Punkty znikają po <?php echo (int) ZPW_DZIKI_DNI; ?> dniach. Granice gmin: BDOT10k (GUGiK). Mieszkasz w Kobyłce? <a href="https://lechur.github.io/wehikul-czasu/kobylka/#dziki">Zgłaszaj w Aplikacji mieszkańca Kobyłki</a>.</p>
+  <p class="zdz-note">Zgłoszenia mieszkańców, niezweryfikowane. Dodając obserwację, nie podajesz żadnych danych o sobie: zapisujemy tylko miejsce, czas, liczbę i zachowanie dzików. Zdjęcia i filmy pojawiają się na mapie po sprawdzeniu przez redakcję; nie wysyłaj nagrań, na których widać ludzi. Punkty znikają po <?php echo (int) ZPW_DZIKI_DNI; ?> dniach. Granice gmin: BDOT10k (GUGiK). Mieszkasz w Kobyłce? <a href="https://lechur.github.io/wehikul-czasu/kobylka/#dziki">Zgłaszaj w Aplikacji mieszkańca Kobyłki</a>.</p>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -266,12 +218,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function kolor(w) { return w < 2 ? '#d21f1f' : w <= 7 ? '#f08a24' : '#9aa3b2'; }
   function kiedy(d) { return d.toLocaleString('pl-PL', {weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}); }
   function load() {
-    fetch(C.api + (C.gmina ? '?gmina=' + C.gmina : ''), {cache: 'no-store'}).then(function (r) { return r.json(); }).then(function (d) {
+    fetch(C.api + (C.gmina ? '&gmina=' + C.gmina : ''), {cache: 'no-store'}).then(function (r) { return r.json(); }).then(function (d) {
       layer.clearLayers(); var now = Date.now(), tydz = 0, O = d.obserwacje || [];
       O.slice().reverse().forEach(function (o) {
         var t = new Date(o.kiedy), w = (now - t.getTime()) / 864e5; if (w <= 7) tydz++;
         L.circleMarker([o.lat, o.lon], {radius: w < 2 ? 11 : 9, color: '#fff', weight: 2.5, fillColor: kolor(w), fillOpacity: 0.95})
-          .bindPopup('<b>' + esc(o.ile) + '</b>, ' + esc(o.co) + '<br>' + kiedy(t) + (G[o.gmina] ? '<br>' + esc(G[o.gmina].n) : '')).addTo(layer);
+          .bindPopup('<b>' + esc(o.ile) + '</b>, ' + esc(o.co) + '<br>' + kiedy(t) + (G[o.gmina] ? '<br>' + esc(G[o.gmina].n) : '') + (o.plik ? (o.media === 'film' ? '<video controls preload="none" playsinline src="' + C.api + '&plik=' + o.plik + '"></video>' : '<img loading="lazy" alt="Zdjęcie dzików" src="' + C.api + '&plik=' + o.plik + '">') : ''), {minWidth: o.plik ? 220 : 50}).addTo(layer);
       });
       var gdzie = cur ? cur.n : 'powiat wołomiński';
       $('zdz-sum').textContent = O.length ? gdzie + ': ' + tydz + ' ' + pl(tydz, 'obserwacja', 'obserwacje', 'obserwacji') + ' dzików w ostatnich 7 dniach, ' + O.length + ' w ostatnich ' + C.dni + ' dniach' : gdzie + ': w ostatnich ' + C.dni + ' dniach nikt nie zgłosił dzików';
@@ -284,23 +236,38 @@ document.addEventListener('DOMContentLoaded', function () {
     el.onclick = function (e) { var bt = e.target.closest('button'); if (!bt) return; sel[key] = bt.dataset.v; [].forEach.call(el.children, function (x) { x.classList.toggle('on', x === bt); }); }; }
   seg('zdz-ile', C.ile, 'ile', ['1', '2–5', 'ponad 5', 'z młodymi']); seg('zdz-co', C.co, 'co', ['przechodzą', 'ryją', 'śmietniki', 'agresywne']);
   function hint(t) { var e = $('zdz-hint'); e.hidden = !t; e.textContent = t || ''; }
-  function krok(n) { $('zdz-k1').hidden = n !== 1; $('zdz-k2').hidden = n !== 2; }
+  function krok(n) { $('zdz-k0').hidden = n !== 0; $('zdz-k1').hidden = n !== 1; $('zdz-k2').hidden = n !== 2; }
   function pl(n, a, b, c) { return n === 1 ? a : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? b : c; }
-  function stop() { adding = false; krok(1); if (pin) { map.removeLayer(pin); pin = null; } $('zdz-sheet').style.display = 'none'; $('zdz-cta').style.display = ''; hint(''); $('zdz-msg').textContent = ''; }
+  var media = null;
+  function wyczyscPlik() { media = null; $('zdz-plik').value = ''; $('zdz-fl').classList.remove('ma'); $('zdz-fn').textContent = '＋ Dodaj zdjęcie lub film (nieobowiązkowo)'; }
+  function stop() { adding = false; krok(0); wyczyscPlik(); if (pin) { map.removeLayer(pin); pin = null; } $('zdz-sheet').style.display = 'none'; $('zdz-cta').style.display = ''; hint(''); $('zdz-msg').textContent = ''; }
   function setPin(ll) {
     if (!pin) { pin = L.marker(ll, {icon: ikona, draggable: true, autoPan: true}).addTo(map); } else pin.setLatLng(ll);
     $('zdz-sheet').style.display = 'block'; krok(1);
     if (map.getZoom() < 17) { hint('Powiększam…'); map.flyTo(ll, 17.5, {duration: 0.6}); map.once('moveend', function () { hint(''); }); } else hint('');
   }
-  $('zdz-start').onclick = function () { adding = true; $('zdz-cta').style.display = 'none'; hint('Dotknij mapy tam, gdzie są dziki'); map.scrollWheelZoom.enable(); };
+  $('zdz-start').onclick = function () { $('zdz-cta').style.display = 'none'; $('zdz-sheet').style.display = 'block'; krok(0); };
+  $('zdz-cancel0').onclick = stop;
+  $('zdz-pick').onclick = function () { adding = true; $('zdz-sheet').style.display = 'none'; hint('Dotknij mapy tam, gdzie są dziki'); map.scrollWheelZoom.enable(); };
+  $('zdz-here').onclick = function () { var bt = this; if (!navigator.geolocation) { $('zdz-pick').click(); return; } bt.disabled = true; bt.textContent = 'Szukam Twojego położenia…';
+    navigator.geolocation.getCurrentPosition(function (p) { bt.disabled = false; bt.textContent = '◎ Tu, gdzie jestem'; adding = true; map.scrollWheelZoom.enable(); setPin(L.latLng(p.coords.latitude, p.coords.longitude)); },
+      function () { bt.disabled = false; bt.textContent = '◎ Tu, gdzie jestem'; $('zdz-pick').click(); hint('Nie udało się ustalić położenia. Dotknij mapy tam, gdzie są dziki'); }, {enableHighAccuracy: true, timeout: 12000}); };
+  // zdjęcie jest zmniejszane w telefonie (bez danych o aparacie i położeniu); film wysyłany bez zmian, do 40 MB
+  $('zdz-plik').onchange = function () { var f = this.files[0]; if (!f) { wyczyscPlik(); return; }
+    function ok(b, nazwa) { media = {blob: b, nazwa: nazwa}; $('zdz-fl').classList.add('ma'); $('zdz-fn').textContent = '✓ ' + (f.type.indexOf('video') === 0 ? 'Film' : 'Zdjęcie') + ' dodane (dotknij, aby zmienić)'; }
+    if (f.type.indexOf('video') === 0) { if (f.size > 40 * 1048576) { wyczyscPlik(); $('zdz-msg').textContent = 'Film jest za duży (najwyżej 40 MB, ok. 20 sekund).'; return; } ok(f, f.name); return; }
+    var img = new Image(), u = URL.createObjectURL(f); img.onload = function () { var k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(u); c.toBlob(function (b) { ok(b, 'dziki.jpg'); }, 'image/jpeg', 0.82); };
+    img.onerror = function () { wyczyscPlik(); $('zdz-msg').textContent = 'Nie udało się odczytać zdjęcia.'; }; img.src = u; };
   $('zdz-cancel').onclick = stop; $('zdz-next').onclick = function () { krok(2); hint(''); }; $('zdz-back').onclick = function () { krok(1); };
   map.on('click', function (e) { if (adding) setPin(e.latlng); });
   $('zdz-add').onclick = function () {
     var m = $('zdz-msg'); if (!pin) { m.textContent = 'Najpierw dotknij mapy.'; return; }
     var ll = pin.getLatLng(), bt = $('zdz-add'); bt.disabled = true; m.textContent = 'Wysyłam…';
-    fetch(C.api, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({lat: ll.lat, lon: ll.lng, ile: sel.ile, co: sel.co, kiedy: new Date().toISOString()})})
+    var fd = new FormData(); fd.append('lat', ll.lat); fd.append('lon', ll.lng); fd.append('ile', sel.ile); fd.append('co', sel.co); fd.append('kiedy', new Date().toISOString()); fd.append('zrodlo', 'zyciepw'); if (media) fd.append('plik', media.blob, media.nazwa);
+    var mial = !!media;
+    fetch(C.api, {method: 'POST', body: fd})
       .then(function (r) { return r.json().then(function (j) { return {ok: r.ok, j: j}; }); })
-      .then(function (x) { bt.disabled = false; if (x.ok) { stop(); hint('Dodano. Dziękujemy!'); setTimeout(function () { hint(''); }, 3000); load(); } else m.textContent = x.j && x.j.message ? x.j.message : 'Nie udało się dodać.'; })
+      .then(function (x) { bt.disabled = false; if (x.ok) { stop(); hint(x.j.media_blad ? 'Dodano bez pliku: ' + x.j.media_blad : mial ? 'Dodano. Zdjęcie/film pojawi się po sprawdzeniu' : 'Dodano. Dziękujemy!'); setTimeout(function () { hint(''); }, 4500); load(); } else m.textContent = x.j && x.j.message ? x.j.message : 'Nie udało się dodać.'; })
       .catch(function () { bt.disabled = false; m.textContent = 'Brak połączenia. Spróbuj ponownie.'; });
   };
   // pełny ekran i położenie
