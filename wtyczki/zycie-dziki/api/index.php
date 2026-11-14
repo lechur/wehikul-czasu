@@ -9,6 +9,8 @@
  *      albo multipart/form-data z tymi polami i plikiem "plik" (zdjęcie lub film) – media czekają na zatwierdzenie
  * GET  ?zasob=dziki&plik=<nazwa>                         zatwierdzone zdjęcie/film (niezatwierdzone tylko z &klucz=)
  * POST ?zasob=dziki&akcja=usun|zatwierdz   JSON {id, klucz}   moderacja (klucz z config.php)
+ *
+ * ?zasob=zgloszenia – wspólna mapa zgłoszeń (dziury, awarie, oświetlenie…), opis w pliku zgloszenia.php
  */
 const MAX_FOTO = 8388608;    // 8 MB
 const MAX_FILM = 41943040;   // 40 MB
@@ -28,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 function odp($kod, $dane) { http_response_code($kod); echo json_encode($dane, JSON_UNESCAPED_UNICODE); exit; }
 function blad($kod, $msg) { odp($kod, array('message' => $msg)); }
 
-if (!isset($_GET['zasob']) || $_GET['zasob'] !== 'dziki') blad(404, 'Nieznany zasób.');
+$ZASOB = isset($_GET['zasob']) ? (string) $_GET['zasob'] : '';
+if ($ZASOB !== 'dziki' && $ZASOB !== 'zgloszenia') blad(404, 'Nieznany zasób.');
 $dir = __DIR__ . '/data';
 if (!is_dir($dir) && !@mkdir($dir, 0755, true)) blad(500, 'Brak katalogu danych.');
 $cfg = is_file(__DIR__ . '/config.php') ? (array) include __DIR__ . '/config.php' : array();
@@ -69,6 +72,36 @@ function plik($sciezka, $zmiana = null) {
 function usun_plik($o) { if (!empty($o['plik']) && preg_match('/^[a-f0-9]{24}\.[a-z0-9]{3,4}$/', $o['plik'])) @unlink(__DIR__ . '/data/media/' . $o['plik']); }
 function swieze($dane) { $od = time() - DNI * 86400; $n = array(); foreach ($dane as $o) { if (isset($o['kiedy']) && strtotime($o['kiedy']) >= $od) $n[] = $o; else usun_plik($o); } return $n; }
 function ma_klucz($cfg, $k) { return !empty($cfg['klucz']) && is_string($k) && hash_equals((string) $cfg['klucz'], $k); }
+
+/** Limit nadużyć: przez godzinę trzymany jest tylko skrót (hash) adresu IP, nie sam adres. */
+function limit_ok($dir, $cfg, $rodzaj, $max) {
+    $sol = isset($cfg['klucz']) ? $cfg['klucz'] : 'brak';
+    $h = substr(hash('sha256', $rodzaj . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . $sol . gmdate('Y-m-d-H')), 0, 24);
+    $godz = gmdate('Y-m-d-H'); $ok = true;
+    plik($dir . '/limit.json', function ($d) use ($h, $godz, $max, &$ok) {
+        $n = array();
+        foreach ($d as $r) if (isset($r['g']) && $r['g'] === $godz) $n[] = $r;
+        foreach ($n as &$r) if ($r['h'] === $h) { if ($r['n'] >= $max) { $ok = false; return null; } $r['n']++; return $n; }
+        $n[] = array('h' => $h, 'g' => $godz, 'n' => 1);
+        return $n;
+    });
+    return $ok;
+}
+/** Zapisuje przesłany plik po sprawdzeniu rzeczywistego typu. Zwraca [nazwa, rodzaj, błąd]. */
+function zapisz_media($dir, $MEDIA, $tylko_foto) {
+    if (empty($_FILES['plik']) || !is_array($_FILES['plik'])) return array('', '', '');
+    $f = $_FILES['plik'];
+    if ($f['error'] !== UPLOAD_ERR_OK) return array('', '', 'Plik był za duży albo przesyłanie się nie powiodło.');
+    $mime = function_exists('finfo_open') ? finfo_file(finfo_open(FILEINFO_MIME_TYPE), $f['tmp_name']) : '';
+    if (!isset($MEDIA[$mime]) || ($tylko_foto && $MEDIA[$mime][0] !== 'foto')) return array('', '', 'Ten rodzaj pliku nie jest przyjmowany.');
+    if ($f['size'] > ($MEDIA[$mime][0] === 'foto' ? MAX_FOTO : MAX_FILM)) return array('', '', 'Plik jest za duży.');
+    if (!is_dir($dir . '/media')) @mkdir($dir . '/media', 0755, true);
+    $nazwa = bin2hex(random_bytes(12)) . '.' . $MEDIA[$mime][1];
+    if (!@move_uploaded_file($f['tmp_name'], $dir . '/media/' . $nazwa)) return array('', '', 'Nie udało się zapisać pliku.');
+    return array($nazwa, $MEDIA[$mime][0], '');
+}
+
+if ($ZASOB === 'zgloszenia') { require __DIR__ . '/zgloszenia.php'; exit; }
 
 $plik = $dir . '/dziki.json';
 
@@ -124,36 +157,11 @@ $ts = isset($p['kiedy']) ? strtotime((string) $p['kiedy']) : time();
 if (!$ts || $ts > time() + 600 || $ts < time() - 3 * 86400) $ts = time();
 $zrodlo = isset($p['zrodlo']) ? substr(preg_replace('/[^a-z0-9\-]/', '', strtolower((string) $p['zrodlo'])), 0, 30) : '';
 
-// Ograniczenie nadużyć: przez godzinę trzymany jest tylko skrót (hash) adresu, nie sam adres IP.
-$sol = isset($cfg['klucz']) ? $cfg['klucz'] : 'brak';
-$h = substr(hash('sha256', (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . $sol . gmdate('Y-m-d-H')), 0, 24);
-$godz = gmdate('Y-m-d-H'); $za_duzo = false;
-plik($dir . '/limit.json', function ($d) use ($h, $godz, &$za_duzo) {
-    $n = array();
-    foreach ($d as $r) if (isset($r['g']) && $r['g'] === $godz) $n[] = $r;
-    foreach ($n as &$r) if ($r['h'] === $h) { if ($r['n'] >= LIMIT_NA_GODZINE) { $za_duzo = true; return null; } $r['n']++; return $n; }
-    $n[] = array('h' => $h, 'g' => $godz, 'n' => 1);
-    return $n;
-});
-if ($za_duzo) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
+if (!limit_ok($dir, $cfg, '', LIMIT_NA_GODZINE)) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
 
 $nowy = array('id' => gmdate('ymdHis') . bin2hex(random_bytes(3)), 'lat' => round($lat, 4), 'lon' => round($lon, 4), 'gmina' => $gm, 'ile' => $ile, 'co' => $co, 'kiedy' => gmdate('c', $ts), 'zrodlo' => $zrodlo, 'media' => '');
 // Zdjęcie lub film: sprawdzany jest rzeczywisty typ pliku; media są widoczne publicznie dopiero po zatwierdzeniu przez moderatora.
-$media_blad = '';
-if (!empty($_FILES['plik']) && is_array($_FILES['plik'])) {
-    $f = $_FILES['plik'];
-    if ($f['error'] !== UPLOAD_ERR_OK) $media_blad = 'Plik był za duży albo przesyłanie się nie powiodło.';
-    else {
-        $mime = function_exists('finfo_open') ? finfo_file(finfo_open(FILEINFO_MIME_TYPE), $f['tmp_name']) : '';
-        if (!isset($MEDIA[$mime])) $media_blad = 'Ten rodzaj pliku nie jest przyjmowany.';
-        else if ($f['size'] > ($MEDIA[$mime][0] === 'foto' ? MAX_FOTO : MAX_FILM)) $media_blad = 'Plik jest za duży.';
-        else {
-            if (!is_dir($dir . '/media')) @mkdir($dir . '/media', 0755, true);
-            $nazwa = bin2hex(random_bytes(12)) . '.' . $MEDIA[$mime][1];
-            if (@move_uploaded_file($f['tmp_name'], $dir . '/media/' . $nazwa)) { $nowy['plik'] = $nazwa; $nowy['media'] = $MEDIA[$mime][0]; $nowy['media_ok'] = 0; }
-            else $media_blad = 'Nie udało się zapisać pliku.';
-        }
-    }
-}
+list($nazwa, $rodzaj, $media_blad) = zapisz_media($dir, $MEDIA, false);
+if ($nazwa !== '') { $nowy['plik'] = $nazwa; $nowy['media'] = $rodzaj; $nowy['media_ok'] = 0; }
 plik($plik, function ($d) use ($nowy) { $d = swieze($d); $d[] = $nowy; return $d; });   // stare wpisy są przy okazji usuwane z pliku
 odp(201, array('ok' => true, 'id' => $nowy['id'], 'gmina' => $gm, 'media' => $nowy['media'], 'media_blad' => $media_blad));

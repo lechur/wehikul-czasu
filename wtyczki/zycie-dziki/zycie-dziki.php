@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.1.0
+ * Version: 2.2.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -26,7 +26,7 @@ function zpw_dziki_gminy() {
 function zpw_dziki_instaluj_api() {
     $d = zpw_dziki_api_dir();
     if (!wp_mkdir_p($d . 'data')) return 'Nie można utworzyć folderu ' . $d;
-    foreach (array('index.php', 'gminy.json') as $f) if (!@copy(__DIR__ . '/api/' . $f, $d . $f)) return 'Nie można zapisać ' . $f;
+    foreach (array('index.php', 'zgloszenia.php', 'gminy.json') as $f) if (!@copy(__DIR__ . '/api/' . $f, $d . $f)) return 'Nie można zapisać ' . $f;
     @copy(__DIR__ . '/api/data.htaccess', $d . 'data/.htaccess');
     if (!is_file($d . 'data/index.html')) @file_put_contents($d . 'data/index.html', '');
     if (!is_file($d . 'config.php')) {
@@ -62,9 +62,16 @@ add_action('admin_post_zpw_dziki_podglad', function () {
     echo wp_remote_retrieve_body($r); exit;
 });
 
+// Po aktualizacji wtyczki pliki mini-serwera są odświeżane (dane i klucz zostają).
+add_action('admin_init', function () {
+    if (get_option('zpw_dziki_api_wersja') === '2.2.0' || !current_user_can('manage_options')) return;
+    if (zpw_dziki_instaluj_api() === '') update_option('zpw_dziki_api_wersja', '2.2.0');
+});
+
 // Moderacja: redaktorzy i administratorzy (uprawnienie moderate_comments).
 add_action('admin_menu', function () {
     add_menu_page('Mapa dzików', 'Mapa dzików', 'moderate_comments', 'zycie-dziki', 'zpw_dziki_admin', 'dashicons-location-alt', 58);
+    add_submenu_page('zycie-dziki', 'Zgłoszenia mieszkańców', 'Zgłoszenia (dziury, awarie)', 'moderate_comments', 'zycie-zgloszenia', 'zpw_zgl_admin');
 });
 function zpw_dziki_admin() {
     if (!current_user_can('moderate_comments')) return;
@@ -96,6 +103,50 @@ function zpw_dziki_admin() {
         wp_nonce_field('zpw_dziki_usun');
         if (!empty($r['plik']) && empty($r['media_ok'])) echo '<button class="button button-primary" name="zpw_dziki_zatw" value="' . esc_attr($r['id']) . '">Zatwierdź zdjęcie/film</button> ';
         echo '<button class="button" name="zpw_dziki_usun" value="' . esc_attr($r['id']) . '" onclick="return confirm(\'Usunąć tę obserwację?\')">Usuń</button></form></td></tr>';
+    }
+    echo '</tbody></table></div>';
+}
+
+function zpw_zgl_url() { return home_url('/mieszkaniec-api/?zasob=zgloszenia'); }
+// Podgląd zdjęcia zgłoszenia dla moderatora.
+add_action('admin_post_zpw_zgl_podglad', function () {
+    if (!current_user_can('moderate_comments')) wp_die('Brak uprawnień.', 403);
+    check_admin_referer('zpw_zgl_podglad');
+    $n = isset($_GET['plik']) ? (string) $_GET['plik'] : '';
+    if (!preg_match('/^[a-f0-9]{24}\.[a-z0-9]{3,4}$/', $n)) wp_die('Brak pliku.', 404);
+    $r = wp_remote_get(zpw_zgl_url() . '&plik=' . $n . '&klucz=' . rawurlencode(zpw_dziki_klucz()), array('timeout' => 60));
+    if (is_wp_error($r) || wp_remote_retrieve_response_code($r) !== 200) wp_die('Brak pliku.', 404);
+    nocache_headers(); header('Content-Type: ' . wp_remote_retrieve_header($r, 'content-type')); echo wp_remote_retrieve_body($r); exit;
+});
+function zpw_zgl_admin() {
+    if (!current_user_can('moderate_comments')) return;
+    $G = zpw_dziki_gminy();
+    $akcje = array('zatwierdz' => 'Zatwierdzono opis i zdjęcie.', 'zamknij' => 'Oznaczono jako naprawione.', 'otworz' => 'Przywrócono do otwartych.', 'usun' => 'Usunięto zgłoszenie.');
+    if (isset($_POST['zpw_zgl_akcja'], $_POST['zpw_zgl_id']) && check_admin_referer('zpw_zgl')) {
+        $a = sanitize_key(wp_unslash($_POST['zpw_zgl_akcja']));
+        if (isset($akcje[$a])) {
+            $r = wp_remote_post(zpw_zgl_url() . '&akcja=' . $a, array('timeout' => 15, 'headers' => array('Content-Type' => 'application/json'), 'body' => wp_json_encode(array('id' => sanitize_text_field(wp_unslash($_POST['zpw_zgl_id'])), 'klucz' => zpw_dziki_klucz()))));
+            $ok = !is_wp_error($r) && wp_remote_retrieve_response_code($r) === 200;
+            echo '<div class="notice notice-' . ($ok ? 'success' : 'error') . '"><p>' . esc_html($ok ? $akcje[$a] : 'Nie udało się wykonać operacji.') . '</p></div>';
+        }
+    }
+    $r = wp_remote_get(zpw_zgl_url() . '&klucz=' . rawurlencode(zpw_dziki_klucz()), array('timeout' => 15));
+    $j = (!is_wp_error($r) && wp_remote_retrieve_response_code($r) === 200) ? json_decode(wp_remote_retrieve_body($r), true) : null;
+    echo '<div class="wrap"><h1>Zgłoszenia mieszkańców</h1><p>Dziury, awarie i inne sprawy z aplikacji mieszkańców. Zgłoszenia z tego samego miejsca (ok. 35 m) i tej samej kategorii łączą się w jedną sprawę z licznikiem. <strong>Opis i zdjęcie są publiczne dopiero po zatwierdzeniu</strong>: nie zatwierdzaj, jeśli zawierają dane osobowe, twarze albo tablice rejestracyjne. Sprawa przechodzi do naprawionych, gdy potwierdzą to 2 osoby albo moderator.</p>';
+    if (!$j || !isset($j['sprawy'])) { echo '<div class="notice notice-error"><p>Mini-serwer nie odpowiada. Na stronie „Mapa dzików” użyj przycisku „Zainstaluj ponownie mini-serwer”.</p></div></div>'; return; }
+    $K = isset($j['kategorie']) ? $j['kategorie'] : array(); $S = $j['sprawy'];
+    usort($S, function ($a, $b) { $x = (empty($b['opis_ok']) && ($b['opis'] !== '' || !empty($b['plik']))) - (empty($a['opis_ok']) && ($a['opis'] !== '' || !empty($a['plik']))); return $x ?: strcmp($a['pierwsze'], $b['pierwsze']); });
+    echo '<table class="widefat striped"><thead><tr><th>Kategoria</th><th>Gmina</th><th>Miejsce</th><th>Pierwsze zgłoszenie</th><th>Zgłoszeń</th><th>Status</th><th>Opis / zdjęcie</th><th></th></tr></thead><tbody>';
+    if (!$S) echo '<tr><td colspan="8">Brak zgłoszeń.</td></tr>';
+    foreach ($S as $s) {
+        $czeka = empty($s['opis_ok']) && ($s['opis'] !== '' || !empty($s['plik']));
+        echo '<tr><td>' . esc_html(isset($K[$s['kat']]) ? $K[$s['kat']] : $s['kat']) . '</td><td>' . esc_html(isset($G[$s['gmina']]) ? $G[$s['gmina']]['n'] : $s['gmina']) . '</td><td><a target="_blank" rel="noopener" href="' . esc_url('https://www.google.com/maps?q=' . $s['lat'] . ',' . $s['lon']) . '">mapa</a></td><td>' . esc_html(wp_date('j.m.Y', strtotime($s['pierwsze']))) . ' (' . (int) floor((time() - strtotime($s['pierwsze'])) / 86400) . ' dni)</td><td>' . (int) $s['n'] . '</td><td>' . esc_html($s['status'] === 'naprawione' ? 'naprawione ' . wp_date('j.m.Y', strtotime($s['naprawione_od'])) : 'otwarte' . ($s['naprawione_glosy'] ? ' (' . (int) $s['naprawione_glosy'] . ' głos za naprawą)' : '')) . '</td><td>' . esc_html($s['opis']);
+        if (!empty($s['plik'])) echo ' <a target="_blank" href="' . esc_url(wp_nonce_url(admin_url('admin-post.php?action=zpw_zgl_podglad&plik=' . $s['plik']), 'zpw_zgl_podglad')) . '">zdjęcie</a>';
+        if ($czeka) echo ' – <strong>czeka na zatwierdzenie</strong>';
+        echo '</td><td><form method="post" style="display:flex;gap:4px;flex-wrap:wrap">'; wp_nonce_field('zpw_zgl'); echo '<input type="hidden" name="zpw_zgl_id" value="' . esc_attr($s['id']) . '">';
+        if ($czeka) echo '<button class="button button-primary" name="zpw_zgl_akcja" value="zatwierdz">Zatwierdź</button>';
+        echo $s['status'] === 'otwarte' ? '<button class="button" name="zpw_zgl_akcja" value="zamknij">Naprawione</button>' : '<button class="button" name="zpw_zgl_akcja" value="otworz">Otwórz ponownie</button>';
+        echo '<button class="button" name="zpw_zgl_akcja" value="usun" onclick="return confirm(\'Usunąć to zgłoszenie?\')">Usuń</button></form></td></tr>';
     }
     echo '</tbody></table></div>';
 }

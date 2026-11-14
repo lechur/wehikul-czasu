@@ -347,6 +347,85 @@ async function boInit(){
  const dk=Q('#bo-doKr');if(dk)dk.onclick=()=>Q('#bo-kreator').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-window.modGo=function(v){if(v==='kom')komInit();else if(v==='budzet')budzetInit();else if(v==='wniosekb')wniosekbInit();else if(v==='bo')boInit();};
-const h0=(location.hash||'').slice(1);if(['kom','budzet','wniosekb','bo'].indexOf(h0)>=0)setTimeout(()=>{if(Q('#v-'+h0+'.on'))window.modGo(h0);},600);
+
+/* =====================================================================
+   MAPA ZGŁOSZEŃ (dziury, awarie…) – wspólny mini-serwer /mieszkaniec-api/
+   ===================================================================== */
+const ZG_API='https://www.zyciepw.pl/mieszkaniec-api/?zasob=zgloszenia';
+const ZK={droga:['🕳','Dziura w drodze lub chodniku','#C2410C'],oswietlenie:['💡','Nie świeci latarnia','#B45309'],woda:['🚰','Woda, kanalizacja, zalana ulica','#2563EB'],odpady:['🗑','Śmieci, dzikie wysypisko','#6B7280'],zielen:['🌳','Zieleń, drzewa','#15803D'],bezpieczenstwo:['🚸','Znak, przejście, bezpieczeństwo','#BE185D'],potrzeba:['✚','Potrzebna inwestycja','#7C3AED'],inne:['✉','Inna sprawa','#0891B2']};
+const ZKR={droga:'Dziury',oswietlenie:'Latarnie',woda:'Woda',odpady:'Śmieci',zielen:'Zieleń',bezpieczenstwo:'Bezpieczeństwo',potrzeba:'Potrzeby',inne:'Inne'};
+const ZMAP={oswietlenie:'oswietlenie',droga:'droga',woda:'woda',odpady:'odpady',zielen:'zielen',bezpieczenstwo:'bezpieczenstwo',potrzeba:'potrzeba',inne:'inne'};
+function zgUid(){let u=LS('zg_u');if(!u){u=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,'0')).join('');LS('zg_u',u);}return u;}
+function zgIle(od){const m=Math.max(0,Math.floor((Date.now()-new Date(od))/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60);
+ if(d>=1)return d+' '+(d===1?'dzień':'dni')+(d<7&&h?' '+h+' godz.':'');if(h>=1)return h+' godz. '+(m%60)+' min';return (m%60)+' min';}
+const pl=(n,a,b,c)=>n===1?a:(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?b:c;
+let ZG=null,ZS={kat:'',st:'otwarte',sort:'czeka',wyb:null},zgMapa=null,ZUL={};
+async function zgWczytaj(){try{const r=await fetch(ZG_API+'&gmina=kobylka',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();ZG=j.sprawy||[];ZG.forEach(z=>{z._p=EN(z.lat,z.lon);});return true;}catch(e){ZG=null;return false;}}
+async function zgUlica(z){if(ZUL[z.id]!==undefined)return ZUL[z.id];ZUL[z.id]='';try{const r=MK.najblizszaUlica?await MK.najblizszaUlica(z.lat,z.lon):null;if(r&&r.u&&r.m<400)ZUL[z.id]=(r.m<40?'ul. ':'okolice ul. ')+r.u;}catch(e){}return ZUL[z.id];}
+window.zgPublikuj=async function(o){
+ const kat=ZMAP[o.cat];if(!kat||o.lat==null)return null;const fd=new FormData();
+ fd.append('kat',kat);fd.append('lat',o.lat);fd.append('lon',o.lon);fd.append('opis',o.opis||'');fd.append('zrodlo','aplikacja-kobylka');fd.append('u',zgUid());
+ if(o.foto){try{const b=await (await fetch(o.foto)).blob();fd.append('plik',b,'zgloszenie.jpg');}catch(e){}}
+ try{const r=await fetch(ZG_API,{method:'POST',body:fd}),j=await r.json().catch(()=>({}));if(!r.ok){say(j.message||'Nie udało się dodać na mapę.');return null;}
+  const z=j.sprawa;LS('zg_moje',[...(LS('zg_moje')||[]),z.id].slice(-100));ZG=null;
+  say(j.dolaczono?'To miejsce ktoś już zgłosił. Twój głos dodano: '+z.n+' '+pl(z.n,'zgłoszenie','zgłoszenia','zgłoszeń')+', czeka '+zgIle(z.pierwsze)+'.':'Dodano na wspólną mapę zgłoszeń.');return j;}
+ catch(e){say('Brak połączenia. Zgłoszenie nie trafiło na wspólną mapę.');return null;}};
+function zgFiltr(){return(ZG||[]).filter(z=>z.status===ZS.st&&(!ZS.kat||z.kat===ZS.kat));}
+function zgRysuj(c,X,Y,v,dk){zgFiltr().forEach(z=>{const k=ZK[z.kat]||ZK.inne,x=X(z._p[0]),y=Y(z._p[1]),r=Math.min(16,7+Math.sqrt(z.n)*2.2),on=ZS.wyb===z.id;
+  c.beginPath();c.arc(x,y,r+(on?3:0),0,7);c.fillStyle=z.status==='naprawione'?(dk?'#0d131d':'#fff'):k[2];c.fill();c.lineWidth=on?4:2.5;c.strokeStyle=z.status==='naprawione'?'#0E7C6B':(dk?'#0d131d':'#fff');c.stroke();
+  if(z.n>1&&z.status!=='naprawione'){c.fillStyle='#fff';c.font='700 11px system-ui';c.textAlign='center';c.fillText(z.n,x,y+4);c.textAlign='left';}});}
+function zgKarta(z){const k=ZK[z.kat]||ZK.inne,tez=(LS('zg_tez')||[]).includes(z.id)||(LS('zg_moje')||[]).includes(z.id),nap=(LS('zg_nap')||[]).includes(z.id),otw=z.status==='otwarte';
+ return `<div class="zgk${ZS.wyb===z.id?' on':''}" data-zid="${E(z.id)}"><div class="zgh"><i style="background:${k[2]}">${k[0]}</i><div class="grow"><b>${E(k[1])}</b><span class="mut" data-zul="${E(z.id)}">${E(ZUL[z.id]||'')}</span></div></div>
+  ${otw?`<div class="zgl2"><div><b class="zglicz" data-od="${E(z.pierwsze)}">${zgIle(z.pierwsze)}</b><span>od pierwszego zgłoszenia</span></div><div><b>${z.n}</b><span>${pl(z.n,'zgłoszenie','zgłoszenia','zgłoszeń')}</span></div></div>`
+   :`<div class="zgfix">✓ Naprawione ${new Date(z.naprawione_od).toLocaleDateString('pl-PL',{day:'numeric',month:'long'})}, po ${zgIle2(z.pierwsze,z.naprawione_od)} od pierwszego zgłoszenia</div>`}
+  ${z.opis?`<p class="zgop">${E(z.opis)}</p>`:''}${z.plik?`<img class="zgimg" loading="lazy" alt="Zdjęcie zgłoszenia" src="${ZG_API}&plik=${E(z.plik)}">`:''}
+  <span class="mut" style="font-size:12.5px">Pierwsze: ${new Date(z.pierwsze).toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'})}${z.n>1?' · ostatnie: '+zgIle(z.ostatnie)+' temu':''}${otw&&z.naprawione_glosy?' · '+z.naprawione_glosy+' '+pl(z.naprawione_glosy,'osoba mówi','osoby mówią','osób mówi')+', że naprawione':''}</span>
+  ${otw?`<div class="zgb"><button data-ztez="${E(z.id)}" ${tez?'disabled':''}>${tez?'✓ Zgłoszone':'＋ Też to widzę'}</button><button data-znap="${E(z.id)}" ${nap?'disabled':''}>${nap?'✓ Dziękujemy':'Już naprawione'}</button><button data-zrad="${E(z.id)}">Przekaż radnym</button></div>`:''}</div>`;}
+function zgIle2(a,b){const d=Math.max(0,Math.round((new Date(b)-new Date(a))/864e5));return d<1?'mniej niż dniu':d+' '+pl(d,'dniu','dniach','dniach');}
+function zgLista(){const L=zgFiltr().slice();if(ZS.sort==='ile')L.sort((a,b)=>b.n-a.n||a.pierwsze.localeCompare(b.pierwsze));else L.sort((a,b)=>a.pierwsze.localeCompare(b.pierwsze));
+ const box=Q('#zg-lista');box.innerHTML=L.length?L.map(zgKarta).join(''):`<p class="empty">${ZS.st==='otwarte'?'Brak otwartych zgłoszeń'+(ZS.kat?' w tej kategorii':'')+'.':'Nic jeszcze nie oznaczono jako naprawione.'}</p>`;
+ L.forEach(z=>{if(ZUL[z.id]===undefined)zgUlica(z).then(u=>{const el=box.querySelector(`[data-zul="${z.id}"]`);if(el)el.textContent=u;});});}
+function zgNaglowek(){const O=(ZG||[]).filter(z=>z.status==='otwarte'),N=(ZG||[]).filter(z=>z.status==='naprawione'),st=O.slice().sort((a,b)=>a.pierwsze.localeCompare(b.pierwsze))[0],suma=O.reduce((a,z)=>a+z.n,0);
+ Q('#zg-hero').innerHTML=`<div><small>Otwarte sprawy w Kobyłce</small><b>${O.length}</b><span>${suma} ${pl(suma,'zgłoszenie','zgłoszenia','zgłoszeń')} mieszkańców${N.length?' · '+N.length+' naprawionych w ostatnich 90 dniach':''}</span></div>${st?`<div class="zgst"><small>Najdłużej czeka</small><b class="zglicz" data-od="${E(st.pierwsze)}">${zgIle(st.pierwsze)}</b><span>${E((ZK[st.kat]||ZK.inne)[1])}</span></div>`:''}`;
+ const cnt={};O.forEach(z=>cnt[z.kat]=(cnt[z.kat]||0)+1);
+ Q('#zg-kat').innerHTML=`<button data-zk="" class="${!ZS.kat?'on':''}">Wszystkie</button>`+Object.keys(ZK).filter(k=>cnt[k]||ZS.kat===k).map(k=>`<button data-zk="${k}" class="${ZS.kat===k?'on':''}" style="--k:${ZK[k][2]}"><i></i>${ZKR[k]} ${cnt[k]||0}</button>`).join('');}
+async function zgInit(odswiez){
+ const box=Q('#v-mapazgl');
+ if(!box.dataset.ok){box.dataset.ok=1;box.innerHTML=`<h2>Mapa zgłoszeń</h2><p class="mut">Dziury, awarie i inne sprawy zgłoszone przez mieszkańców Kobyłki. Licznik pokazuje, ile czasu minęło od pierwszego zgłoszenia na tej mapie.</p>
+  <div class="bhero zgh2" id="zg-hero"><div><small>Wczytuję…</small></div></div>
+  <button class="btn gold wide" data-go="zglos">＋ Zgłoś nową sprawę</button>
+  <div class="seg k2" id="zg-st" style="margin-top:14px"><button data-zs="otwarte" class="on">Czekają na naprawę</button><button data-zs="naprawione">Naprawione</button></div>
+  <div class="kchips" id="zg-kat" style="margin-top:10px"></div>
+  <div class="card" style="padding:10px"><div class="mwrap"><canvas id="zg-map" class="mcv"></canvas>${zoomBtns('zg')}</div><p class="mut" style="margin:8px 4px 0">Liczba w kółku to liczba zgłoszeń w tym miejscu. Dotknij punktu, aby zobaczyć szczegóły.</p></div>
+  <div class="sec"><h3>Lista</h3><div class="seg" id="zg-sort" style="grid-template-columns:1fr 1fr;width:62%;margin:0"><button data-zo="czeka" class="on">najdłużej</button><button data-zo="ile">najczęściej</button></div></div>
+  <div id="zg-lista"></div>
+  <p class="mut">Zgłoszenia są anonimowe. Ta sama sprawa zgłoszona w promieniu ok. 35 m łączy się w jeden punkt z licznikiem. Sprawa trafia do „Naprawione”, gdy potwierdzą to 2 osoby albo moderator. Opisy i zdjęcia pokazujemy po sprawdzeniu przez moderatora. Licznik dotyczy zgłoszeń w tej aplikacji i na zyciepw.pl, a nie rejestru Urzędu: żeby sprawa trafiła do Urzędu, wyślij pismo albo przekaż ją radnym.</p>`;
+  zgMapa=Mapa(Q('#zg-map'),zgRysuj,(x,y,r)=>{let best=null,bd=(Math.max(r,25)*2.2)**2;zgFiltr().forEach(z=>{const d=(z._p[0]-x)**2+(z._p[1]-y)**2;if(d<bd){bd=d;best=z;}});ZS.wyb=best?best.id:null;zgMapa.draw();zgLista();const el=Q('#zg-lista .on');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});});
+  box.addEventListener('click',zgKlik);
+  setInterval(()=>{if(!Q('#v-mapazgl.on'))return;QA('#v-mapazgl .zglicz').forEach(b=>b.textContent=zgIle(b.dataset.od));},30000);}
+ if(!ZG||odswiez){Q('#zg-lista').innerHTML='<p class="mut">Wczytuję zgłoszenia…</p>';const ok=await zgWczytaj();
+  if(!ok){Q('#zg-hero').innerHTML='<div><small>Mapa zgłoszeń</small><b style="font-size:22px">Brak połączenia</b><span>Nie udało się wczytać zgłoszeń. Spróbuj za chwilę.</span></div>';Q('#zg-lista').innerHTML='';zgMapa.draw();return;}}
+ zgNaglowek();zgLista();
+ const P=(ZG||[]).map(z=>z._p);if(P.length&&!zgMapa._fit){zgMapa._fit=1;const xs=P.map(p=>p[0]),ys=P.map(p=>p[1]);zgMapa.cel((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,Math.max(2500,(Math.max(...xs)-Math.min(...xs))*1.3,(Math.max(...ys)-Math.min(...ys))*1.6));}else zgMapa.draw();
+}
+async function zgGlos(id,akcja){const r=await fetch(ZG_API+'&akcja='+akcja,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,u:zgUid()})}).catch(()=>null);
+ if(!r){say('Brak połączenia.');return;}const j=await r.json().catch(()=>({}));if(!r.ok){say(j.message||'Nie udało się.');return;}
+ const kl=akcja==='tez'?'zg_tez':'zg_nap';LS(kl,[...(LS(kl)||[]),id].slice(-300));const i=ZG.findIndex(z=>z.id===id);if(i>=0&&j.sprawa){j.sprawa._p=ZG[i]._p;ZG[i]=j.sprawa;}
+ say(j.juz?'Twój głos był już policzony.':akcja==='tez'?'Dziękujemy. Teraz '+j.sprawa.n+' '+pl(j.sprawa.n,'zgłoszenie','zgłoszenia','zgłoszeń')+'.':j.sprawa.status==='naprawione'?'Dziękujemy. Sprawa trafiła do naprawionych.':'Dziękujemy. Jeszcze jedna osoba musi potwierdzić naprawę.');
+ zgNaglowek();zgLista();zgMapa.draw();}
+function zgRadni(z){const k=ZK[z.kat]||ZK.inne,ul=ZUL[z.id]||'';
+ const t='Szanowni Państwo Radni,\n\nproszę o interwencję w sprawie zgłoszonej przez mieszkańców na wspólnej mapie zgłoszeń:\n\n'+k[1]+(ul?', '+ul:'')+'\nMiejsce na mapie: https://www.google.com/maps?q='+z.lat+','+z.lon+'\nPierwsze zgłoszenie: '+new Date(z.pierwsze).toLocaleDateString('pl-PL')+' (czeka '+zgIle(z.pierwsze)+')\nLiczba zgłoszeń: '+z.n+(z.opis?'\nOpis: '+z.opis:'')+'\n\nProszę o przekazanie sprawy Burmistrzowi i informację, kiedy zostanie załatwiona.\n\nZ poważaniem\n(imię i nazwisko, ulica)\n\n(Z mapy zgłoszeń w Aplikacji mieszkańca Kobyłki)';
+ doRadnych(k[1]+(ul?', '+ul:'')+' – '+z.n+' '+pl(z.n,'zgłoszenie','zgłoszenia','zgłoszeń'),t);}
+function zgKlik(e){const b=e.target.closest('button');
+ if(b){if(b.dataset.zs){ZS.st=b.dataset.zs;ZS.wyb=null;QA('#zg-st button').forEach(x=>x.classList.toggle('on',x===b));zgNaglowek();zgLista();zgMapa.draw();return;}
+  if(b.dataset.zk!==undefined){ZS.kat=b.dataset.zk;ZS.wyb=null;zgNaglowek();zgLista();zgMapa.draw();return;}
+  if(b.dataset.zo){ZS.sort=b.dataset.zo;QA('#zg-sort button').forEach(x=>x.classList.toggle('on',x===b));zgLista();return;}
+  if(b.dataset.z==='zg'){zgMapa.zoom(+b.dataset.k);return;}
+  if(b.dataset.ztez){b.disabled=true;zgGlos(b.dataset.ztez,'tez');return;}
+  if(b.dataset.znap){b.disabled=true;zgGlos(b.dataset.znap,'naprawione');return;}
+  if(b.dataset.zrad){zgRadni(ZG.find(z=>z.id===b.dataset.zrad));return;}return;}
+ const k=e.target.closest('[data-zid]');if(k&&!e.target.closest('a')){const z=ZG.find(x=>x.id===k.dataset.zid);ZS.wyb=ZS.wyb===z.id?null:z.id;QA('#zg-lista .zgk').forEach(x=>x.classList.toggle('on',x.dataset.zid===ZS.wyb));if(ZS.wyb)zgMapa.cel(z._p[0],z._p[1],Math.min(zgMapa.v.w,2500));else zgMapa.draw();Q('#zg-map').scrollIntoView({behavior:'smooth',block:'center'});}}
+
+window.modGo=function(v){if(v==='mapazgl')zgInit(true);else if(v==='kom')komInit();else if(v==='budzet')budzetInit();else if(v==='wniosekb')wniosekbInit();else if(v==='bo')boInit();};
+const h0=(location.hash||'').slice(1);if(['kom','budzet','wniosekb','bo','mapazgl'].indexOf(h0)>=0)setTimeout(()=>{if(Q('#v-'+h0+'.on'))window.modGo(h0);},600);
 })();
