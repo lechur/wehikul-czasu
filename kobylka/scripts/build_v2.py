@@ -16,6 +16,7 @@ rep('<title>Aplikacja mieszkańca Kobyłki</title>','<title>Aplikacja mieszkańc
 # ---- start view
 a=s.index('<section class="view on" id="v-start">'); b=s.index('</section>',a)+10
 about=re.search(r'<div class="card about">.*?</div>\n',s[a:b],re.S).group(0)
+HOWCARD=re.search(r'<div class="card how">.*?</div></div>\n',s[a:b],re.S).group(0).strip()
 start=f'''<section class="view on" id="v-start">
   <div id="hero"></div>
   <div class="card" id="s-waste"></div>
@@ -28,6 +29,7 @@ start=f'''<section class="view on" id="v-start">
   <div id="s-sprawy-wrap"><div class="sec"><h3>Moje sprawy</h3><button data-go="sprawy">Otwórz</button></div><div class="card" id="s-sprawy"></div></div>
   <div class="sec"><h3>Najbliższe dni</h3><button data-go="kal">Kalendarz</button></div>
   <div id="agenda"></div>
+  {HOWCARD}
   <button class="card lok-teaser" data-go="lokalnie"><span class="ico c1">{ic('coins')}</span><span class="grow"><b>Ze 100 zł u sąsiada 48 zł zostaje w Kobyłce</b><small>W sieci handlowej tylko 14 zł. Zobacz, jak to działa</small></span><span class="chev">{ic('chev',20)}</span></button>
   {about}  <div hidden><div id="s-terminy"></div><div id="s-zap"></div><div id="s-firmy"></div><b id="s-dzis"></b><div id="s-sun"></div><span id="s-moon"></span><canvas id="startsky"></canvas><div id="s-ev"></div></div>
 </section>'''

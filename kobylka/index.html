@@ -182,6 +182,12 @@ input[type=range]{padding:0;min-height:34px;border:0;accent-color:var(--acc);bac
 html.big body{zoom:1.15}
 .sw{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:15px;font-weight:600}.sw input{width:22px;height:22px;min-height:0;accent-color:var(--acc)}
 .mut{font-size:14.5px}
+.how{background:var(--acc2);box-shadow:none}.how-t{font-size:19px;font-weight:800;letter-spacing:-.01em;display:block}
+.how-s{display:grid;gap:8px;margin-top:10px}.how-s span{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.how-s i{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800;flex:none}
+.stat{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}.stat span{font-size:12.5px;font-weight:600;background:var(--soft);border-radius:999px;padding:3px 9px;white-space:nowrap}.stat span b{font-size:13.5px}
+.stat span.z{color:var(--mut);font-weight:500}
+#r-sort{grid-template-columns:1fr 1fr;margin:8px 0}
 /* ===== tryb ciemny ===== */
 :root{--soft:#EEF1F5;--bd:#CBD2DC;--navc:#5F6878;--hdrbg:rgba(244,246,249,.92);--navbg:rgba(255,255,255,.96);--toast:#14213D;--warnbg:#FFF7E0;--warnbd:#F0D98A;--errbg:#FBEBEB;--infobg:#E7F1FB;--okbg:#E5F4E4;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0D131D;--card:#161F2E;--soft:#212C3F;--ink:#E7ECF4;--mut:#98A3B5;--line:#263247;--bd:#34425B;--pri:#3D6DB5;--acc:#2DB39C;--acc2:#123631;--acc-ink:#8BE3D3;--navc:#8792A5;--hdrbg:rgba(13,19,29,.9);--navbg:rgba(19,27,40,.96);--toast:#2A3850;--warnbg:#3A2F12;--warnbd:#6B5517;--errbg:#3B1D1D;--infobg:#17294A;--okbg:#14301F;color-scheme:dark}
@@ -232,6 +238,9 @@ html.big body{zoom:1.15}
    <button data-go="rada"><span class="ico c4"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span><span><b>Twoi radni</b><small>kto Cię reprezentuje</small></span></button>
    <button data-go="wiecej"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><b>Ważne telefony</b><small>awarie i alarmowe</small></span></button>
   </div>
+  <div class="card how"><b class="how-t">Ty zgłaszasz. Radny pyta. Urząd odpowiada.</b>
+   <div class="how-s"><span><i>1</i>Zgłaszasz sprawę</span><span><i>2</i>Radny składa interpelację</span><span><i>3</i>Burmistrz odpowiada na piśmie w 14 dni</span></div>
+   <p class="mut" style="margin:8px 0 0">Radni kontrolują pracę burmistrza i Urzędu. Tu masz do nich najkrótszą drogę i widzisz, jak z tego prawa korzystają.</p><div class="flex-wrap" style="margin-top:10px"><button class="btn sm gold" data-go="zglos">Zgłoś sprawę</button><button class="btn sm line" data-go="rada">Twoi radni</button></div></div>
   <div class="sec"><h3>Ważne terminy</h3><button data-go="urzad">Urząd</button></div>
   <div class="card" id="s-terminy"></div>
   <div class="sec"><h3>Wydarzenia</h3><button data-go="kal">Wszystkie</button></div>
@@ -383,7 +392,10 @@ html.big body{zoom:1.15}
 
 <section class="view" id="v-rada">
   <h2>Rada Miasta</h2>
-  <p class="mut">21 radnych wybranych w 4 okręgach wyborczych. Radni stanowią prawo miejscowe, uchwalają budżet i kontrolują burmistrza. Możesz zwrócić się do każdego z nich, najlepiej do radnych ze swojego okręgu.</p>
+  <div class="card how"><b class="how-t">Ty zgłaszasz. Radny pyta. Urząd odpowiada.</b>
+   <div class="how-s"><span><i>1</i>Zgłaszasz sprawę</span><span><i>2</i>Radny składa interpelację</span><span><i>3</i>Burmistrz odpowiada na piśmie w 14 dni</span></div>
+   <p class="mut" style="margin:8px 0 0">Radni kontrolują pracę burmistrza i Urzędu. Tu masz do nich najkrótszą drogę i widzisz, jak z tego prawa korzystają.</p></div>
+  <p class="mut">21 radnych wybranych w 4 okręgach wyborczych. Możesz zwrócić się do każdego z nich, najlepiej do radnych ze swojego okręgu.</p>
   <div class="card" id="r-twoi"></div>
   <h3>Jak radny może pomóc</h3>
   <div class="card">
@@ -397,6 +409,8 @@ html.big body{zoom:1.15}
   <h3>Dyżury i budżet obywatelski</h3>
   <div class="card" id="r-bo"></div>
   <h3>Wszyscy radni</h3>
+  <div id="r-akt-info"></div>
+  <div class="seg" id="r-sort" hidden><button data-rs="okr" class="on">Według okręgów</button><button data-rs="akt">Według aktywności</button></div>
   <div id="r-lista"></div>
 </section>
 
@@ -548,17 +562,22 @@ function renderUrzad(){const u=(DANE&&DANE.urzad)||{};
 function adresMenu(){const u=store('ulica'),x=u&&rejonUlicy(u);const e=$('#m-adres');if(e)e.textContent=x?`${x.u} · ${x.r.nazwa}`+(okregUlicy()?` · okręg ${okregUlicy()}`:''):'Ustaw ulicę: wywóz i Twój okręg';}
 function okregUlicy(){const u=store('ulica');const O=DANE&&DANE.rada&&DANE.rada.okregi;if(!u||!Array.isArray(O))return null;const n=nrm(u);const f=O.find(o=>(o.ulice||[]).some(x=>nrm(x)===n));return f?f.nr:null;}
 function okregDzielony(){const u=store('ulica'),D=DANE&&DANE.rada&&DANE.rada.dzielone;if(!u||!D)return null;const k=Object.keys(D).find(x=>nrm(x)===nrm(u));return k?D[k]:null;}
-let OKR=null,OKR_U=null;
+let OKR=null,OKR_U=null,AKT=null,RSORT='okr';
+function aktOf(r){const a=AKT&&AKT.radni&&AKT.radni[r.id];if(!a)return null;const i=a.interpelacje,z=a.zapytania,l=a.lacznie!=null?a.lacznie:((i||0)+(z||0));if(i==null&&z==null&&a.lacznie==null)return null;return{i,z,l,o:a.ostatnia,t:a.tematy||[]};}
+function aktHtml(r){const a=aktOf(r);if(!a)return'';const rozr=AKT.rozroznia_typy!==false;return `<div class="stat">${rozr?`<span><b>${a.i||0}</b> interpelacji</span><span><b>${a.z||0}</b> zapytań</span>`:`<span><b>${a.l}</b> interpelacji i zapytań</span>`}${a.o?`<span class="z">ostatnia: ${fmtD(a.o)}</span>`:''}</div>`;}
 function renderRada(){const R=(DANE&&DANE.radni&&DANE.radni.length?DANE.radni:(window.RADNI||[]));const nums=[...new Set(R.map(r=>r.okreg))].sort((a,b)=>a-b);
  const auto=okregUlicy();const cu=store('ulica')||'';if(OKR_U!==cu){OKR=null;OKR_U=cu;}if(OKR===null)OKR=auto||(okregDzielony()?null:store('okreg'))||null;
  const ini=n=>n.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('');
- const RB=(DANE&&DANE.rada)||{};const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'radny okręgu nr '+r.okreg}</div></div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:RB.biuro_email?`<a class="btn sm line" href="mailto:${RB.biuro_email}?subject=${encodeURIComponent('Prośba o kontakt z radnym: '+r.imie)}">Napisz</a>`:''}</div>`;
+ const RB=(DANE&&DANE.rada)||{};const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'okręg nr '+r.okreg}</div>${aktHtml(r)}</div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:RB.biuro_email?`<a class="btn sm line" href="mailto:${RB.biuro_email}?subject=${encodeURIComponent('Prośba o kontakt z radnym: '+r.imie)}">Napisz</a>`:''}</div>`;
  const pick=`<div class="okr">${nums.map(n=>`<button data-ok="${n}" class="${n===OKR?'on':''}">Okręg ${n}</button>`).join('')}</div>`;
  const twoi=OKR?R.filter(r=>r.okreg===OKR):[];
  const dz=okregDzielony(),src=DANE&&DANE.rada&&DANE.rada.okregi_zrodlo;
  $('#r-twoi').innerHTML=`<b>Twoi radni</b><div class="mut">${auto&&OKR===auto?`Ulica ${store('ulica')} leży w okręgu nr ${auto}.`:dz?`Ulica ${store('ulica')} jest podzielona między okręgi: ${dz.map(x=>`okręg ${x[0]} (${x[1]})`).join('; ')}.`:store('ulica')?`Nie mam ulicy ${store('ulica')} w opisie okręgów. Wybierz okręg poniżej.`:'Ustaw ulicę w zakładce Odpady albo wybierz okręg.'}</div>${pick}${twoi.map(card).join('')}${src?`<p class="mut" style="margin:8px 0 0">Granice okręgów: <a href="${src}" target="_blank" rel="noopener">postanowienie Komisarza Wyborczego</a>.</p>`:''}`;
  $$('#r-twoi [data-ok]').forEach(b=>b.onclick=()=>{OKR=+b.dataset.ok;OKR_U=store('ulica')||'';store('okreg',OKR);renderRada();});
- $('#r-lista').innerHTML=nums.map(n=>`<div class="card"><b>Okręg nr ${n}</b>${R.filter(r=>r.okreg===n).map(card).join('')}</div>`).join('');
+ const hasA=!!(AKT&&AKT.radni&&R.some(r=>aktOf(r)));$('#r-sort').hidden=!hasA;
+ $('#r-akt-info').innerHTML=hasA?`<p class="mut">Liczby interpelacji i zapytań z rejestru w <a href="${AKT.zrodlo}" target="_blank" rel="noopener">BIP</a>, kadencja 2024–2029, stan na ${fmtD(AKT.stan_na)}. To jedna z miar pracy radnego, nie jedyna: radni pracują też w komisjach i na dyżurach.</p>`:'';
+ $$('#r-sort button').forEach(b=>{b.classList.toggle('on',b.dataset.rs===RSORT);b.onclick=()=>{RSORT=b.dataset.rs;renderRada();};});
+ if(hasA&&RSORT==='akt'){$('#r-lista').innerHTML='<div class="card">'+R.slice().sort((x,y)=>((aktOf(y)||{l:-1}).l-(aktOf(x)||{l:-1}).l)||x.imie.localeCompare(y.imie,'pl')).map(card).join('')+'</div>';}else $('#r-lista').innerHTML=nums.map(n=>`<div class="card"><b>Okręg nr ${n}</b>${R.filter(r=>r.okreg===n).map(card).join('')}</div>`).join('');
  const se=(DANE&&DANE.rada)||{};
  const bo=se.budzet_obywatelski;$('#r-bo').innerHTML=bo?`<b>Budżet obywatelski</b><p style="margin:6px 0">${bo.opis}</p><a class="btn sm" href="${bo.url}" target="_blank" rel="noopener">budzet.kobylka.pl</a>`:'';
  $('#r-sesje').innerHTML=`<div>Sesje są jawne: możesz przyjść do sali konferencyjnej Urzędu albo obejrzeć transmisję.</div>${se.przewodniczaca?`<div class="mut">Przewodnicząca Rady: ${se.przewodniczaca}</div>`:''}${Array.isArray(se.sesje_daty)&&se.sesje_daty.some(d=>d>=today())?`<div style="margin-top:6px">Najbliższa sesja: <b>${fmtD(se.sesje_daty.find(d=>d>=today()))}</b></div>`:''}<div class="flex-wrap" style="margin-top:10px">${se.transmisje?`<a class="btn sm" href="${se.transmisje}" target="_blank" rel="noopener">Transmisje i nagrania</a>`:''}${se.biuro_tel?`<a class="btn sm line" href="tel:${se.biuro_tel.replace(/\s/g,'')}">Biuro Rady</a>`:''}${se.biuro_email?`<a class="btn sm line" href="mailto:${se.biuro_email}">E-mail do Biura Rady</a>`:''}</div>${se.dyzury?`<p class="mut">${se.dyzury}</p>`:''}`;}
@@ -825,6 +844,7 @@ async function init(){
  if(T&&d&&d.odpady)d.odpady.rejony.forEach(r=>{const x=T.rejony&&T.rejony[r.nazwa];if(x&&x.length)r.terminy=x;});
  FIRMY=await fetch('firmy.json').then(r=>r.ok?r.json():[]).catch(()=>[]);
  const RD=await fetch('radni.json').then(r=>r.ok?r.json():null).catch(()=>null);if(RD&&d)d.radni=RD;
+ AKT=await fetch('radni_aktywnosc.json').then(r=>r.ok?r.json():null).catch(()=>null);
  SKY=s;MAPA=m;MAPA._r=m.roads.map(cl=>cl.map(dec));MAPA._w=m.water.map(dec);MAPA._f=m.forest.map(dec);DANE=d;
  if(d&&d.urzad)Object.assign(URZAD,d.urzad);
  RADNI=(d&&d.radni&&d.radni.length)?d.radni:[{id:'edyta-zbiec',imie:'Edyta Zbieć'}];
