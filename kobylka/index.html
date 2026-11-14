@@ -207,6 +207,8 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 .arow .ico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;font-weight:800;font-size:14px}
 .arow b{display:block;font-size:15px;font-weight:600;line-height:1.3}.arow small{display:block;color:var(--mut);font-size:13px}.arow .wtags{margin-top:3px}
 #v-miasto .qa button{min-height:112px}
+.seg.dz{grid-template-columns:repeat(4,1fr);margin-top:4px}.seg.dz button{font-size:13px;padding:10px 2px}
+.dzr{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}.dzr:last-child{border-bottom:0}
 /* ===== tryb ciemny ===== */
 :root{--soft:#EEF1F5;--bd:#CBD2DC;--navc:#5F6878;--hdrbg:rgba(244,246,249,.92);--navbg:rgba(255,255,255,.96);--toast:#14213D;--warnbg:#FFF7E0;--warnbd:#F0D98A;--errbg:#FBEBEB;--infobg:#E7F1FB;--okbg:#E5F4E4;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0D131D;--card:#161F2E;--soft:#212C3F;--ink:#E7ECF4;--mut:#98A3B5;--line:#263247;--bd:#34425B;--pri:#3D6DB5;--acc:#2DB39C;--acc2:#123631;--acc-ink:#8BE3D3;--navc:#8792A5;--hdrbg:rgba(13,19,29,.9);--navbg:rgba(19,27,40,.96);--toast:#2A3850;--warnbg:#3A2F12;--warnbd:#6B5517;--errbg:#3B1D1D;--infobg:#17294A;--okbg:#14301F;color-scheme:dark}
@@ -334,6 +336,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <section class="view" id="v-zglos">
   <h2>Zgłoś sprawę</h2>
   <p class="mut">Wybierz, czego dotyczy sprawa. Aplikacja wskaże, gdzie najszybciej to załatwić, i przygotuje pismo do Urzędu Miasta.</p>
+  <button class="card lok-teaser" data-go="dziki"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="4.5" ry="3.6"/><circle cx="5.5" cy="11" r="1.8"/><circle cx="9.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18.5" cy="11" r="1.8"/></svg></span><span class="grow"><b>Widzisz dziki?</b><small>Zgłoś obserwację w pół minuty</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   <div class="cats" id="z-cats"></div>
   <div id="z-szybko"></div>
   <label>Co się dzieje albo czego potrzeba?</label><textarea id="z-opis" placeholder="Np. Od tygodnia nie świeci latarnia przy przejściu dla pieszych. Wieczorem jest tu bardzo ciemno."></textarea>
@@ -362,6 +365,33 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <div id="sp-radna" hidden><h3>Panel radnego</h3><div class="card"><label>Jestem radną / radnym</label><select id="sp-ja"></select><p class="mut">Widzisz sprawy, które mieszkańcy przekazali Tobie.</p></div><div id="sp-radna-lista"></div></div>
 </section>
 
+<section class="view" id="v-dziki">
+  <h2>Dziki w mieście</h2>
+  <div class="card" style="background:var(--warnbg);box-shadow:none"><b>Dziki blisko ludzi, ranne albo agresywne?</b><p class="mut" style="color:var(--ink);margin:4px 0 10px">Nie podchodź. Zadzwoń od razu.</p><div class="flex-wrap" id="dz-tel"></div></div>
+  <h3>Zgłoś obserwację</h3>
+  <div class="card">
+   <label for="dz-gdzie">Gdzie?</label>
+   <input id="dz-gdzie" placeholder="ulica, okolica, np. las przy Nadmeńskiej" autocomplete="off">
+   <button class="btn sm line" id="dz-gps" style="margin-top:8px">📍 Tu, gdzie jestem</button>
+   <label>Ile?</label><div class="seg dz" id="dz-ile"><button data-v="1 dzik">1</button><button data-v="2–5 dzików" class="on">2–5</button><button data-v="więcej niż 5 dzików">ponad 5</button><button data-v="locha z młodymi">z młodymi</button></div>
+   <label>Co robią?</label><div class="seg dz" id="dz-co"><button data-v="przechodzą" class="on">przechodzą</button><button data-v="żerują, ryją">ryją</button><button data-v="są przy śmietnikach">śmietniki</button><button data-v="zachowują się agresywnie">agresywne</button></div>
+   <label for="dz-kiedy">Kiedy?</label><input type="datetime-local" id="dz-kiedy">
+   <label for="dz-opis">Dodatkowe informacje (nieobowiązkowo)</label><textarea id="dz-opis" style="min-height:64px" placeholder="np. zniszczony trawnik, dziki wracają co wieczór"></textarea>
+   <button class="btn gold wide" id="dz-wyslij" style="margin-top:12px">Wyślij zgłoszenie do Urzędu</button>
+   <button class="btn line wide" id="dz-zapisz" style="margin-top:8px">Tylko zapisz u mnie</button>
+   <p class="mut">Zgłoszenie wysyłasz e-mailem ze swojej skrzynki do Urzędu Miasta. Aplikacja zapisuje obserwację tylko w tym telefonie.</p>
+  </div>
+  <h3>Moje obserwacje</h3>
+  <div id="dz-lista"></div>
+  <h3>Jak się zachować</h3>
+  <div class="card">
+   <div class="step"><b>Zachowaj odległość</b><span class="mut">Nie podchodź, nie próbuj przepędzać. Odejdź spokojnie, bez gwałtownych ruchów.</span></div>
+   <div class="step"><b>Psa weź na krótką smycz</b><span class="mut">Dzik broni się przed psem, a locha broni młodych.</span></div>
+   <div class="step"><b>Nie dokarmiaj</b><span class="mut">Dokarmiane dziki wracają i tracą lęk przed ludźmi.</span></div>
+   <div class="step"><b>Zabezpiecz odpady</b><span class="mut">Zamknięte pojemniki i bioodpady wystawiane dopiero w dniu odbioru zmniejszają liczbę wizyt.</span></div>
+  </div>
+</section>
+
 <!-- MENU -->
 <section class="view" id="v-miasto">
   <h2>Miasto</h2>
@@ -372,6 +402,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <button data-go="wiecej"><span class="ico c5"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><b>Ważne telefony</b><small>awarie i alarmowe</small></span></button>
    <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span><b>Firmy sąsiadów</b><small>usługi i sklepy z Kobyłki</small></span></button>
    <button data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span><b>Twoje pieniądze</b><small>zakupy lokalne i PIT</small></span></button>
+   <button data-go="dziki"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="4.5" ry="3.6"/><circle cx="5.5" cy="11" r="1.8"/><circle cx="9.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18.5" cy="11" r="1.8"/></svg></span><span><b>Dziki</b><small>zgłoś obserwację</small></span></button>
    <button data-go="odkryj"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span><b>Odkrywaj</b><small>mapy, historia, niebo</small></span></button>
   </div>
 </section>
@@ -534,10 +565,10 @@ function skyTick(){const t=Date.now();const m=moon(t);if($('#v-start').classList
 
 /* ===== nawigacja ===== */
 let _pop=false;window.addEventListener('popstate',e=>{_pop=true;go((e.state&&e.state.v)||'start');_pop=false;});
-function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(DANE){if(v==='start')agenda();if(v==='rada')renderRada();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
+function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(v==='dziki')dzikiInit();if(DANE){if(v==='start')agenda();if(v==='rada')renderRada();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
  if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go);if(b.dataset.scroll){const t=document.getElementById(b.dataset.scroll);if(t)setTimeout(()=>t.scrollIntoView({block:'start'}),30);}}});
-const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto'};
+const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',dziki:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto'};
 window.addEventListener('scroll',()=>{const h=document.querySelector('header.app');if(h)h.classList.toggle('sc',scrollY>4);},{passive:true});
 (()=>{const d=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});const e=document.getElementById('hdate');if(e)e.textContent=d.charAt(0).toUpperCase()+d.slice(1);})();
 
@@ -627,6 +658,28 @@ function agenda(){const u=store('ulica'),x=u&&rejonUlicy(u),H=$('#hero'),A=$('#a
  const ord={w:0,p:1,r:2,e:3,m:4};E.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:ord[a.k]-ord[b.k]);
  const IK={w:['c1','♻'],p:['c3','zł'],r:['c4','R'],e:['c2','•'],m:['c6','…']};const days=[...new Set(E.map(e=>e.d))].slice(0,7);
  A.innerHTML=days.length?days.map(d=>`<div class="aday"><div class="aday-h">${kiedy(d)}</div><div class="card acard">${E.filter(e=>e.d===d).map(e=>`<button class="arow" data-go="${e.go}"><span class="ico ${IK[e.k][0]}">${IK[e.k][1]}</span><span class="grow"><b>${esc(e.t)}</b>${e.dots?`<span class="wtags">${e.dots.map(p=>`<span class="wtag"><i style="background:${p.c}"></i></span>`).join('')}</span>`:''}${e.s?`<small>${esc(e.s)}</small>`:''}</span></button>`).join('')}</div></div>`).join(''):'<div class="card mut">Na najbliższe dni nie mam nic w kalendarzu.</div>';}
+
+
+/* ===== dziki ===== */
+function dzikiKontakt(){const a=(DANE&&DANE.awarie||[]).find(x=>/dzik/i.test(x.kategoria||''))||{};return{tel:a.telefon||'22 760 70 16',uw:a.uwagi||''};}
+function dzikiLista(){const L=(Array.isArray(store('dziki'))?store('dziki'):[]);$('#dz-lista').innerHTML=L.length?'<div class="card">'+L.slice(0,20).map((o,i)=>`<div class="dzr"><div class="grow"><b>${esc(o.gdzie)}</b><div class="mut">${new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})} · ${esc(o.ile)}, ${esc(o.co)}${o.wyslano?' · wysłano do Urzędu':''}</div></div><button class="btn sm line" data-dzx="${i}" aria-label="Usuń obserwację">Usuń</button></div>`).join('')+(L.length>=3?`<p class="mut" style="margin:8px 0 0">Masz ${L.length} obserwacje. Powtarzające się wizyty dzików w jednym miejscu to dobry powód, by przekazać sprawę radnemu.</p><button class="btn sm" data-go="zglos" style="margin-top:8px">Przygotuj sprawę</button>`:'')+'</div>':'<div class="card mut">Nie masz jeszcze zapisanych obserwacji.</div>';
+ $$('[data-dzx]').forEach(b=>b.onclick=()=>{const L=store('dziki')||[];L.splice(+b.dataset.dzx,1);store('dziki',L);dzikiLista();});}
+let _dzI=false;function dzikiInit(){const k=dzikiKontakt(),n=new Date();n.setMinutes(n.getMinutes()-n.getTimezoneOffset());$('#dz-kiedy').value=n.toISOString().slice(0,16);
+ $('#dz-tel').innerHTML=`<a class="btn sm" href="tel:112">112 – zagrożenie życia</a><a class="btn sm line" href="tel:${k.tel.replace(/\s/g,'')}">Urząd: ${k.tel}</a>`+(k.uw?`<div class="mut" style="width:100%;color:var(--ink)">${esc(k.uw.charAt(0).toUpperCase()+k.uw.slice(1))}.</div>`:'');
+ if(!$('#dz-gdzie').value&&store('ulica'))$('#dz-gdzie').placeholder='np. '+store('ulica')+', przy lesie';
+ dzikiLista();if(_dzI)return;_dzI=true;
+ ['dz-ile','dz-co'].forEach(id=>$$('#'+id+' button').forEach(b=>b.onclick=()=>{$$('#'+id+' button').forEach(x=>x.classList.toggle('on',x===b));}));
+ let pos=null;
+ $('#dz-gps').onclick=()=>{const b=$('#dz-gps');if(!navigator.geolocation){toast('Telefon nie udostępnia lokalizacji. Wpisz miejsce.');return;}b.disabled=true;b.textContent='📍 Ustalam miejsce…';
+  navigator.geolocation.getCurrentPosition(async p=>{b.disabled=false;b.textContent='📍 Tu, gdzie jestem';pos=[+p.coords.latitude.toFixed(5),+p.coords.longitude.toFixed(5)];let u=null;try{u=await najblizszaUlica(pos[0],pos[1]);}catch(e){}
+   $('#dz-gdzie').value=(u&&u.u&&u.m<700?(u.m<60?'ul. '+u.u:'okolice ul. '+u.u+' (ok. '+u.m+' m)'):'miejsce wg współrzędnych');},()=>{b.disabled=false;b.textContent='📍 Tu, gdzie jestem';toast('Nie udało się pobrać lokalizacji. Wpisz miejsce.');},{enableHighAccuracy:true,timeout:15000});};
+ const zbierz=()=>{const g=$('#dz-gdzie').value.trim();if(!g){toast('Wpisz, gdzie widzisz dziki, albo użyj lokalizacji.');$('#dz-gdzie').focus();return null;}
+  return{gdzie:g,pos,ile:$('#dz-ile .on').dataset.v,co:$('#dz-co .on').dataset.v,kiedy:$('#dz-kiedy').value||new Date().toISOString(),opis:$('#dz-opis').value.trim()};};
+ const zapisz=o=>{const L=Array.isArray(store('dziki'))?store('dziki'):[];L.unshift(o);store('dziki',L.slice(0,50));$('#dz-gdzie').value='';$('#dz-opis').value='';pos=null;dzikiLista();};
+ $('#dz-zapisz').onclick=()=>{const o=zbierz();if(!o)return;zapisz(o);toast('Obserwacja zapisana w telefonie.');};
+ $('#dz-wyslij').onclick=()=>{const o=zbierz();if(!o)return;const kiedy=new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const t='Dzień dobry,\n\nzgłaszam obserwację dzików na terenie Kobyłki.\n\nMiejsce: '+o.gdzie+(o.pos?'\nWspółrzędne: '+o.pos[0]+', '+o.pos[1]+' (https://www.google.com/maps?q='+o.pos[0]+','+o.pos[1]+')':'')+'\nKiedy: '+kiedy+'\nIle: '+o.ile+'\nZachowanie: '+o.co+(o.opis?'\nDodatkowe informacje: '+o.opis:'')+'\n\nProszę o podjęcie działań przewidzianych w takich sytuacjach i informację o sposobie załatwienia zgłoszenia.\n\nZ poważaniem\n(imię i nazwisko, adres)\n\n(Zgłoszenie przygotowane w Aplikacji mieszkańca Kobyłki)';
+  o.wyslano=1;zapisz(o);location.href='mailto:'+URZAD.email+'?subject='+encodeURIComponent('Zgłoszenie: dziki, '+o.gdzie)+'&body='+encodeURIComponent(mailBody(t));};}
 
 /* ===== odpady ===== */
 const FRAK=[{k:'bio',n:'Bio',c:'#8B5A2B'},{k:'zmiesz',n:'Zmieszane',c:'#374151'},{k:'niesegreg',n:'Zmieszane',c:'#374151'},{k:'metal',n:'Metale i tworzywa',c:'#E5B700'},{k:'tworzyw',n:'Metale i tworzywa',c:'#E5B700'},{k:'papier',n:'Papier',c:'#2563EB'},{k:'szk',n:'Szkło',c:'#16A34A'},{k:'gabaryt',n:'Gabaryty',c:'#9333EA'},{k:'choink',n:'Choinki',c:'#15803D'},{k:'popi',n:'Popiół',c:'#9CA3AF'}];
@@ -894,7 +947,7 @@ async function init(){
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  {const v=store('sprawy');SPRAWY=Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&x.id&&typeof x.opis==='string'):[];if(typeof store('ulica')!=='string')store('ulica',null);}renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
- if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto'].includes(h))go(h);
+ if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto','dziki'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=Array.isArray(store('sprawy'))?store('sprawy'):[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
