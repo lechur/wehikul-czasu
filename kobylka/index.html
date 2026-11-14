@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Kobyłka">
+<meta property="og:type" content="website"><meta property="og:url" content="https://lechur.github.io/wehikul-czasu/kobylka/"><meta property="og:title" content="Aplikacja mieszkańca Kobyłki"><meta property="og:description" content="Wywóz odpadów pod Twoim adresem, wydarzenia, sprawy do Urzędu i radnych, firmy sąsiadów i niebo nad Kobyłką. Bezpłatnie, w telefonie."><meta property="og:image" content="https://lechur.github.io/wehikul-czasu/kobylka/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="pl_PL"><meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Aplikacja mieszkańca Kobyłki: odpady, wydarzenia, zgłoszenia i pisma do Urzędu, sprawy do radnych, niebo nad miastem.">
 <style>
 :root{--night:#0F1B2D;--night2:#16263f;--star:#F3EAD7;--gold:#E7C46C;--ink:#1d2430;--mut:#6b7280;--bg:#f6f3ec;--card:#fff;--line:#e8e2d6;--acc:#C8553D;--ok:#2E7D4F;--warn:#C27C0E}
@@ -192,6 +193,11 @@ details summary{cursor:pointer}
 
 <!-- WIĘCEJ -->
 <section class="view" id="v-wiecej">
+  <h3>Aplikacja w Twoim telefonie</h3>
+  <div class="card night" id="w-inst"><div class="row"><img src="icon-192.png" alt="" style="width:52px;height:52px;border-radius:12px"><div class="grow"><b>Zainstaluj aplikację</b><div class="mut" id="w-inst-txt">Ikona na ekranie telefonu, działa także bez internetu.</div></div></div>
+   <button class="btn gold wide" id="w-inst-btn" style="margin-top:10px">Zainstaluj</button>
+   <div class="mut" style="margin-top:10px"><b style="color:var(--star)">Android:</b> w Chrome menu ⋮ → „Zainstaluj aplikację”.<br><b style="color:var(--star)">iPhone:</b> w Safari Udostępnij ⬆ → „Do ekranu początkowego”.</div></div>
+  <div class="card" style="text-align:center"><b>Poleć sąsiadom</b><p class="mut">Pokaż ten kod do zeskanowania aparatem albo wyślij link.</p><img src="qr.png" alt="Kod QR do aplikacji" style="width:200px;height:200px"><button class="btn wide" data-polec style="margin-top:10px">Wyślij link do aplikacji</button></div>
   <h2>Ważne telefony i adresy</h2>
   <div id="w-awarie"></div>
   <h3>Niebo nad Kobyłką</h3>
@@ -535,6 +541,22 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;
 if(!standalone&&!store('noinstall')&&/iphone|ipad/i.test(navigator.userAgent)){$('#install-txt').textContent='Stuknij Udostępnij ⬆ i wybierz „Do ekranu początkowego”.';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',4000);}
 $('#install-btn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;}inst.style.display='none';};
 $('#install-x').onclick=()=>{inst.style.display='none';store('noinstall',1);};
+
+const APP_URL='https://lechur.github.io/wehikul-czasu/kobylka/';
+async function polec(){const d={title:'Aplikacja mieszkańca Kobyłki',text:'Kiedy wywóz śmieci, wydarzenia, sprawy do Urzędu i niebo nad Kobyłką. Bezpłatna aplikacja w telefonie:',url:APP_URL};
+ try{if(navigator.share){await navigator.share(d);return;}}catch(e){if(e.name==='AbortError')return;}
+ try{await navigator.clipboard.writeText(d.text+' '+APP_URL);toast('Link skopiowany. Wklej go na Messengerze, WhatsAppie albo w grupie.');}catch(e){prompt('Skopiuj link:',APP_URL);}}
+document.addEventListener('click',e=>{if(e.target.closest('[data-polec]'))polec();});
+const sb=document.createElement('button');sb.className='btn sm line';sb.dataset.polec='1';sb.textContent='Poleć aplikację sąsiadom';sb.style.margin='8px 0 0 8px';$('#v-start').appendChild(sb);
+const inApp=/FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\/|wv\)/i.test(navigator.userAgent),iOS=/iphone|ipad/i.test(navigator.userAgent);
+function instUI(){const t=$('#w-inst-txt'),b=$('#w-inst-btn');
+ if(standalone){t.textContent='Aplikacja jest już zainstalowana na tym telefonie.';b.hidden=true;return;}
+ if(inApp){t.textContent='Otwierasz aplikację w przeglądarce Facebooka. Żeby ją zainstalować, otwórz link w '+(iOS?'Safari':'Chrome')+': menu ⋯ → „Otwórz w przeglądarce”.';b.textContent='Skopiuj link';b.hidden=false;b.onclick=async()=>{try{await navigator.clipboard.writeText(APP_URL);toast('Link skopiowany. Wklej go w '+(iOS?'Safari':'Chrome')+'.');}catch(e){prompt('Skopiuj link:',APP_URL);}};return;}
+ if(deferred){b.hidden=false;b.textContent='Zainstaluj';b.onclick=async()=>{deferred.prompt();await deferred.userChoice;deferred=null;instUI();};return;}
+ b.hidden=true;t.textContent=iOS?'W Safari stuknij Udostępnij ⬆ i wybierz „Do ekranu początkowego”.':'W Chrome otwórz menu ⋮ i wybierz „Zainstaluj aplikację” (albo „Dodaj do ekranu głównego”).';}
+window.addEventListener('beforeinstallprompt',()=>setTimeout(instUI,0));window.addEventListener('appinstalled',()=>{inst.style.display='none';toast('Gotowe! Aplikacja jest na ekranie telefonu.');});
+if(inApp&&!store('noinstall')){$('#install-txt').textContent='Żeby zainstalować, otwórz link w '+(iOS?'Safari':'Chrome')+' (menu ⋯ → Otwórz w przeglądarce).';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',3000);}
+instUI();
 })();
 </script>
 </body>
