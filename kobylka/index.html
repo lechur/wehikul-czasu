@@ -252,6 +252,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <!-- START -->
 <section class="view on" id="v-start">
   <div id="hero"></div>
+  <button class="card lok-teaser" id="dz-alert" data-go="dziki" hidden style="background:var(--warnbg);box-shadow:none"></button>
   <div class="card" id="s-waste"></div>
   <div class="qa4">
    <button data-go="zglos"><span class="ico c5"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.01"/></svg></span>Zgłoś</button>
@@ -368,6 +369,8 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <section class="view" id="v-dziki">
   <h2>Dziki w mieście</h2>
   <div class="card" style="background:var(--warnbg);box-shadow:none"><b>Dziki blisko ludzi, ranne albo agresywne?</b><p class="mut" style="color:var(--ink);margin:4px 0 10px">Nie podchodź. Zadzwoń od razu.</p><div class="flex-wrap" id="dz-tel"></div></div>
+  <div id="dz-wspolna" hidden><div class="sec"><h3>Mapa obserwacji</h3><a href="https://www.zyciepw.pl/dziki-kobylka/" target="_blank" rel="noopener">Duża mapa</a></div>
+  <div class="card" style="padding:10px"><b id="dz-sum" style="display:block;margin:4px 6px 8px"></b><canvas id="dz-map" style="width:100%;height:300px;border-radius:12px;display:block"></canvas><p class="mut" style="margin:8px 6px 2px">Zgłoszenia mieszkańców z ostatnich 14 dni, niezweryfikowane. Im jaśniejszy punkt, tym starsza obserwacja. Miejsca zaokrąglone do ok. 100 m.</p></div></div>
   <h3>Zgłoś obserwację</h3>
   <div class="card">
    <label for="dz-gdzie">Gdzie?</label>
@@ -377,9 +380,10 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <label>Co robią?</label><div class="seg dz" id="dz-co"><button data-v="przechodzą" class="on">przechodzą</button><button data-v="żerują, ryją">ryją</button><button data-v="są przy śmietnikach">śmietniki</button><button data-v="zachowują się agresywnie">agresywne</button></div>
    <label for="dz-kiedy">Kiedy?</label><input type="datetime-local" id="dz-kiedy">
    <label for="dz-opis">Dodatkowe informacje (nieobowiązkowo)</label><textarea id="dz-opis" style="min-height:64px" placeholder="np. zniszczony trawnik, dziki wracają co wieczór"></textarea>
+   <label class="sw"><input type="checkbox" id="dz-pub" checked> <span>Pokaż na wspólnej mapie (anonimowo)</span></label>
    <button class="btn gold wide" id="dz-wyslij" style="margin-top:12px">Wyślij zgłoszenie do Urzędu</button>
    <button class="btn line wide" id="dz-zapisz" style="margin-top:8px">Tylko zapisz u mnie</button>
-   <p class="mut">Zgłoszenie wysyłasz e-mailem ze swojej skrzynki do Urzędu Miasta. Aplikacja zapisuje obserwację tylko w tym telefonie.</p>
+   <p class="mut">Zgłoszenie wysyłasz e-mailem ze swojej skrzynki do Urzędu Miasta. Na wspólną mapę trafia tylko miejsce (zaokrąglone do ok. 100 m), czas, liczba i zachowanie dzików, bez żadnych danych o Tobie. Mapę prowadzi portal zyciepw.pl; punkty znikają po 14 dniach.</p>
   </div>
   <h3>Moje obserwacje</h3>
   <div id="dz-lista"></div>
@@ -664,7 +668,23 @@ function agenda(){const u=store('ulica'),x=u&&rejonUlicy(u),H=$('#hero'),A=$('#a
 function dzikiKontakt(){const a=(DANE&&DANE.awarie||[]).find(x=>/dzik/i.test(x.kategoria||''))||{};return{tel:a.telefon||'22 760 70 16',uw:a.uwagi||''};}
 function dzikiLista(){const L=(Array.isArray(store('dziki'))?store('dziki'):[]);$('#dz-lista').innerHTML=L.length?'<div class="card">'+L.slice(0,20).map((o,i)=>`<div class="dzr"><div class="grow"><b>${esc(o.gdzie)}</b><div class="mut">${new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})} · ${esc(o.ile)}, ${esc(o.co)}${o.wyslano?' · wysłano do Urzędu':''}</div></div><button class="btn sm line" data-dzx="${i}" aria-label="Usuń obserwację">Usuń</button></div>`).join('')+(L.length>=3?`<p class="mut" style="margin:8px 0 0">Masz ${L.length} obserwacje. Powtarzające się wizyty dzików w jednym miejscu to dobry powód, by przekazać sprawę radnemu.</p><button class="btn sm" data-go="zglos" style="margin-top:8px">Przygotuj sprawę</button>`:'')+'</div>':'<div class="card mut">Nie masz jeszcze zapisanych obserwacji.</div>';
  $$('[data-dzx]').forEach(b=>b.onclick=()=>{const L=store('dziki')||[];L.splice(+b.dataset.dzx,1);store('dziki',L);dzikiLista();});}
-let _dzI=false;function dzikiInit(){const k=dzikiKontakt(),n=new Date();n.setMinutes(n.getMinutes()-n.getTimezoneOffset());$('#dz-kiedy').value=n.toISOString().slice(0,16);
+
+const DZ_API='https://www.zyciepw.pl/wp-json/zycie-dziki/v1/obserwacje';let DZ=null;
+function dzMapa(){const cv=$('#dz-map');if(!cv||!MAPA||!DZ)return;const dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;cv.width=w*dpr;cv.height=h*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
+ const dark=getComputedStyle(document.documentElement).getPropertyValue('color-scheme').includes('dark');const vw=9000,sc=w/vw,cx=MAPA.center[0],cy=MAPA.center[1],X=v=>w/2+(v-cx)*sc,Y=v=>h/2-(v-cy)*sc;
+ c.fillStyle=dark?'#1b2638':'#f1f3f6';c.fillRect(0,0,w,h);const poly=(L,col)=>{c.fillStyle=col;for(const p of L){c.beginPath();c.moveTo(X(p[0]),Y(p[1]));for(let i=2;i<p.length;i+=2)c.lineTo(X(p[i]),Y(p[i+1]));c.fill();}};
+ poly(MAPA._f,dark?'#1f3a2e':'#d9e8d6');poly(MAPA._w,dark?'#27405c':'#b9d3e6');const W=[2.4,1.9,1.4,1,.6,.3];c.strokeStyle=dark?'#8894a8':'#5b6577';c.lineCap='round';
+ MAPA._r.forEach((cl,i)=>{c.lineWidth=W[i];c.globalAlpha=i>=4?.45:.9;c.beginPath();cl.forEach(p=>{c.moveTo(X(p[0]),Y(p[1]));for(let k=2;k<p.length;k+=2)c.lineTo(X(p[k]),Y(p[k+1]));});c.stroke();});
+ const now=Date.now();DZ.slice().reverse().forEach(o=>{const [E,N]=fwd(o.lon,o.lat),wiek=(now-new Date(o.kiedy))/864e5;c.globalAlpha=Math.max(.25,1-wiek/14*.75);c.fillStyle='#C2410C';c.strokeStyle='#fff';c.lineWidth=1.5;c.beginPath();c.arc(X(E),Y(N),wiek<1?8:6,0,7);c.fill();c.stroke();});c.globalAlpha=1;}
+async function dzWczytaj(){try{const r=await fetch(DZ_API,{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();DZ=d.obserwacje||[];$('#dz-wspolna').hidden=false;const t=DZ.filter(o=>Date.now()-new Date(o.kiedy)<7*864e5).length;
+  $('#dz-sum').textContent=DZ.length?`${t} ${pl(t,'obserwacja','obserwacje','obserwacji')} w ostatnich 7 dniach, ${DZ.length} w ostatnich 14`:'W ostatnich 14 dniach nikt nie zgłosił dzików';dzMapa();dzAlert();}catch(e){DZ=null;}}
+function dzAlert(){const el=$('#dz-alert');if(!el)return;el.hidden=true;const u=store('ulica');if(!DZ||!u||!UGEO||!UGEO.ulice[u])return;const P=UGEO.ulice[u],O=UGEO.origin10m;
+ const blisko=DZ.filter(o=>Date.now()-new Date(o.kiedy)<864e5).filter(o=>{const [E,N]=fwd(o.lon,o.lat),x=E/10-O[0],y=N/10-O[1];return P.some(p=>(p[0]-x)**2+(p[1]-y)**2<60*60);});
+ if(blisko.length){el.hidden=false;el.innerHTML=`<span class="ico c3" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:800">!</span><span class="grow"><b>Dziki w pobliżu ulicy ${esc(u)}</b><small>${blisko.length} ${pl(blisko.length,'obserwacja','obserwacje','obserwacji')} w ostatnich 24 godzinach. Zobacz mapę</small></span>`;}}
+async function dzPublikuj(o){if(!$('#dz-pub').checked)return false;let p=o.pos;if(!p){try{if(!UGEO)UGEO=await fetch('ulice_geo.json').then(r=>r.json());const k=Object.keys(UGEO.ulice).find(x=>nrm(o.gdzie).replace(/^(ul|ulica|okolice ul)\s+/,'')===nrm(x));if(k){const a=UGEO.ulice[k],m=a[Math.floor(a.length/2)],ll=inv((m[0]+UGEO.origin10m[0])*10,(m[1]+UGEO.origin10m[1])*10);p=[ll[1],ll[0]];}}catch(e){}}
+ if(!p){toast('Zapisane. Na wspólną mapę trafiają obserwacje z lokalizacją albo z nazwą ulicy.');return false;}
+ try{const r=await fetch(DZ_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lat:p[0],lon:p[1],ile:o.ile,co:o.co,kiedy:new Date(o.kiedy).toISOString()})});if(r.ok){dzWczytaj();return true;}const j=await r.json().catch(()=>({}));toast(j.message||'Nie udało się dodać do wspólnej mapy.');}catch(e){toast('Brak połączenia – obserwacja zapisana tylko w telefonie.');}return false;}
+let _dzI=false;function dzikiInit(){dzWczytaj();const k=dzikiKontakt(),n=new Date();n.setMinutes(n.getMinutes()-n.getTimezoneOffset());$('#dz-kiedy').value=n.toISOString().slice(0,16);
  $('#dz-tel').innerHTML=`<a class="btn sm" href="tel:112">112 – zagrożenie życia</a><a class="btn sm line" href="tel:${k.tel.replace(/\s/g,'')}">Urząd: ${k.tel}</a>`+(k.uw?`<div class="mut" style="width:100%;color:var(--ink)">${esc(k.uw.charAt(0).toUpperCase()+k.uw.slice(1))}.</div>`:'');
  if(!$('#dz-gdzie').value&&store('ulica'))$('#dz-gdzie').placeholder='np. '+store('ulica')+', przy lesie';
  dzikiLista();if(_dzI)return;_dzI=true;
@@ -676,10 +696,10 @@ let _dzI=false;function dzikiInit(){const k=dzikiKontakt(),n=new Date();n.setMin
  const zbierz=()=>{const g=$('#dz-gdzie').value.trim();if(!g){toast('Wpisz, gdzie widzisz dziki, albo użyj lokalizacji.');$('#dz-gdzie').focus();return null;}
   return{gdzie:g,pos,ile:$('#dz-ile .on').dataset.v,co:$('#dz-co .on').dataset.v,kiedy:$('#dz-kiedy').value||new Date().toISOString(),opis:$('#dz-opis').value.trim()};};
  const zapisz=o=>{const L=Array.isArray(store('dziki'))?store('dziki'):[];L.unshift(o);store('dziki',L.slice(0,50));$('#dz-gdzie').value='';$('#dz-opis').value='';pos=null;dzikiLista();};
- $('#dz-zapisz').onclick=()=>{const o=zbierz();if(!o)return;zapisz(o);toast('Obserwacja zapisana w telefonie.');};
- $('#dz-wyslij').onclick=()=>{const o=zbierz();if(!o)return;const kiedy=new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+ $('#dz-zapisz').onclick=async()=>{const o=zbierz();if(!o)return;zapisz(o);const ok=await dzPublikuj(o);if(ok)toast('Dodano do wspólnej mapy. Dziękujemy.');else if(!$('#dz-pub').checked)toast('Obserwacja zapisana w telefonie.');};
+ $('#dz-wyslij').onclick=async()=>{const o=zbierz();if(!o)return;const kiedy=new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const t='Dzień dobry,\n\nzgłaszam obserwację dzików na terenie Kobyłki.\n\nMiejsce: '+o.gdzie+(o.pos?'\nWspółrzędne: '+o.pos[0]+', '+o.pos[1]+' (https://www.google.com/maps?q='+o.pos[0]+','+o.pos[1]+')':'')+'\nKiedy: '+kiedy+'\nIle: '+o.ile+'\nZachowanie: '+o.co+(o.opis?'\nDodatkowe informacje: '+o.opis:'')+'\n\nProszę o podjęcie działań przewidzianych w takich sytuacjach i informację o sposobie załatwienia zgłoszenia.\n\nZ poważaniem\n(imię i nazwisko, adres)\n\n(Zgłoszenie przygotowane w Aplikacji mieszkańca Kobyłki)';
-  o.wyslano=1;zapisz(o);location.href='mailto:'+URZAD.email+'?subject='+encodeURIComponent('Zgłoszenie: dziki, '+o.gdzie)+'&body='+encodeURIComponent(mailBody(t));};}
+  o.wyslano=1;zapisz(o);await dzPublikuj(o);location.href='mailto:'+URZAD.email+'?subject='+encodeURIComponent('Zgłoszenie: dziki, '+o.gdzie)+'&body='+encodeURIComponent(mailBody(t));};}
 
 /* ===== odpady ===== */
 const FRAK=[{k:'bio',n:'Bio',c:'#8B5A2B'},{k:'zmiesz',n:'Zmieszane',c:'#374151'},{k:'niesegreg',n:'Zmieszane',c:'#374151'},{k:'metal',n:'Metale i tworzywa',c:'#E5B700'},{k:'tworzyw',n:'Metale i tworzywa',c:'#E5B700'},{k:'papier',n:'Papier',c:'#2563EB'},{k:'szk',n:'Szkło',c:'#16A34A'},{k:'gabaryt',n:'Gabaryty',c:'#9333EA'},{k:'choink',n:'Choinki',c:'#15803D'},{k:'popi',n:'Popiół',c:'#9CA3AF'}];
@@ -943,7 +963,7 @@ async function init(){
  RADNI=(d&&d.radni&&d.radni.length)?d.radni:[{id:'edyta-zbiec',imie:'Edyta Zbieć'}];
  EVS=e.map(x=>({d:x.d,t:x.allday?'':x.t,title:x.title,desc:x.desc,kind:x.cat==='niebo'?'niebo':'miasto',allday:x.allday,alarm:x.alarm?('-'+x.alarm).slice(1):null}));
  if(d&&d.wydarzenia)EVS=EVS.concat(d.wydarzenia.map(x=>({d:x.data,t:x.godzina||'',title:'🎭 '+x.tytul,desc:x.opis||'',miejsce:x.miejsce||'',url:x.url||x.zrodlo,kind:'miasto'})));
- cats();odpady();kalendarz();wiecej();firmy();renderTerminy();renderUrzad();renderRada();adresMenu();agenda();skyTick();setInterval(skyTick,60000);
+ cats();odpady();kalendarz();wiecej();firmy();renderTerminy();renderUrzad();renderRada();adresMenu();agenda();(async()=>{try{if(store('ulica')){if(!UGEO)UGEO=await fetch('ulice_geo.json').then(r=>r.json());await dzWczytaj();}}catch(e){}})();skyTick();setInterval(skyTick,60000);
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  {const v=store('sprawy');SPRAWY=Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&x.id&&typeof x.opis==='string'):[];if(typeof store('ulica')!=='string')store('ulica',null);}renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
