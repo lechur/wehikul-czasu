@@ -15,14 +15,15 @@
 <style>
 :root{--night:#0F1B2D;--night2:#16263f;--star:#F3EAD7;--gold:#E7C46C;--ink:#1d2430;--mut:#6b7280;--bg:#f6f3ec;--card:#fff;--line:#e8e2d6;--acc:#C8553D;--ok:#2E7D4F;--warn:#C27C0E}
 *{box-sizing:border-box}html,body{margin:0;height:100%}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;padding-bottom:0}
 a{color:var(--acc)}
 header{background:radial-gradient(700px 300px at 70% -40%,#24406a,var(--night));color:var(--star);padding:calc(14px + env(safe-area-inset-top)) 16px 14px;display:flex;gap:12px;align-items:center;position:relative;overflow:hidden}
 header canvas{width:84px;height:84px;flex:none}
 header h1{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0}
 header .sub{font-size:13px;opacity:.8}
 header .tw{position:absolute;inset:0;pointer-events:none;opacity:.35}
-main{max-width:720px;margin:0 auto;padding:12px 14px 40px}
+main{max-width:720px;margin:0 auto;padding:12px 14px calc(120px + env(safe-area-inset-bottom))}
+.view::after{content:"";display:block;height:20px}
 .view{display:none}.view.on{display:block}
 h2{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:8px 0}
 h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
@@ -50,8 +51,8 @@ textarea{min-height:90px}
 .ev .d{min-width:54px;text-align:center;background:#f2ede3;border-radius:10px;padding:5px 3px;font-weight:700;line-height:1.1}
 .ev .d span{display:block;font-size:11px;font-weight:500;color:var(--mut)}
 .ev.sky .d{background:var(--night);color:var(--gold)}.ev.sky .d span{color:#c9c3b3}
-nav.bar{position:fixed;left:0;right:0;bottom:0;background:var(--night);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
-nav.bar button{background:none;border:0;color:#b9b4a6;font:inherit;font-size:11px;padding:4px 0;cursor:pointer}
+nav.bar{position:fixed;left:0;right:0;bottom:0;background:var(--night);display:grid;grid-template-columns:repeat(6,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:9}
+nav.bar button{background:none;border:0;color:#b9b4a6;font:inherit;font-size:10.5px;padding:4px 0;cursor:pointer;white-space:nowrap}
 nav.bar button b{display:block;font-size:20px;line-height:1.2}
 nav.bar button.on{color:var(--gold)}
 .pismo{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;background:#fffdf8;border:1px solid var(--line);border-radius:12px;padding:14px;max-height:340px;overflow:auto}
@@ -72,10 +73,13 @@ details summary{cursor:pointer}
 <main>
 <!-- START -->
 <section class="view on" id="v-start">
+  <div class="card night" style="text-align:center;padding:10px"><canvas id="startsky" style="width:min(340px,80vw);height:min(340px,80vw)"></canvas><div class="mut">Niebo nad Kobyłką w tej chwili · <a href="#" data-go="odkryj" style="color:var(--gold)">zobacz niebo w swoim dniu</a></div></div>
+  <h3>Zapowiedzi</h3><div id="s-zap" style="display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px"></div>
   <div class="card night"><div class="row"><div class="grow"><div class="mut">Dziś</div><div class="big" id="s-dzis"></div><div class="mut" id="s-sun"></div></div><div style="text-align:right"><div class="mut">Księżyc</div><div id="s-moon"></div></div></div></div>
   <h3>Odpady</h3><div class="card" id="s-waste"></div>
   <h3>Moje sprawy</h3><div class="card" id="s-sprawy"></div>
-  <h3>Najbliżej w kalendarzu</h3><div class="card" id="s-ev"></div>
+  <h3>Na niebie</h3><div class="card" id="s-ev"></div>
+  <div class="card"><div class="mut" style="font-family:Georgia,serif;font-size:16px;color:var(--ink)">Drodzy Mieszkańcy, przygotowałam dla Was aplikację, w której Kobyłka mieści się w kieszeni: odpady, wydarzenia, sprawy do załatwienia w Urzędzie i niebo nad naszym miastem. Jest otwarta dla wszystkich radnych, więc swoją sprawę możecie przekazać radnemu, którego wybierzecie.</div><div class="mut" style="margin-top:6px">Edyta Zbieć, radna Rady Miasta Kobyłka</div></div>
   <div class="card"><b>Coś nie działa albo czegoś brakuje?</b><p class="mut">Zgłoś dziurę, zgasłą latarnię, potrzebę przejścia dla pieszych. Aplikacja przygotuje pismo do Urzędu, przypilnuje terminu odpowiedzi i w razie potrzeby przygotuje ponaglenie.</p><button class="btn gold" data-go="zglos">Zgłoś sprawę</button></div>
 </section>
 
@@ -95,6 +99,34 @@ details summary{cursor:pointer}
   <div class="flex-wrap"><button class="btn sm" data-f="wszystko">Wszystko</button><button class="btn sm line" data-f="miasto">W mieście</button><button class="btn sm line" data-f="niebo">Na niebie</button><button class="btn sm line" data-f="odpady">Odpady</button></div>
   <div class="card" id="k-lista"></div>
   <button class="btn line wide" id="k-ics">Dodaj cały kalendarz do telefonu</button>
+</section>
+
+<!-- ODKRYWAJ -->
+<section class="view" id="v-odkryj">
+  <h2>Odkrywaj Kobyłkę</h2>
+  <div class="card night" style="text-align:center"><b style="font-family:Georgia,serif;font-size:20px;font-weight:400">Niebo w Twoim dniu</b>
+   <p class="mut">Urodziny, ślub, narodziny dziecka, pierwszy dzień w Kobyłce. Zobacz, jak wyglądały gwiazdy nad naszym miastem.</p>
+   <div class="flex-wrap" style="justify-content:center"><input type="date" id="my-d" value="2000-01-01" min="1900-01-01" max="2100-12-31" style="width:auto"><input type="time" id="my-t" value="21:00" style="width:auto"></div>
+   <canvas id="mysky" style="width:min(380px,84vw);height:min(380px,84vw);margin-top:10px"></canvas><div class="mut" id="my-info"></div>
+   <div class="flex-wrap" style="justify-content:center;margin-top:8px"><button class="btn sm gold" id="my-save">Zapisz jako obrazek</button><button class="btn sm" id="my-share" style="background:rgba(255,255,255,.12)">Udostępnij</button></div></div>
+  <h3>Mapy Kobyłki</h3>
+  <div class="tabs" id="maptabs"><button data-m="wzrost" class="on">Jak rosła Kobyłka</button><button data-m="rzezba">Rzeźba terenu</button><button data-m="budynki">Każdy budynek</button><button data-m="ulice">Ulice</button></div>
+  <img id="mapimg" src="img/wzrost.jpg" alt="Mapa Kobyłki" style="width:100%;border-radius:14px;display:block" loading="lazy"><p class="mut" id="mapdesc"></p>
+  <h3>Wtedy i dziś</h3>
+  <div class="ba" id="ba" style="position:relative;border-radius:14px;overflow:hidden;line-height:0;user-select:none"><img src="img/dzis_2024.jpg" alt="Kobyłka 2024" style="width:100%;display:block" loading="lazy"><div id="batop" style="position:absolute;inset:0;overflow:hidden;width:50%"><img src="img/wtedy_2001.jpg" alt="Kobyłka 2001" id="baimg" style="height:100%;max-width:none;display:block"></div>
+   <span style="position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:8px;font:600 13px system-ui;color:#fff;background:rgba(0,0,0,.55);line-height:1.4">2001</span><span style="position:absolute;top:10px;right:10px;padding:4px 10px;border-radius:8px;font:600 13px system-ui;color:#fff;background:rgba(0,0,0,.55);line-height:1.4">2024</span>
+   <input type="range" min="0" max="100" value="50" id="baslider" aria-label="Suwak wtedy i dziś" style="position:absolute;left:10%;width:80%;bottom:10px;padding:0"></div>
+  <p class="mut">Centrum Kobyłki. Ortofotomapy GUGiK (Geoportal).</p>
+  <h3>Kobyłka w datach</h3>
+  <div class="card">
+   <div class="ev"><div class="d">ok.<span>1415</span></div><div class="grow"><b>Pierwsza wzmianka o Kobyłce</b><div class="mut">Parafia i wieś rycerska.</div></div></div>
+   <div class="ev"><div class="d">1740<span>–1741</span></div><div class="grow"><b>Kościół Świętej Trójcy</b><div class="mut">Barokowa świątynia według projektu Guida Antonia Longhiego, od 18 czerwca 2011 r. bazylika mniejsza.</div></div></div>
+   <div class="ev"><div class="d">26<span>X 1794</span></div><div class="grow"><b>Bitwa pod Kobyłką</b><div class="mut">Starcie w czasie powstania kościuszkowskiego.</div></div></div>
+   <div class="ev"><div class="d">1862</div><div class="grow"><b>Kolej</b><div class="mut">Przez Kobyłkę przechodzi linia kolejowa. Przystanek Kobyłka powstaje w 1924 r.</div></div></div>
+   <div class="ev"><div class="d">14–15<span>VIII 1920</span></div><div class="grow"><b>Walki nad Czarną i Długą</b><div class="mut">Bitwa Warszawska tuż obok, w Ossowie. Obchody co roku na Placu 15 Sierpnia.</div></div></div>
+   <div class="ev"><div class="d">1969</div><div class="grow"><b>Kobyłka miastem</b><div class="mut">Nadanie praw miejskich.</div></div></div>
+   <p class="mut">Źródła: <a href="https://www.kobylka.pl/strona-3967-historia_kobylki.html">kobylka.pl</a>, <a href="https://zabytek.pl/en/obiekty/kobylka-bazylika-mniejsza-pw-swietej-trojcy">zabytek.pl</a>.</p></div>
+  <button class="btn line wide" data-go="wiecej">Ważne telefony i adresy</button>
 </section>
 
 <!-- ZGŁOŚ -->
@@ -144,6 +176,7 @@ details summary{cursor:pointer}
   <button data-go="start" class="on"><b>☾</b>Start</button>
   <button data-go="odpady"><b>♻</b>Odpady</button>
   <button data-go="kal"><b>✦</b>Kalendarz</button>
+  <button data-go="odkryj"><b>☆</b>Odkrywaj</button>
   <button data-go="zglos"><b>＋</b>Zgłoś</button>
   <button data-go="sprawy"><b>✉</b>Sprawy</button>
 </nav>
@@ -182,7 +215,7 @@ function sun(){const now=new Date();const day=Date.UTC(now.getUTCFullYear(),now.
  const f=m=>new Date(day+m*60000).toLocaleTimeString('pl-PL',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit'});
  return[f(720-4*(LON+ha)-eq),f(720-4*(LON-ha)-eq)];}
 function drawSky(cv,t,labels){const dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;cv.width=w*dpr;cv.height=h*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
- const cx=w/2,cy=h/2,Rr=Math.min(w,h)/2*(labels?0.84:0.96),L=lst(t);
+ const cx=w/2,cy=h/2,Rr=Math.min(w,h)/2*(labels?0.8:0.96),L=lst(t);
  const g=c.createRadialGradient(cx,cy,Rr*.1,cx,cy,Rr);g.addColorStop(0,'#1d3357');g.addColorStop(1,'#0b1526');c.fillStyle=g;c.beginPath();c.arc(cx,cy,Rr,0,7);c.fill();
  c.save();c.beginPath();c.arc(cx,cy,Rr,0,7);c.clip();c.strokeStyle='rgba(231,196,108,.45)';c.lineWidth=labels?0.7:0.5;c.beginPath();
  for(const s of SKY.lines){const A=altaz(s[0],s[1],L),B=altaz(s[2],s[3],L);if(A[0]<0||B[0]<0)continue;const p=proj(...A),q=proj(...B);c.moveTo(cx+p[0]*Rr,cy+p[1]*Rr);c.lineTo(cx+q[0]*Rr,cy+q[1]*Rr);}c.stroke();
@@ -191,14 +224,14 @@ function drawSky(cv,t,labels){const dpr=window.devicePixelRatio||1,w=cv.clientWi
  c.restore();c.strokeStyle='rgba(243,234,215,.6)';c.lineWidth=1;c.beginPath();c.arc(cx,cy,Rr,0,7);c.stroke();
  if(labels){c.fillStyle='rgba(243,234,215,.75)';c.font='11px system-ui';c.textAlign='center';c.textBaseline='middle';[['PN',0,-1],['WSCH',-1,0],['PD',0,1],['ZACH',1,0]].forEach(([l,dx,dy])=>c.fillText(l,cx+dx*(Rr+15),cy+dy*(Rr+11)));}
  return m;}
-function skyTick(){const t=Date.now();const m=drawSky($('#hsky'),t,false);if($('#v-wiecej').classList.contains('on'))drawSky($('#bigsky'),t,true);
+function skyTick(){const t=Date.now();const m=drawSky($('#hsky'),t,false);if($('#v-start').classList.contains('on'))drawSky($('#startsky'),t,true);if($('#v-wiecej').classList.contains('on'))drawSky($('#bigsky'),t,true);
  const s=sun();$('#s-dzis').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
  $('#s-sun').textContent='Wschód Słońca '+s[0]+' · zachód '+s[1];$('#s-moon').textContent=moonName(m)+' '+Math.round(m.ill*100)+'%';
  const next=EVS.find(e=>e.kind==='niebo'&&e.d>=today());$('#hsub').textContent=next?('Następne na niebie: '+next.title.replace(/^\S+\s/,'')+', '+fmtD(next.d)):'Niebo nad Kobyłką w tej chwili';}
 
 /* ===== nawigacja ===== */
 function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));window.scrollTo(0,0);
- if(v==='zglos')drawMap(); if(v==='wiecej')skyTick(); try{history.replaceState(null,'','#'+v);}catch(e){}}
+ if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();} try{history.replaceState(null,'','#'+v);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
 
 /* ===== odpady ===== */
@@ -233,7 +266,10 @@ function evAll(){let a=[...EVS];if(DANE&&DANE.odpady&&DANE.odpady.rejony){const 
  return a.filter(e=>e.d>=today()).sort((x,y)=>(x.d+x.t)<(y.d+y.t)?-1:1);}
 function evHTML(e){const d=new Date(e.d+'T12:00');return `<div class="ev ${e.kind==='niebo'?'sky':''}"><div class="d">${d.getDate()}<span>${d.toLocaleDateString('pl-PL',{month:'short'})} ${e.t||''}</span></div><div class="grow"><b>${e.title}</b><div class="mut">${e.desc||''}${e.miejsce?' · '+e.miejsce:''}${e.url?` · <a href="${e.url}">więcej</a>`:''}</div></div></div>`;}
 function kalendarz(){const a=evAll().filter(e=>FILTR==='wszystko'||e.kind===FILTR);$('#k-lista').innerHTML=a.slice(0,60).map(evHTML).join('')||'<p class="empty">Brak wydarzeń.</p>';
- $('#s-ev').innerHTML=evAll().filter(e=>e.kind!=='odpady').slice(0,3).map(evHTML).join('')||'<p class="mut">Brak.</p>';}
+ $('#s-ev').innerHTML=evAll().filter(e=>e.kind==='niebo').slice(0,3).map(evHTML).join('')||'<p class="mut">Brak.</p>';
+ const z=evAll().filter(e=>e.kind==='miasto'&&!/^.{0,3}(Nów|Pełnia)/.test(e.title)).slice(0,10);
+ $('#s-zap').innerHTML=z.map((e,i)=>{const d=new Date(e.d+'T12:00');return `<div class="card" style="min-width:230px;max-width:260px;scroll-snap-align:start;margin:0;background:linear-gradient(160deg,#fff,#f4efe4)"><div class="mut" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--acc)">${d.toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})}${e.t?' · '+e.t:''}</div><b style="display:block;margin:4px 0;font-size:16px">${e.title.replace(/^\S+\s/,'')}</b><div class="mut">${e.miejsce||e.desc||''}</div><div class="flex-wrap" style="margin-top:8px"><button class="btn sm" data-ev="${i}">Do kalendarza</button>${e.url?`<a class="btn sm line" href="${e.url}">Więcej</a>`:''}</div></div>`;}).join('')||'<p class="mut">Brak zapowiedzi.</p>';
+ $$('#s-zap [data-ev]').forEach(b=>b.onclick=()=>{const e=z[+b.dataset.ev];save('wydarzenie.ics',icsOf([Object.assign({},e,{alarm:'PT2H'})],'Kobyłka'),'text/calendar');});}
 $$('[data-f]').forEach(b=>b.onclick=()=>{FILTR=b.dataset.f;$$('[data-f]').forEach(x=>x.classList.toggle('line',x!==b));kalendarz();});
 function icsOf(list,name){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Moja Kobylka//PL','X-WR-CALNAME:'+name];const st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
  list.forEach((e,i)=>{L.push('BEGIN:VEVENT','UID:mk-'+i+'-'+e.d+'@mojakobylka','DTSTAMP:'+st);const d=e.d.replace(/-/g,'');
@@ -355,6 +391,29 @@ function panelRadnego(){if(!db)return;$('#sp-radna').hidden=false;const sel=$('#
  const subS=()=>{if(unsubS)unsubS();unsubS=db.doc('statusy/'+sel.value).onSnapshot(d=>{STAT=d.exists?Object.assign({},d.data()):{};render();},()=>{});};
  sel.onchange=()=>{subS();render();};subS();}
 
+/* ===== odkrywaj ===== */
+function localToUTC(d,tm){const[Y,M,D]=d.split('-').map(Number),[h,mi]=tm.split(':').map(Number);let t=Date.UTC(Y,M-1,D,h,mi)-3600000;
+ const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',hour12:false});
+ for(let k=0;k<2;k++){const p=f.format(new Date(t)).split(':').map(Number);const diff=(h*60+mi)-(p[0]*60+p[1]);if(!diff)break;t+=((diff+720)%1440-720)*60000;}return t;}
+function mine(){const d=$('#my-d').value,tm=$('#my-t').value;if(!d||!tm||!SKY)return;store('mojdzien',[d,tm]);const m=drawSky($('#mysky'),localToUTC(d,tm),true);
+ $('#my-info').textContent='Niebo nad Kobyłką, '+new Date(d+'T12:00').toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'})+', godz. '+tm+'. Księżyc: '+moonName(m)+'.';}
+['my-d','my-t'].forEach(id=>$('#'+id).addEventListener('input',mine));
+async function skyImage(){const d=$('#my-d').value,tm=$('#my-t').value;const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');
+ x.fillStyle='#0F1B2D';x.fillRect(0,0,1080,1350);const tmp=document.createElement('canvas');tmp.style.width='940px';tmp.style.height='940px';document.body.appendChild(tmp);
+ drawSky(tmp,localToUTC(d,tm),true);x.drawImage(tmp,70,60,940,940);tmp.remove();x.fillStyle='#F3EAD7';x.textAlign='center';x.font='52px Georgia';x.fillText('Niebo nad Kobyłką',540,1110);
+ x.fillStyle='#E7C46C';x.font='600 32px system-ui';x.fillText(new Date(d+'T12:00').toLocaleDateString('pl-PL',{day:'numeric',month:'long',year:'numeric'})+' · '+tm,540,1170);
+ x.fillStyle='rgba(243,234,215,.6)';x.font='22px system-ui';x.fillText('52°20′22″ N  ·  21°11′44″ E  ·  Aplikacja mieszkańca Kobyłki',540,1230);
+ return new Promise(r=>c.toBlob(r,'image/png'));}
+$('#my-save').onclick=async()=>{const b=await skyImage();try{const dl=await window.claude?.use?.('downloads');if(dl){await dl.save({filename:'niebo-nad-kobylka.png',data:b});return;}}catch(_){}
+ const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='niebo-nad-kobylka.png';document.body.appendChild(a);a.click();a.remove();};
+$('#my-share').onclick=async()=>{const b=await skyImage();const f=new File([b],'niebo-nad-kobylka.png',{type:'image/png'});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Niebo nad Kobyłką'});return;}}catch(_){}toast('Udostępnianie niedostępne – użyj „Zapisz jako obrazek”');};
+const MDESC={wzrost:'Na szaro budynki, które stały już w 2001 r. W kolorze te, które pojawiły się później na zdjęciach lotniczych (im czerwieńszy, tym nowszy). Szacunek z analizy zdjęć.',rzezba:'Teren zeskanowany laserem z samolotu (lidar): wydmy, doliny, nasypy kolejowe.',budynki:'Wszystkie budynki w Kobyłce i wokół niej. Znajdź swój dom.',ulice:'Wszystkie ulice i drogi, tory, lasy i stawy. Przerywana linia to granica miasta.'};
+$$('#maptabs button').forEach(b=>b.onclick=()=>{$$('#maptabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#mapimg').src='img/'+b.dataset.m+'.jpg';$('#mapdesc').textContent=MDESC[b.dataset.m];});
+$('#mapdesc').textContent=MDESC.wzrost;
+function baSize(){$('#baimg').style.width=$('#ba').clientWidth+'px';}window.addEventListener('resize',baSize);$('#baimg').onload=baSize;
+$('#baslider').oninput=e=>$('#batop').style.width=e.target.value+'%';
+
 /* ===== więcej ===== */
 function wiecej(){const aw=(DANE&&DANE.awarie)||[];$('#w-awarie').innerHTML=`<div class="card"><b>${URZAD.nazwa}</b><div class="mut">${URZAD.adres} · <a href="tel:227607000">${URZAD.tel}</a>${URZAD.email?' · '+URZAD.email:''}${URZAD.epuap?' · ePUAP: '+URZAD.epuap:''}</div></div>`+
  aw.map(a=>`<div class="card"><div class="row"><div class="grow"><b>${a.kto||a.kategoria}</b><div class="mut">${a.kategoria}${a.uwagi?' · '+a.uwagi:''}${a.www?` · <a href="${a.www}">strona</a>`:''}</div></div>${a.telefon?`<a class="btn sm" href="tel:${a.telefon.replace(/\s/g,'')}">${a.telefon}</a>`:''}</div></div>`).join('')+
@@ -375,7 +434,8 @@ async function init(){
  cats();odpady();kalendarz();wiecej();skyTick();setInterval(skyTick,60000);
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  SPRAWY=store('sprawy')||[];renderSprawy();
- const h=(location.hash||'').slice(1);if(['start','odpady','kal','zglos','sprawy','wiecej'].includes(h))go(h);
+ const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
+ if(['start','odpady','kal','odkryj','zglos','sprawy','wiecej'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=store('sprawy')||[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
