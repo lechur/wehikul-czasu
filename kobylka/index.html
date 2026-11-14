@@ -483,7 +483,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <button data-go="menu"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-4 3.4-7 7.5-7s7.5 3 7.5 7"/></svg>Moje</button>
 </nav>
 <div class="toast" id="toast"></div>
-<div id="install" class="card night" style="position:fixed;left:12px;right:12px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:15;display:none"><div class="row"><img src="icon-192.png" alt="" style="width:44px;height:44px;border-radius:10px"><div class="grow"><b>Zainstaluj aplikację</b><div class="mut" id="install-txt">Kobyłka na ekranie Twojego telefonu, także bez internetu.</div></div><button class="btn sm gold" id="install-btn">Zainstaluj</button><button class="btn sm" id="install-x" aria-label="Zamknij" style="background:none">✕</button></div></div>
+<div id="install" class="card night" role="dialog" aria-labelledby="install-q" style="position:fixed;left:12px;right:12px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:15;display:none"><div class="row"><img src="icon-192.png" alt="" style="width:48px;height:48px;border-radius:12px"><div class="grow"><b id="install-q">Dodać ikonę aplikacji na ekranie głównym telefonu?</b><div class="mut" id="install-txt">Otworzysz ją jednym dotknięciem. Działa także bez internetu.</div></div></div><div class="flex-wrap" style="margin-top:12px"><button class="btn gold" id="install-btn" style="flex:1">Tak, dodaj ikonę</button><button class="btn line" id="install-x" style="flex:1">Nie teraz</button></div></div>
 
 <script>
 (function(){
@@ -905,9 +905,15 @@ window.addEventListener('resize',()=>{if(SKY){skyTick();drawMap();}});
 init();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 let deferred=null;const inst=$('#install');const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(!standalone&&!store('noinstall'))inst.style.display='block';});
-if(!standalone&&!store('noinstall')&&/iphone|ipad/i.test(navigator.userAgent)){$('#install-txt').textContent='Stuknij Udostępnij ⬆ i wybierz „Do ekranu początkowego”.';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',4000);}
-$('#install-btn').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;}inst.style.display='none';};
+const _iOS=/iphone|ipad/i.test(navigator.userAgent),_inApp=/FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\/|wv\)/i.test(navigator.userAgent);
+function askInstall(){if(standalone||store('noinstall')||inst.style.display==='block')return;inst.style.display='block';}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;setTimeout(askInstall,1500);});
+if(!standalone&&!store('noinstall'))setTimeout(askInstall,6000);
+$('#install-btn').onclick=async()=>{const t=$('#install-txt'),b=$('#install-btn');
+ if(deferred&&!_inApp){deferred.prompt();const c=await deferred.userChoice;deferred=null;inst.style.display='none';if(c&&c.outcome!=='accepted')store('noinstall',1);return;}
+ if(b.dataset.krok){inst.style.display='none';store('noinstall',1);return;}
+ $('#install-q').textContent='Jak dodać ikonę';b.dataset.krok=1;b.textContent='Rozumiem';$('#install-x').hidden=true;
+ t.innerHTML=_inApp?'Otwierasz aplikację w przeglądarce Facebooka. Stuknij menu ⋯ i wybierz „Otwórz w przeglądarce”, a potem dodaj ikonę z menu '+(_iOS?'Safari':'Chrome')+'.':_iOS?'1. Stuknij <b>Udostępnij ⬆</b> na dole ekranu.<br>2. Wybierz <b>„Do ekranu początkowego”</b>.<br>3. Potwierdź <b>Dodaj</b>.':'1. Otwórz menu przeglądarki <b>⋮</b>.<br>2. Wybierz <b>„Dodaj do ekranu głównego”</b> albo „Zainstaluj aplikację”.<br>3. Potwierdź.';};
 $('#install-x').onclick=()=>{inst.style.display='none';store('noinstall',1);};
 
 const APP_URL='https://lechur.github.io/wehikul-czasu/kobylka/';
@@ -922,7 +928,7 @@ function instUI(){const t=$('#w-inst-txt'),b=$('#w-inst-btn');
  if(deferred){b.hidden=false;b.textContent='Zainstaluj';b.onclick=async()=>{deferred.prompt();await deferred.userChoice;deferred=null;instUI();};return;}
  b.hidden=true;t.textContent=iOS?'W Safari stuknij Udostępnij ⬆ i wybierz „Do ekranu początkowego”.':'W Chrome otwórz menu ⋮ i wybierz „Zainstaluj aplikację” (albo „Dodaj do ekranu głównego”).';}
 window.addEventListener('beforeinstallprompt',()=>setTimeout(instUI,0));window.addEventListener('appinstalled',()=>{inst.style.display='none';toast('Gotowe! Aplikacja jest na ekranie telefonu.');});
-if(inApp&&!store('noinstall')){$('#install-txt').textContent='Żeby zainstalować, otwórz link w '+(iOS?'Safari':'Chrome')+' (menu ⋯ → Otwórz w przeglądarce).';$('#install-btn').hidden=true;setTimeout(()=>inst.style.display='block',3000);}
+
 instUI();
 $('#m-inst').onclick=()=>{if(deferred&&!inApp){deferred.prompt();deferred.userChoice.then(()=>{deferred=null;instUI();});return;}go('wiecej');setTimeout(()=>{const t=document.getElementById('w-app');if(t)t.scrollIntoView({block:'start'});},30);};
 if(standalone){$('#m-inst-txt').textContent='Już zainstalowana';}
