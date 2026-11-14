@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -84,7 +84,7 @@ function zpw_dziki_admin() {
     $rows = zpw_dziki_lista();
     echo '<div class="wrap"><h1>Mapa dzików – obserwacje z ostatnich ' . (int) ZPW_DZIKI_DNI . ' dni</h1>';
     echo '<form method="post" style="margin:10px 0">'; wp_nonce_field('zpw_dziki_narz');
-    echo '<button class="button button-primary" name="zpw_dziki_strony" value="1">Utwórz strony map (powiat + 12 gmin)</button> <button class="button" name="zpw_dziki_api" value="1">Zainstaluj ponownie mini-serwer</button> <span class="description">Strony: /dziki/ i /dziki/&lt;gmina&gt;/. Istniejących nie zmienia.</span></form>';
+    echo '<button class="button button-primary" name="zpw_dziki_strony" value="1">Utwórz strony map i zgłoszeń (powiat + 12 gmin)</button> <button class="button" name="zpw_dziki_api" value="1">Zainstaluj ponownie mini-serwer</button> <span class="description">Strony: /dziki/ i /dziki/&lt;gmina&gt;/. Istniejących nie zmienia.</span></form>';
     echo '<p>Shortcode: <code>[zycie_dziki_mapa]</code> (powiat) albo <code>[zycie_dziki_mapa gmina="kobylka"]</code>. Dane trzyma samodzielny mini-serwer <code>' . esc_html(home_url('/mieszkaniec-api/')) . '</code>, do którego zgłaszają też aplikacje mieszkańców. Wpisy starsze niż ' . (int) ZPW_DZIKI_DNI . ' dni znikają same. Zgłoszenia nie zawierają danych osobowych. <strong>Zdjęcia i filmy są widoczne na mapie dopiero po zatwierdzeniu</strong>: nie zatwierdzaj, jeśli widać na nich twarze, tablice rejestracyjne albo cokolwiek poza dzikami.</p>';
     if ($rows === null) { echo '<div class="notice notice-error"><p>Mini-serwer nie odpowiada. Użyj przycisku „Zainstaluj ponownie mini-serwer”.</p></div></div>'; return; }
     echo '<table class="widefat striped"><thead><tr><th>Kiedy</th><th>Gmina</th><th>Miejsce</th><th>Ile</th><th>Zachowanie</th><th>Zdjęcie / film</th><th>Źródło</th><th></th></tr></thead><tbody>';
@@ -113,10 +113,20 @@ function zpw_dziki_utworz_strony() {
         $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $rid, 'post_name' => $slug, 'post_title' => 'Dziki: ' . $g['n'] . ' – mapa obserwacji', 'post_content' => '[zycie_dziki_mapa gmina="' . $slug . '"]'));
         if ($id && !is_wp_error($id)) $nowe++;
     }
-    return 'Utworzono stron: ' . $nowe . '. Mapa powiatu: ' . home_url('/dziki/');
+    // strony zgłoszeń: /dziki/zglos/ (gmina ustalana z położenia) i /dziki/<gmina>/zglos/
+    if (!get_page_by_path('dziki/zglos')) { $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $rid, 'post_name' => 'zglos', 'post_title' => 'Zgłoś dziki w powiecie wołomińskim', 'post_content' => '[zycie_dziki_zglos]')); if ($id && !is_wp_error($id)) $nowe++; }
+    foreach (zpw_dziki_gminy() as $slug => $g) {
+        if (get_page_by_path('dziki/' . $slug . '/zglos')) continue;
+        $ro = get_page_by_path('dziki/' . $slug); if (!$ro) continue;
+        $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $ro->ID, 'post_name' => 'zglos', 'post_title' => 'Zgłoś dziki: ' . $g['n'], 'post_content' => '[zycie_dziki_zglos gmina="' . $slug . '"]'));
+        if ($id && !is_wp_error($id)) $nowe++;
+    }
+    return 'Utworzono stron: ' . $nowe . '. Mapa powiatu: ' . home_url('/dziki/') . ' · Zgłoszenia: ' . home_url('/dziki/zglos/');
 }
 
 // Mapa na stronie: [zycie_dziki_mapa] (powiat) albo [zycie_dziki_mapa gmina="kobylka"]
+require_once __DIR__ . '/zglos.php';
+
 add_shortcode('zycie_dziki_mapa', function ($atts) {
     $atts = shortcode_atts(array('gmina' => ''), $atts);
     $gm = sanitize_key($atts['gmina']);
@@ -154,6 +164,7 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
 .zdz-ok{border:0;background:#0e7c6b;color:#fff}.zdz-no{border:1px solid #cbd2dc;background:#fff;color:#14213d}
 .zdz-file{display:block;border:1.5px dashed #9aa3b2;border-radius:12px;padding:12px;text-align:center;font-size:15px;font-weight:600;color:#14315a;cursor:pointer;margin:0 0 10px}.zdz-file.ma{border-style:solid;border-color:#0e7c6b;color:#0b5e52;background:#e6f4f1}
 .zdz .leaflet-popup-content img,.zdz .leaflet-popup-content video{display:block;width:220px;max-width:100%;border-radius:8px;margin-top:6px}
+.zdz-big{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#14315a,#0e7c6b);color:#fff!important;text-decoration:none!important;border-radius:16px;padding:14px 18px;margin:12px 0;box-shadow:0 8px 22px rgba(20,49,90,.25)}.zdz-big span{font-size:30px}.zdz-big div{flex:1}.zdz-big b{display:block;font-size:18px}.zdz-big small{font-size:13.5px;opacity:.9}.zdz-big em{font-style:normal;font-size:24px}
 .zdz-leg{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:#5b6577;margin:10px 0}.zdz-leg i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px;border:2px solid #fff;box-shadow:0 0 0 1px #9aa3b2}
 .zdz-note{font-size:14px;color:#5b6577;line-height:1.5}
 .zdz-warn{background:#fff7e0;border-radius:14px;padding:12px 16px;margin:12px 0;font-size:15px}
@@ -190,6 +201,7 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
     </div>
   </div>
   <div class="zdz-leg"><span><i style="background:#d21f1f"></i>dziś i wczoraj</span><span><i style="background:#f08a24"></i>2–7 dni temu</span><span><i style="background:#9aa3b2"></i>8–<?php echo (int) ZPW_DZIKI_DNI; ?> dni temu</span></div>
+  <a class="zdz-big" href="<?php echo esc_url(home_url('/dziki/' . ($gm !== '' ? $gm . '/' : '') . 'zglos/')); ?>"><span>🐗</span><div><b>Zgłoś dziki w 3 krokach</b><small>Zlokalizuj mnie · zdjęcie lub film · zgłoszenie i kontakt do urzędu</small></div><em>→</em></a>
   <div class="zdz-warn"><b>Dziki blisko ludzi, ranne albo agresywne?</b> Nie podchodź. Zadzwoń pod 112 albo do swojego urzędu gminy.</div>
   <p class="zdz-note">Zgłoszenia mieszkańców, niezweryfikowane. Dodając obserwację, nie podajesz żadnych danych o sobie: zapisujemy tylko miejsce, czas, liczbę i zachowanie dzików. Zdjęcia i filmy pojawiają się na mapie po sprawdzeniu przez redakcję; nie wysyłaj nagrań, na których widać ludzi. Punkty znikają po <?php echo (int) ZPW_DZIKI_DNI; ?> dniach. Granice gmin: BDOT10k (GUGiK). Mieszkasz w Kobyłce? <a href="https://lechur.github.io/wehikul-czasu/kobylka/#dziki">Zgłaszaj w Aplikacji mieszkańca Kobyłki</a>.</p>
 </div>

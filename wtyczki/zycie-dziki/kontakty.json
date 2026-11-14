@@ -1,0 +1,98 @@
+{
+ "dabrowka": {
+  "urzad": "Urząd Gminy Dąbrówka",
+  "email": "urzad@dabrowka.net.pl",
+  "tel": "29 757 80 02",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://dabrowka.net.pl/"
+ },
+ "jadow": {
+  "urzad": "Urząd Miasta i Gminy Jadów",
+  "email": "gmina@jadow.az.pl",
+  "tel": "25 675 40 44",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://bip.jadow.az.pl/"
+ },
+ "klembow": {
+  "urzad": "Urząd Gminy w Klembowie",
+  "email": "urzad@klembow.pl",
+  "tel": "29 753 88 00",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://www.klembow.pl/strona-74-kontakt.html"
+ },
+ "kobylka": {
+  "urzad": "Urząd Miasta Kobyłka",
+  "email": "urzad@kobylka.pl",
+  "tel": "22 760 70 16",
+  "straz": null,
+  "dziki": "W godzinach pracy urząd przyjmuje zgłoszenia pod 22 760 70 16; poza nimi policja 47 724 78 46 albo PCZK 22 776 03 00.",
+  "zrodlo": "https://kobylka.pl/strona-2556-kontakt.html"
+ },
+ "marki": {
+  "urzad": "Urząd Miasta Marki",
+  "email": "urzad.miasta@marki.pl",
+  "tel": "22 781 10 03",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://www.marki.pl/kontakt"
+ },
+ "poswietne": {
+  "urzad": "Urząd Gminy Poświętne",
+  "email": "sekretariat@ugposwietne.pl",
+  "tel": "25 752 03 10",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://poswietne.bip-e.pl/pos/podstawowe-dane/dane-teleadresowe/13,Dane-teleadresowe-Urzedu-Gminy-Poswietne.html"
+ },
+ "radzymin": {
+  "urzad": "Urząd Miasta i Gminy Radzymin",
+  "email": "sekretariat@umig.radzymin.pl",
+  "tel": "22 667 67 67",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://bip.radzymin.pl/"
+ },
+ "strachowka": {
+  "urzad": "Urząd Gminy Strachówka",
+  "email": "urzad@strachowka.com.pl",
+  "tel": "25 756 28 28",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://www.strachowka.4bip.pl/"
+ },
+ "tluszcz": {
+  "urzad": "Urząd Miejski w Tłuszczu",
+  "email": "urzad@tluszcz.pl",
+  "tel": "29 642 30 55",
+  "straz": null,
+  "dziki": null,
+  "zrodlo": "https://www.tluszcz.pl/strona-2556-kontakt.html"
+ },
+ "wolomin": {
+  "urzad": "Urząd Miejski w Wołominie",
+  "email": "um@wolomin.org.pl",
+  "tel": "22 763 30 00",
+  "straz": "22 787 90 50",
+  "dziki": "Gdy dziki są przy zabudowaniach, dzwoń do Straży Miejskiej; poza jej godzinami policja 22 776 20 21 albo PCZK 22 776 03 00.",
+  "zrodlo": "https://wolomin.org/"
+ },
+ "zabki": {
+  "urzad": "Urząd Miasta Ząbki",
+  "email": "um@zabki.pl",
+  "tel": "22 510 97 00",
+  "straz": "986",
+  "dziki": null,
+  "zrodlo": "https://zabki.pl/kontakt"
+ },
+ "zielonka": {
+  "urzad": "Urząd Miasta Zielonka",
+  "email": "um@zielonka.pl",
+  "tel": "22 761 39 00",
+  "straz": null,
+  "dziki": "Miasto podaje całodobową linię do zgłaszania dzików: 733 300 805.",
+  "zrodlo": "https://zielonka.pl/strona-3392-informacje_teleadresowe.html"
+ }
+}
