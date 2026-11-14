@@ -1,0 +1,482 @@
+{
+"pobrano": "2026-11-14T00:45Z",
+"zrodlo": "Oficjalne kalendarze Google wywozu odpadów Urzędu Miasta Kobyłka",
+"rejony": {
+"Rejon I": [
+{
+"data": "2026-11-16",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-23",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-01",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-07",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-22",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon II": [
+{
+"data": "2026-11-10",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-16",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-23",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-03",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-07",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-22",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon III": [
+{
+"data": "2026-11-17",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-24",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-02",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-07",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-08",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-16",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-29",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Zmieszane (niesegregowane)"
+}
+],
+"Rejon IV": [
+{
+"data": "2026-11-17",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-24",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-02",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-08",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-08",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-16",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-29",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Zmieszane (niesegregowane)"
+}
+],
+"Rejon V": [
+{
+"data": "2026-11-12",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-23",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-07",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-10",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-21",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon VI": [
+{
+"data": "2026-11-16",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-23",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-07",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-14",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-21",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon VII": [
+{
+"data": "2026-11-16",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-17",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-19",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-26",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-30",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-10",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-14",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-15",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-31",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon VIII": [
+{
+"data": "2026-11-16",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-19",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-19",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-26",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-30",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-10",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-14",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-17",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-31",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon IX": [
+{
+"data": "2026-11-19",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-20",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-23",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-27",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-03",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-11",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-17",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-21",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-31",
+"frakcja": "Zmieszane (niesegregowane)"
+}
+],
+"Rejon X": [
+{
+"data": "2026-11-19",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-20",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-24",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-27",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-03",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-11",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-17",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-28",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-29",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-31",
+"frakcja": "Zmieszane (niesegregowane)"
+}
+],
+"Rejon XI": [
+{
+"data": "2026-11-12",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-26",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-11-26",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-10",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-23",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-29",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Bioodpady"
+}
+],
+"Rejon XII": [
+{
+"data": "2026-11-12",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-18",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-25",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-11-26",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-11-30",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+},
+{
+"data": "2026-12-09",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-10",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-23",
+"frakcja": "Zmieszane (niesegregowane)"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Bioodpady"
+},
+{
+"data": "2026-12-30",
+"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
+}
+]
+}
+}

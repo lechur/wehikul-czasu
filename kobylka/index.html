@@ -23,6 +23,20 @@ header h1{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0}
 header .sub{font-size:13px;opacity:.8}
 header .tw{position:absolute;inset:0;pointer-events:none;opacity:.35}
 main{max-width:720px;margin:0 auto;padding:12px 14px calc(120px + env(safe-area-inset-bottom))}
+.ac{position:relative}.ac input{padding-right:40px}
+.ac-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:24px;color:var(--mut);width:34px;height:34px;display:none}
+.ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(10,20,40,.18);z-index:30;overflow:hidden;display:none}
+.ac-list button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:13px 14px;font-size:17px;color:var(--ink);font-family:inherit}
+.ac-list button:last-child{border-bottom:0}.ac-list button:active{background:#f3efe6}.ac-list small{color:var(--mut);font-size:12px;white-space:nowrap}.ac-list mark{background:none;color:var(--acc);font-weight:700}
+.wnext{border-radius:18px;padding:18px;color:#fff;background:linear-gradient(160deg,var(--night),var(--night2));margin:10px 0;position:relative;overflow:hidden}
+.wnext .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}.wnext .when{font-family:Georgia,serif;font-size:30px;line-height:1.15;margin:4px 0 2px}
+.wnext .ile{font-size:14px;opacity:.85}.bins{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bin{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:12px;padding:8px 11px;font-size:15px;font-weight:600}
+.bin i{width:14px;height:18px;outline:1.5px solid rgba(255,255,255,.55);border-radius:3px 3px 4px 4px;display:inline-block;box-shadow:inset 0 3px 0 rgba(0,0,0,.25)}
+.wrow{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.wrow:last-child{border-bottom:0}
+.wday{width:52px;text-align:center;flex:none;border-radius:12px;background:#f3efe6;padding:6px 0}.wday b{display:block;font-size:20px;line-height:1}.wday span{font-size:11px;text-transform:uppercase;color:var(--mut)}
+.wtags{display:flex;flex-wrap:wrap;gap:6px}.wtag{display:inline-flex;align-items:center;gap:6px;font-size:14px}.wtag i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.warn{background:#fff7e0;border:1px solid #f0d98a;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:8px}
 .view::after{content:"";display:block;height:20px}
 .view{display:none}.view.on{display:block}
 h2{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:8px 0}
@@ -87,8 +101,11 @@ details summary{cursor:pointer}
 <!-- ODPADY -->
 <section class="view" id="v-odpady">
   <h2>Odpady</h2>
-  <div class="card"><label>Twoja ulica</label><input id="o-ulica" list="o-ulice" placeholder="np. Wołomińska"><datalist id="o-ulice"></datalist><div class="mut" id="o-rejon" style="margin-top:6px"></div></div>
-  <div class="card" id="o-terminy"></div>
+  <div class="card"><label for="o-ulica">Twoja ulica</label>
+   <div class="ac"><input id="o-ulica" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="search" placeholder="Zacznij pisać, np. Wołomińska"><button class="ac-x" id="o-x" aria-label="Wyczyść">×</button><div id="o-pod" class="ac-list" role="listbox"></div></div>
+   <button class="btn line wide" id="o-gps" style="margin-top:10px">📍 Zlokalizuj mnie</button>
+   <div class="mut" id="o-rejon" style="margin-top:8px"></div></div>
+  <div id="o-terminy"></div>
   <h3>Gdzie to wyrzucić?</h3>
   <div class="card"><input id="o-szukaj" placeholder="np. gazety, słoik, folia, liście"><p class="mut" style="margin:6px 0 0">Kolory pojemników według zasad ogólnopolskich, listy według kobylka.pl.</p><div id="o-wynik"></div></div>
   <div class="card" id="o-pszok"></div>
@@ -248,26 +265,66 @@ function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
 
 /* ===== odpady ===== */
-const KOLOR={'zmieszane':'#4b5563','metale i tworzywa sztuczne':'#E5B700','papier':'#2563EB','szkło':'#16A34A','bio':'#8B5A2B','gabaryty':'#9333EA','choinki':'#15803D','popiół':'#9CA3AF'};
-function kol(f){f=(f||'').toLowerCase();for(const k in KOLOR)if(f.includes(k.split(' ')[0]))return KOLOR[k];return '#999';}
-function rejonUlicy(u){if(!DANE||!u)return null;const n=u.trim().toLowerCase();return DANE.odpady.rejony.find(r=>(r.ulice||[]).some(x=>x.toLowerCase()===n))||DANE.odpady.rejony.find(r=>(r.ulice||[]).some(x=>x.toLowerCase().includes(n)&&n.length>3));}
+const FRAK=[{k:'bio',n:'Bio',c:'#8B5A2B'},{k:'zmiesz',n:'Zmieszane',c:'#374151'},{k:'niesegreg',n:'Zmieszane',c:'#374151'},{k:'metal',n:'Metale i tworzywa',c:'#E5B700'},{k:'tworzyw',n:'Metale i tworzywa',c:'#E5B700'},{k:'papier',n:'Papier',c:'#2563EB'},{k:'szk',n:'Szkło',c:'#16A34A'},{k:'gabaryt',n:'Gabaryty',c:'#9333EA'},{k:'choink',n:'Choinki',c:'#15803D'},{k:'popi',n:'Popiół',c:'#9CA3AF'}];
+function pojemniki(f){f=(f||'').toLowerCase();if(f.includes('segregowane')&&!f.includes('niesegreg'))return[FRAK[3],FRAK[5],FRAK[6]];const o=[];FRAK.forEach(x=>{if(f.includes(x.k)&&!o.some(y=>y.n===x.n))o.push(x);});return o.length?o:[{n:f||'Odbiór odpadów',c:'#999'}];}
+function kol(f){return pojemniki(f)[0].c;}
+const nrm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l').replace(/[.\-"]/g,' ').replace(/\s+/g,' ').trim();
+let ULICE=null,UGEO=null;
+function ulice(){if(ULICE)return ULICE;ULICE=[];if(!DANE||!DANE.odpady)return ULICE;DANE.odpady.rejony.forEach(r=>{(r.ulice||[]).forEach(u=>ULICE.push({u,r,n:nrm(u)}));(r.ulice_sasiedztwo||[]).forEach(u=>ULICE.push({u,r,n:nrm(u),sas:1}));});ULICE.sort((a,b)=>a.u.localeCompare(b.u,'pl'));return ULICE;}
+function rejonUlicy(u){const n=nrm(u);if(!n)return null;return ulice().find(x=>x.n===n)||null;}
+function podpowiedzi(){const q=nrm($('#o-ulica').value);$('#o-x').style.display=q?'block':'none';const box=$('#o-pod');
+ if(!q){box.style.display='none';return;}
+ const L=ulice(),a=[],b=[],c=[];L.forEach(x=>{if(x.n.startsWith(q))a.push(x);else if(x.n.split(' ').some(w=>w.startsWith(q)))b.push(x);else if(q.length>2&&x.n.includes(q))c.push(x);});
+ const hit=a.concat(b,c).slice(0,7);
+ if(!hit.length){box.innerHTML='<div class="mut" style="padding:13px 14px">Nie ma takiej ulicy w harmonogramie Kobyłki. Sprawdź pisownię albo użyj „Zlokalizuj mnie”.</div>';box.style.display='block';return;}
+ const hl=u=>{const n=nrm(u),i=n.indexOf(q);return i<0?u:u.slice(0,i)+'<mark>'+u.slice(i,i+q.length)+'</mark>'+u.slice(i+q.length);};
+ box.innerHTML=hit.map((x,i)=>`<button data-i="${i}" role="option"><span>${hl(x.u)}</span><small>${x.r.nazwa}</small></button>`).join('');box.style.display='block';
+ box.querySelectorAll('button').forEach(bt=>bt.onmousedown=bt.ontouchstart=ev=>{ev.preventDefault();wybierzUlice(hit[+bt.dataset.i].u);});}
+function wybierzUlice(u,info){$('#o-ulica').value=u;$('#o-pod').style.display='none';$('#o-ulica').blur();store('ulica',u);store('ulica_info',info||null);odpady();}
+$('#o-ulica').addEventListener('input',podpowiedzi);$('#o-ulica').addEventListener('focus',podpowiedzi);
+$('#o-ulica').addEventListener('blur',()=>setTimeout(()=>{$('#o-pod').style.display='none';const x=rejonUlicy($('#o-ulica').value);if(x&&x.u!==store('ulica'))wybierzUlice(x.u);},150));
+$('#o-ulica').addEventListener('keydown',e=>{if(e.key==='Enter'){const f=$('#o-pod').querySelector('button');if(f){e.preventDefault();f.dispatchEvent(new Event('mousedown'));}}});
+$('#o-x').onclick=()=>{$('#o-ulica').value='';store('ulica',null);store('ulica_info',null);podpowiedzi();$('#o-ulica').focus();odpady();};
+function fwd(lon,lat){const a=6378137,f=1/298.257222101,k0=0.9993,lon0=19*R,FE=500000,FN=-5300000,n=f/(2-f),A=a/(1+n)*(1+n*n/4+n**4/64),e=Math.sqrt(f*(2-f));
+ const al=[n/2-2*n*n/3+5*n**3/16,13*n*n/48-3*n**3/5,61*n**3/240];const p=lat*R,l=lon*R-lon0;
+ const t=Math.sinh(Math.atanh(Math.sin(p))-e*Math.atanh(e*Math.sin(p)));const xi=Math.atan2(t,Math.cos(l)),eta=Math.atanh(Math.sin(l)/Math.sqrt(1+t*t));
+ let x=xi,y=eta;for(let j=0;j<3;j++){x+=al[j]*Math.sin(2*(j+1)*xi)*Math.cosh(2*(j+1)*eta);y+=al[j]*Math.cos(2*(j+1)*xi)*Math.sinh(2*(j+1)*eta);}return[FE+k0*A*y,FN+k0*A*x];}
+async function najblizszaUlica(lat,lon){if(!UGEO)UGEO=await fetch('ulice_geo.json').then(r=>r.json());const[E,N]=fwd(lon,lat);const X=E/10-UGEO.origin10m[0],Y=N/10-UGEO.origin10m[1];
+ let best=null,bd=1e18;for(const u in UGEO.ulice)for(const p of UGEO.ulice[u]){const d=(p[0]-X)**2+(p[1]-Y)**2;if(d<bd){bd=d;best=u;}}return{u:best,m:Math.round(Math.sqrt(bd)*10)};}
+$('#o-gps').onclick=()=>{const b=$('#o-gps');if(!navigator.geolocation){toast('Ten telefon nie udostępnia lokalizacji. Wpisz ulicę.');return;}
+ b.disabled=true;b.textContent='📍 Szukam Twojej ulicy…';
+ navigator.geolocation.getCurrentPosition(async pos=>{b.disabled=false;b.textContent='📍 Zlokalizuj mnie';
+  try{const r=await najblizszaUlica(pos.coords.latitude,pos.coords.longitude);
+   if(!r.u||r.m>700){$('#o-rejon').innerHTML='Wygląda na to, że jesteś poza Kobyłką. Wpisz swoją ulicę ręcznie.';return;}
+   wybierzUlice(r.u,{gps:1,m:r.m,acc:Math.round(pos.coords.accuracy)});}catch(e){toast('Nie udało się ustalić ulicy. Wpisz ją ręcznie.');}},
+  err=>{b.disabled=false;b.textContent='📍 Zlokalizuj mnie';$('#o-rejon').innerHTML=err.code===1?'Lokalizacja jest wyłączona dla tej strony. Włącz ją w ustawieniach przeglądarki albo wpisz ulicę.':'Nie udało się pobrać lokalizacji. Wpisz ulicę.';},
+  {enableHighAccuracy:true,timeout:15000,maximumAge:60000});};
+function kiedy(d){const t=today();if(d===t)return'Dziś';if(d===addDays(t,1))return'Jutro';if(d===addDays(t,2))return'Pojutrze';const x=new Date(d+'T12:00');const w=x.toLocaleDateString('pl-PL',{weekday:'long'});return w.charAt(0).toUpperCase()+w.slice(1)+', '+x.toLocaleDateString('pl-PL',{day:'numeric',month:'long'});}
+function zaIle(d){const n=Math.round((new Date(d+'T12:00')-new Date(today()+'T12:00'))/864e5);return n===0?'Pojemniki powinny już stać przy posesji.':n===1?'Wystaw pojemniki dziś wieczorem.':'Za '+n+' dni.';}
+function grupuj(up){const m=new Map();up.forEach(t=>{if(!m.has(t.data))m.set(t.data,[]);pojemniki(t.frakcja).forEach(p=>{if(!m.get(t.data).some(q=>q.n===p.n))m.get(t.data).push(p);});});return[...m.entries()];}
 function odpady(){
  const ok=DANE&&DANE.odpady&&DANE.odpady.rejony&&DANE.odpady.rejony.length;
- if(ok){const dl=$('#o-ulice');const all=new Set();DANE.odpady.rejony.forEach(r=>(r.ulice||[]).forEach(u=>all.add(u)));dl.innerHTML=[...all].sort().map(u=>`<option value="${u}">`).join('');}
- const u=$('#o-ulica').value||store('ulica')||'';$('#o-ulica').value=u;const r=rejonUlicy(u);
  const src=DANE&&DANE.odpady&&DANE.odpady.zrodlo||'https://www.kobylka.pl/strona-3975-harmonogram_odbioru_odpadow_styczen.html';
- if(!ok){$('#o-terminy').innerHTML=`<p class="mut">Harmonogram wczytuje się z danych Urzędu. Na razie sprawdź swój rejon na <a href="${src}">kobylka.pl</a>.</p>`;$('#s-waste').innerHTML=$('#o-terminy').innerHTML;return;}
- if(!r){$('#o-rejon').textContent=u?'Nie znam tej ulicy. Wybierz z listy podpowiedzi.':'Wpisz ulicę, a pokażę Twoje terminy.';$('#o-terminy').innerHTML='';$('#s-waste').innerHTML='<p class="mut">Ustaw swoją ulicę w zakładce Odpady.</p><button class="btn sm" data-go="odpady">Ustaw ulicę</button>';return;}
- store('ulica',u);$('#o-rejon').textContent='Rejon: '+r.nazwa;
+ if(!ok){$('#o-terminy').innerHTML=`<div class="card mut">Harmonogram jest na <a href="${src}">kobylka.pl</a>.</div>`;$('#s-waste').innerHTML=$('#o-terminy').innerHTML;return;}
+ const u=$('#o-ulica').value||store('ulica')||'';$('#o-ulica').value=u;$('#o-x').style.display=u?'block':'none';const x=rejonUlicy(u);
+ if(!x){$('#o-rejon').textContent=u?'Nie znam tej ulicy. Wybierz ją z podpowiedzi.':'Wpisz ulicę albo użyj lokalizacji, a pokażę najbliższe wywozy.';$('#o-terminy').innerHTML='';
+  $('#s-waste').innerHTML='<p class="mut" style="margin:0 0 8px">Ustaw swoją ulicę, a pokażę, kiedy wystawić pojemniki.</p><button class="btn sm" data-go="odpady">Ustaw ulicę</button>';return;}
+ const r=x.r,info=store('ulica_info');
+ $('#o-rejon').innerHTML=`<b style="color:var(--ink)">${x.u}</b> · ${r.nazwa}`+(info&&info.gps?` · ustalone z lokalizacji (ok. ${info.m} m)`:'')+
+  (x.sas?`<div class="warn">Tej ulicy nie ma na liście Urzędu. Rejon przypisałam według sąsiednich ulic. Sprawdź w <a href="${r.pdf||src}">harmonogramie PDF</a>.</div>`:'');
  const up=(Array.isArray(r.terminy)?r.terminy:[]).filter(t=>t.data>=today()).sort((a,b)=>a.data<b.data?-1:1);
- if(!up.length){const cid=r.kalendarz_id?encodeURIComponent(r.kalendarz_id):'';const wc=r.ical?r.ical.replace(/^https:/,'webcal:'):'';
-  const box=`<b>Terminy wywozu: ${r.nazwa}</b><p class="mut">Urząd prowadzi oficjalny kalendarz wywozu dla Twojego rejonu. Dodaj go raz, a terminy same pojawią się w Twoim telefonie.</p><div class="flex-wrap">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Dodaj do Kalendarza Google (Android)</a>`:''}${wc?`<a class="btn sm line" href="${wc}">Dodaj do iPhone’a</a>`:''}${r.pdf?`<a class="btn sm line" href="${r.pdf}">Harmonogram PDF</a>`:''}</div><p class="mut">Źródło: <a href="${src}">kobylka.pl</a>.</p>`;
-  $('#o-terminy').innerHTML=box;$('#s-waste').innerHTML=`<div class="mut">${r.nazwa} · ${u}</div><div class="flex-wrap" style="margin-top:6px">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Wywóz w moim kalendarzu</a>`:''}<button class="btn sm line" data-go="odpady">Szczegóły</button></div>`;return;}
- const html=up.slice(0,12).map(t=>`<div class="waste"><span class="dot" style="background:${kol(t.frakcja)}"></span><div class="grow"><b>${t.frakcja}</b><div class="mut">${fmtD(t.data)}${t.data===addDays(today(),1)?' · <b style="color:var(--acc)">JUTRO – wystaw pojemnik</b>':''}${t.data===today()?' · <b>DZIŚ</b>':''}</div></div></div>`).join('')||'<p class="mut">Brak terminów w danych. Sprawdź na kobylka.pl.</p>';
- $('#o-terminy').innerHTML=`<b>Najbliższe odbiory</b>${html}<p class="mut">Źródło: <a href="${src}">harmonogram Urzędu Miasta</a>.${r.kalendarz_google?` <a href="${r.kalendarz_google}">Kalendarz Google rejonu</a>.`:''}</p>`;
- const n=up[0];$('#s-waste').innerHTML=n?`<div class="waste"><span class="dot" style="background:${kol(n.frakcja)}"></span><div class="grow"><b>${n.frakcja}</b><div class="mut">${fmtD(n.data)} · ${r.nazwa}</div></div></div>`:'<p class="mut">Brak najbliższych terminów w danych.</p>';
+ const cid=r.kalendarz_id?encodeURIComponent(r.kalendarz_id):'',wc=r.ical?r.ical.replace(/^https:/,'webcal:'):'';
+ const btns=`<div class="flex-wrap">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Do Kalendarza Google</a>`:''}${wc?`<a class="btn sm line" href="${wc}">Do kalendarza iPhone’a</a>`:''}${r.pdf?`<a class="btn sm line" href="${r.pdf}">Harmonogram PDF</a>`:''}</div>`;
+ const stopka=`<p class="mut">Daty z oficjalnego kalendarza wywozu Urzędu Miasta Kobyłka${(r.terminy||[]).length?' (opublikowane do '+fmtD(r.terminy[r.terminy.length-1].data)+')':''}. Dodaj kalendarz rejonu do telefonu, a nowe terminy pojawią się same.</p>`;
+ if(!up.length){$('#o-terminy').innerHTML=`<div class="card"><b>Terminy wywozu: ${r.nazwa}</b><p class="mut">Urząd nie opublikował jeszcze kolejnych terminów. Dodaj kalendarz rejonu do telefonu, a zobaczysz je od razu po publikacji.</p>${btns}</div>`;
+  $('#s-waste').innerHTML=`<div class="mut">${x.u} · ${r.nazwa}</div><div class="flex-wrap" style="margin-top:6px">${cid?`<a class="btn sm" href="https://calendar.google.com/calendar/u/0/r?cid=${cid}">Wywóz w moim kalendarzu</a>`:''}<button class="btn sm line" data-go="odpady">Szczegóły</button></div>`;return;}
+ const g=grupuj(up),[d0,b0]=g[0];
+ const bin=p=>`<span class="bin"><i style="background:${p.c}"></i>${p.n}</span>`,tag=p=>`<span class="wtag"><i style="background:${p.c}"></i>${p.n}</span>`;
+ const nxt=`<div class="wnext"><div class="lbl">Najbliższy wywóz · ${x.u}</div><div class="when">${kiedy(d0)}</div><div class="ile">${zaIle(d0)}</div><div class="bins">${b0.map(bin).join('')}</div></div>`;
+ const lst=g.slice(1,10).map(([d,b])=>{const dt=new Date(d+'T12:00');return`<div class="wrow"><div class="wday"><b>${dt.getDate()}</b><span>${dt.toLocaleDateString('pl-PL',{month:'short'})}</span></div><div class="grow"><div style="font-weight:600;margin-bottom:3px">${kiedy(d)}</div><div class="wtags">${b.map(tag).join('')}</div></div></div>`;}).join('');
+ $('#o-terminy').innerHTML=nxt+(lst?`<div class="card"><b>Kolejne wywozy</b>${lst}</div>`:'')+`<div class="card"><b>Przypomnienia w telefonie</b><p class="mut" style="margin:4px 0 8px">Dodaj kalendarz swojego rejonu, a telefon sam przypomni o wywozie.</p>${btns}${stopka}</div>`;
+ $('#s-waste').innerHTML=`<div class="row"><div class="grow"><div class="mut">${x.u} · ${r.nazwa}</div><div style="font-family:Georgia,serif;font-size:22px;margin:2px 0">${kiedy(d0)}</div><div class="wtags">${b0.map(tag).join('')}</div></div><button class="btn sm line" data-go="odpady">Więcej</button></div>`;
 }
-$('#o-ulica').addEventListener('change',odpady);
 function segreguj(){let q=$('#o-szukaj').value.trim().toLowerCase();if(q.length>=5)q=q.slice(0,q.length-1);if(!q||!DANE||!DANE.segregacja){$('#o-wynik').innerHTML='';return;}
  const hit=DANE.segregacja.map(f=>({f,y:(f.tak||[]).filter(x=>x.toLowerCase().includes(q)),n:(f.nie||[]).filter(x=>x.toLowerCase().includes(q))})).filter(x=>x.y.length||x.n.length);
  $('#o-wynik').innerHTML=hit.length?hit.map(x=>x.y.length?`<div class="waste"><span class="dot" style="background:${kol(x.f.frakcja)}"></span><div><b>${x.f.frakcja}</b> (${x.f.kolor||''})<div class="mut">${x.y.join(', ')}</div></div></div>`:`<div class="mut">Nie do: ${x.f.frakcja} – ${x.n.join(', ')}</div>`).join(''):'<p class="mut">Nie znalazłam. Spróbuj innego słowa albo zapytaj w PSZOK.</p>';}
@@ -275,7 +332,7 @@ $('#o-szukaj').addEventListener('input',segreguj);
 
 /* ===== kalendarz ===== */
 let FILTR='wszystko';
-function evAll(){let a=[...EVS];if(DANE&&DANE.odpady&&DANE.odpady.rejony){const r=rejonUlicy(store('ulica'));if(r&&Array.isArray(r.terminy))a=a.concat(r.terminy.map(t=>({d:t.data,t:'',title:'♻ Odbiór: '+t.frakcja,desc:r.nazwa,kind:'odpady',allday:true})));}
+function evAll(){let a=[...EVS];if(DANE&&DANE.odpady&&DANE.odpady.rejony){const rx=rejonUlicy(store('ulica')),r=rx&&rx.r;if(r&&Array.isArray(r.terminy))a=a.concat(r.terminy.map(t=>({d:t.data,t:'',title:'♻ Odbiór: '+t.frakcja,desc:r.nazwa,kind:'odpady',allday:true})));}
  return a.filter(e=>e.d>=today()).sort((x,y)=>(x.d+x.t)<(y.d+y.t)?-1:1);}
 function evHTML(e){const d=new Date(e.d+'T12:00');return `<div class="ev ${e.kind==='niebo'?'sky':''}"><div class="d">${d.getDate()}<span>${d.toLocaleDateString('pl-PL',{month:'short'})} ${e.t||''}</span></div><div class="grow"><b>${e.title}</b><div class="mut">${e.desc||''}${e.miejsce?' · '+e.miejsce:''}${e.url?` · <a href="${e.url}">więcej</a>`:''}</div></div></div>`;}
 function kalendarz(){const a=evAll().filter(e=>FILTR==='wszystko'||e.kind===FILTR);$('#k-lista').innerHTML=a.slice(0,60).map(evHTML).join('')||'<p class="empty">Brak wydarzeń.</p>';
