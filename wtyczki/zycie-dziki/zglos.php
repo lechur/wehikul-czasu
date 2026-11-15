@@ -25,7 +25,7 @@ add_shortcode('zycie_dziki_zglos', function ($atts) {
     $tytul = $gm !== '' ? $G[$gm]['n'] : 'powiat wołomiński';
     ob_start(); ?>
 <style>
-.zgl{--ink:#14213d;--mut:#5b6577;--line:#d8dee8;--acc:#0e7c6b;--acc2:#0b5e52;--navy:#14315a;--soft:#f3f6f9;max-width:560px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45}
+.zgl{width:100%;min-width:0;contain:inline-size;--ink:#14213d;--mut:#5b6577;--line:#d8dee8;--acc:#0e7c6b;--acc2:#0b5e52;--navy:#14315a;--soft:#f3f6f9;max-width:min(560px,100%);margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45}
 .zgl *{box-sizing:border-box}.zgl [hidden]{display:none!important}
 .zgl button{font-family:inherit;-webkit-tap-highlight-color:transparent}
 .zgl-card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 40px rgba(20,33,61,.10);overflow:hidden}

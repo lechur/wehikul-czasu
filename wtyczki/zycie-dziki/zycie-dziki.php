@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.2.1
+ * Version: 2.2.2
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -203,9 +203,9 @@ add_shortcode('zycie_dziki_mapa', function ($atts) {
     $cfg = wp_json_encode(array('api' => esc_url_raw(zpw_dziki_api_url()), 'ile' => zpw_dziki_ile(), 'co' => zpw_dziki_co(), 'dni' => ZPW_DZIKI_DNI, 'gmina' => $gm, 'gminy' => $G, 'linki' => $linki, 'powiat' => home_url('/dziki/')));
     ob_start(); ?>
 <style>
-.zdz{max-width:980px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14213d}
+.zdz{max-width:min(980px,100%);width:100%;min-width:0;contain:inline-size;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#14213d}
 .zdz *{box-sizing:border-box}
-.zdz-nav{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:thin}
+.zdz-nav{max-width:100%;display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:thin}
 .zdz-nav a{flex:none;padding:9px 14px;border-radius:999px;border:1px solid #cbd2dc;background:#fff;color:#14213d;text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap}
 .zdz-nav a.on{background:#14315a;border-color:#14315a;color:#fff}
 .zdz-sum{font-size:18px;font-weight:700;margin:4px 0 10px}
