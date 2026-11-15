@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Życie – Mapa dzików
- * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.3.1
+ * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy. Rozkłady jazdy z przesiadkami: [zycie_rozklady gmina="kobylka"].
+ * Version: 2.5.1
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -191,6 +191,7 @@ function zpw_dziki_utworz_strony() {
 // Mapa na stronie: [zycie_dziki_mapa] (powiat) albo [zycie_dziki_mapa gmina="kobylka"]
 require_once __DIR__ . '/zglos.php';
 require_once __DIR__ . '/zgloszenia-mapa.php';
+require_once __DIR__ . '/rozklady.php';
 
 // Na stronach z mapą i kreatorem bez reklam automatycznych Google (wstawiały się w środek mapy).
 // Ten sam mechanizm co w katalogu firm: filtr zpw_ads_wylacz z wtyczki zycie-pomiar.
@@ -198,7 +199,7 @@ add_filter('zpw_ads_wylacz', function ($wyl) {
     if ($wyl || !is_singular()) return $wyl;
     $p = get_post();
     if (!$p) return $wyl;
-    foreach (array('zycie_dziki_mapa', 'zycie_dziki_zglos', 'zycie_zgloszenia_mapa') as $sc) if (has_shortcode($p->post_content, $sc)) return true;
+    foreach (array('zycie_dziki_mapa', 'zycie_dziki_zglos', 'zycie_zgloszenia_mapa', 'zycie_rozklady') as $sc) if (has_shortcode($p->post_content, $sc)) return true;
     return $wyl;
 });
 
