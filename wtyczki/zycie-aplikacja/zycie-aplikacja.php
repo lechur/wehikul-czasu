@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Aplikacja czytelnika
  * Description: Instaluje aplikację dla czytelników (PWA) w folderze /aplikacja/ obok WordPressa: wiadomości z gminy, Pytanie dnia, Twoja okolica, mapa dzików, kontakt z redakcją. Aplikacja to zwykłe pliki – działa także po wyłączeniu wtyczki. Aktualizacja: wgraj nową wersję wtyczki („Zastąp obecną”) albo użyj Narzędzia → Aplikacja czytelnika.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -18,7 +18,7 @@ function zpw_app_instaluj() {
     foreach ($pliki as $f) if (is_file($f) && !@copy($f, $d . basename($f))) return 'Nie można zapisać ' . basename($f);
     $ht = "<IfModule mod_mime.c>\nAddType application/manifest+json .webmanifest\n</IfModule>\n<IfModule mod_headers.c>\n<FilesMatch \"^(sw\\.js|index\\.html)$\">\nHeader set Cache-Control \"no-cache\"\n</FilesMatch>\n</IfModule>\nDirectoryIndex index.html\n";
     @file_put_contents($d . '.htaccess', $ht);
-    update_option('zpw_app_wersja', '1.2.0 · ' . current_time('Y-m-d H:i'), false);
+    update_option('zpw_app_wersja', '1.3.0 · ' . current_time('Y-m-d H:i'), false);
     return '';
 }
 register_activation_hook(__FILE__, 'zpw_app_instaluj');

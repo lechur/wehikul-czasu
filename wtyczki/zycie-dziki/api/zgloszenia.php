@@ -136,24 +136,27 @@ if ($gm === null) blad(422, 'Miejsce jest poza powiatem wołomińskim.');
 $opis = isset($p['opis']) ? trim(preg_replace('/\s+/u', ' ', strip_tags((string) $p['opis']))) : '';
 $opis = mb_substr($opis, 0, 160);
 $zrodlo = isset($p['zrodlo']) ? substr(preg_replace('/[^a-z0-9\-]/', '', strtolower((string) $p['zrodlo'])), 0, 30) : '';
-if (!limit_ok($dir, $cfg, 'z', ZG_LIMIT_ZGL)) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
+$imp = ma_klucz($cfg, isset($p['klucz']) ? $p['klucz'] : null);   // import przez moderatora: data zdarzenia, opis od razu jawny, bez limitu
+$kiedy = gmdate('c');
+if ($imp && isset($p['kiedy'])) { $t = strtotime((string) $p['kiedy']); if ($t && $t <= time() + 600 && $t >= time() - ZG_DNI_OTWARTE * 86400) $kiedy = gmdate('c', $t); }
+if (!$imp && !limit_ok($dir, $cfg, 'z', ZG_LIMIT_ZGL)) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
 list($nazwa, $rodzaj, $media_blad) = zapisz_media($dir, $MEDIA, true);
 $os = zg_osoba($cfg, $p); $wynik = null; $dolaczono = false;
-plik($zp, function ($d) use ($kat, $lat, $lon, $gm, $opis, $zrodlo, $nazwa, $os, &$wynik, &$dolaczono) {
+plik($zp, function ($d) use ($kat, $lat, $lon, $gm, $opis, $zrodlo, $nazwa, $os, $imp, $kiedy, &$wynik, &$dolaczono) {
     $d = zg_porzadek($d); $best = null; $bd = ZG_PROMIEN_M;
     foreach ($d as $i => $s) { if ($s['kat'] !== $kat || $s['status'] !== 'otwarte') continue; $o = zg_odl($lat, $lon, $s['lat'], $s['lon']); if ($o <= $bd) { $bd = $o; $best = $i; } }
     if ($best !== null) {
         $s = &$d[$best]; $dolaczono = true;
         if (!in_array($os, $s['os'], true)) { $s['os'][] = $os; $s['n']++; }
         $s['ostatnie'] = gmdate('c');
-        if ($opis !== '' && $s['opis'] === '') { $s['opis'] = $opis; $s['opis_ok'] = 0; }
+        if ($opis !== '' && $s['opis'] === '') { $s['opis'] = $opis; $s['opis_ok'] = $imp ? 1 : 0; }
         if ($nazwa !== '' && empty($s['plik'])) { $s['plik'] = $nazwa; $s['media_ok'] = 0; } else if ($nazwa !== '') @unlink(__DIR__ . '/data/media/' . $nazwa);
         if ($zrodlo !== '' && !in_array($zrodlo, $s['zrodla'], true)) $s['zrodla'][] = $zrodlo;
         $wynik = $s; return $d;
     }
     $s = array('id' => 'z' . gmdate('ymdHis') . bin2hex(random_bytes(2)), 'kat' => $kat, 'lat' => round($lat, 5), 'lon' => round($lon, 5), 'gmina' => $gm,
-        'pierwsze' => gmdate('c'), 'ostatnie' => gmdate('c'), 'n' => 1, 'status' => 'otwarte', 'naprawione_od' => null, 'naprawione_glosy' => 0,
-        'opis' => $opis, 'opis_ok' => 0, 'plik' => $nazwa, 'media_ok' => 0, 'zrodla' => $zrodlo !== '' ? array($zrodlo) : array(), 'os' => array($os), 'osn' => array());
+        'pierwsze' => $kiedy, 'ostatnie' => $kiedy, 'n' => 1, 'status' => 'otwarte', 'naprawione_od' => null, 'naprawione_glosy' => 0,
+        'opis' => $opis, 'opis_ok' => $imp ? 1 : 0, 'plik' => $nazwa, 'media_ok' => 0, 'zrodla' => $zrodlo !== '' ? array($zrodlo) : array(), 'os' => array($os), 'osn' => array());
     $d[] = $s; $wynik = $s; return $d;
 });
 odp(201, array('ok' => true, 'dolaczono' => $dolaczono, 'media_blad' => $media_blad, 'sprawa' => zg_publiczne($wynik, false)));

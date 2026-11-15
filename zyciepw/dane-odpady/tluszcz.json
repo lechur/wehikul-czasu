@@ -1,0 +1,513 @@
+{
+ "zrodlo": "https://tluszcz.pl/strona-3395-harmonogram_odbioru_odpadow.html",
+ "aktualizacja": "harmonogram IV-XII 2026, odczyt 15.11.2026; rok 2027 nieopublikowany",
+ "kontakt": "Reklamacje: firma obsługująca (Jurant) tel. 609 112 922, bok@jurant.pl; Urząd Miejski w Tłuszczu, Biuro Gospodarki Odpadami tel. 29 777 52 61, odpady@tluszcz.pl",
+ "rejony": [
+  {
+   "id": "r1",
+   "nazwa": "Rejon 1 - Tłuszcz - północna strona torów",
+   "ulice": [
+    "Ananasowa",
+    "Bajkowa",
+    "Boczna",
+    "Cienista",
+    "Chmielna",
+    "Dębowa",
+    "Dzielna",
+    "Fabryczna",
+    "Jarzębinowa",
+    "Jarzynowa",
+    "Julianny",
+    "Kalinowa",
+    "Kasprowicza",
+    "Klonowa",
+    "Kolejowa",
+    "Krótka",
+    "Krucza",
+    "Kwiatowa",
+    "Leszczynowa",
+    "Letnia",
+    "Lipowa",
+    "Lotnicza",
+    "Magnoliowa",
+    "Malinowa",
+    "Mazowiecka",
+    "Młodzieńcza",
+    "Modrzewiowa",
+    "Mostowa",
+    "Narutowicza",
+    "Norwida",
+    "Nowa",
+    "Ogrodowa",
+    "Okrężna",
+    "Owocowa",
+    "Orzechowa",
+    "Parkowa",
+    "Piaskowa",
+    "Piastowska",
+    "Pilawska",
+    "Pilińskiego",
+    "Pogodna",
+    "Poniatowskiego",
+    "Poprzeczna",
+    "Północna",
+    "Prusa",
+    "Przejazdowa",
+    "Przyzakładowa",
+    "Radzymińska",
+    "Relaksowa",
+    "Różana",
+    "Sieroszewskiego",
+    "Słowackiego",
+    "Słowicza",
+    "Sosnowa",
+    "Szeroka",
+    "Szmaragdowa",
+    "Szymborskiej",
+    "Środkowa",
+    "Świerkowa",
+    "Tarczyńskiego",
+    "Truskawkowa",
+    "Wesoła",
+    "Widna",
+    "Wspólna",
+    "Wyspiańskiego",
+    "Wypoczynkowa",
+    "Zachodnia",
+    "Zaściankowa"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-24",
+     "2026-12-08",
+     "2026-12-22"
+    ],
+    "bio": [
+     "2026-11-16",
+     "2026-12-14"
+    ],
+    "pap": [
+     "2026-11-23",
+     "2026-12-21"
+    ],
+    "mtw": [
+     "2026-12-11"
+    ],
+    "szk": [
+     "2026-11-20"
+    ],
+    "pop": [
+     "2026-12-03"
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "nazwa": "Rejon 2 - Tłuszcz - południowa strona torów (bez osiedla Słoneczna)",
+   "ulice": [
+    "Adamowicza",
+    "Armii Krajowej",
+    "Bajeczna",
+    "Batorego",
+    "Bobrowa",
+    "Bukowa",
+    "Brzozowa",
+    "Charżewskiego",
+    "Długa",
+    "Dolna",
+    "Folwarczna",
+    "Głowackiego",
+    "Graniczna",
+    "Grzelaka",
+    "Jałowcowa",
+    "Kielaka",
+    "Kopernika",
+    "Kościelna",
+    "Kościuszki",
+    "Kraszewskiego",
+    "Leśna",
+    "Łączna",
+    "Łodygowa",
+    "Mała",
+    "Mickiewicza",
+    "Miła",
+    "Miodowa",
+    "Mokra",
+    "Myśliwska",
+    "Nowosadowa",
+    "Orla",
+    "Paprotkowa",
+    "Piekarska",
+    "Polna",
+    "Powstańców",
+    "Przelotowa",
+    "Przemysłowa",
+    "Pszczela",
+    "Racławicka",
+    "Radosna",
+    "Ratuszowa",
+    "Reymonta",
+    "Rodziewiczówny",
+    "Sienkiewicza",
+    "Sobieskiego",
+    "Spokojna",
+    "Stawowa",
+    "Stokrotki",
+    "Strażacka",
+    "Szklana",
+    "Szkolna",
+    "Szumiących Traw",
+    "Targowa",
+    "Topolowa",
+    "Warszawska",
+    "Wąska",
+    "Wiejska",
+    "Wilcza",
+    "Wileńska",
+    "Wiosenna",
+    "Wodospadowa",
+    "Wrzosowa",
+    "Zagłoby",
+    "Zakrzewie",
+    "Zgoda",
+    "Zielna",
+    "Zjazdowa",
+    "Żurawia",
+    "Żołnierzy Wyklętych",
+    "Żytnia"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-17",
+     "2026-12-01",
+     "2026-12-15",
+     "2026-12-29"
+    ],
+    "bio": [
+     "2026-11-23",
+     "2026-12-21"
+    ],
+    "pap": [
+     "2026-11-18",
+     "2026-12-16"
+    ],
+    "mtw": [
+     "2026-11-27",
+     "2026-12-18"
+    ],
+    "szk": [
+     "2026-11-18"
+    ],
+    "pop": [
+     "2026-11-30",
+     "2026-12-21"
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "nazwa": "Rejon 3 - Tłuszcz - osiedle Słoneczna",
+   "ulice": [
+    "Bażantowa",
+    "Błękitna",
+    "Cicha",
+    "Cisowa",
+    "Diamentowa",
+    "Działkowa",
+    "Jasna",
+    "Lazurowa",
+    "Łąkowa",
+    "Makowa",
+    "Nadrzeczna",
+    "Prosta",
+    "Ptasia",
+    "Rzemieślnicza",
+    "Sasanki",
+    "Słoneczna",
+    "Strumykowa",
+    "Tęczowa",
+    "Wacława Wierzby-Odrowąża",
+    "Wierzbowa",
+    "Willowa",
+    "Wiśniowa",
+    "Zielona"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-20",
+     "2026-12-04",
+     "2026-12-18"
+    ],
+    "bio": [
+     "2026-11-27",
+     "2026-12-30"
+    ],
+    "pap": [
+     "2026-11-18",
+     "2026-12-16"
+    ],
+    "mtw": [
+     "2026-12-11"
+    ],
+    "szk": [
+     "2026-11-24"
+    ],
+    "pop": [
+     "2026-11-27",
+     "2026-12-21"
+    ],
+    "gab": [
+     "2026-11-28"
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "nazwa": "Rejon 4 - Chrzęsne, Zalesie",
+   "ulice": [
+    "Chrzęsne",
+    "Zalesie"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-25",
+     "2026-12-09",
+     "2026-12-23"
+    ],
+    "bio": [
+     "2026-11-20",
+     "2026-12-30"
+    ],
+    "pap": [
+     "2026-11-24",
+     "2026-12-22"
+    ],
+    "mtw": [
+     "2026-11-26",
+     "2026-12-31"
+    ],
+    "szk": [],
+    "pop": [
+     "2026-12-04"
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "nazwa": "Rejon 5 - Postoliska",
+   "ulice": [
+    "Postoliska"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-25",
+     "2026-12-09",
+     "2026-12-23"
+    ],
+    "bio": [
+     "2026-11-20",
+     "2026-12-30"
+    ],
+    "pap": [
+     "2026-11-24",
+     "2026-12-22"
+    ],
+    "mtw": [
+     "2026-11-26",
+     "2026-12-31"
+    ],
+    "szk": [],
+    "pop": [
+     "2026-12-04"
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "nazwa": "Rejon 6 - Mokra Wieś, Szymanówek",
+   "ulice": [
+    "Mokra Wieś",
+    "Szymanówek"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-26",
+     "2026-12-10",
+     "2026-12-30"
+    ],
+    "bio": [
+     "2026-11-16",
+     "2026-12-14"
+    ],
+    "pap": [
+     "2026-12-01",
+     "2026-12-29"
+    ],
+    "mtw": [
+     "2026-11-19",
+     "2026-12-17"
+    ],
+    "szk": [
+     "2026-11-17"
+    ],
+    "pop": [
+     "2026-12-07"
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "nazwa": "Rejon 7",
+   "ulice": [
+    "Brzezinów",
+    "Fiukały",
+    "Jarzębia Łąka",
+    "Konary",
+    "Kozły",
+    "Marianów",
+    "Moczydło",
+    "Rysie",
+    "Wagan",
+    "Waganka",
+    "Wólka Kozłowska"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-26",
+     "2026-12-10",
+     "2026-12-30"
+    ],
+    "bio": [
+     "2026-11-16",
+     "2026-12-14"
+    ],
+    "pap": [
+     "2026-12-01",
+     "2026-12-29"
+    ],
+    "mtw": [
+     "2026-11-19",
+     "2026-12-17"
+    ],
+    "szk": [
+     "2026-11-17"
+    ],
+    "pop": [
+     "2026-12-07"
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "nazwa": "Rejon 8",
+   "ulice": [
+    "Balcery",
+    "Białki",
+    "Dzięcioły",
+    "Kury",
+    "Ołdaki",
+    "Pólko",
+    "Rudniki",
+    "Stryjki",
+    "Wilczeniec",
+    "Zapole"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-19",
+     "2026-12-03",
+     "2026-12-17",
+     "2026-12-31"
+    ],
+    "bio": [
+     "2026-11-23",
+     "2026-12-21"
+    ],
+    "pap": [
+     "2026-12-11"
+    ],
+    "mtw": [
+     "2026-12-07"
+    ],
+    "szk": [
+     "2026-12-02"
+    ],
+    "pop": [
+     "2026-12-08"
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "nazwa": "Rejon 9",
+   "ulice": [
+    "Franciszków",
+    "Grabów",
+    "Jadwinin",
+    "Jaźwie",
+    "Łysobyki",
+    "Miąse",
+    "Pawłów",
+    "Stasinów",
+    "Szczepanek"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-19",
+     "2026-12-03",
+     "2026-12-17",
+     "2026-12-31"
+    ],
+    "bio": [
+     "2026-11-23",
+     "2026-12-21"
+    ],
+    "pap": [
+     "2026-12-11"
+    ],
+    "mtw": [
+     "2026-12-07"
+    ],
+    "szk": [
+     "2026-12-02"
+    ],
+    "pop": [
+     "2026-12-08"
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "nazwa": "Rejon 10 - Jasienica",
+   "ulice": [
+    "Jasienica"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-16",
+     "2026-11-30",
+     "2026-12-14",
+     "2026-12-28"
+    ],
+    "bio": [
+     "2026-11-25",
+     "2026-12-23"
+    ],
+    "pap": [
+     "2026-11-20",
+     "2026-12-18"
+    ],
+    "mtw": [
+     "2026-11-18",
+     "2026-12-16"
+    ],
+    "szk": [
+     "2026-11-24"
+    ],
+    "pop": [
+     "2026-12-02"
+    ]
+   }
+  }
+ ]
+}

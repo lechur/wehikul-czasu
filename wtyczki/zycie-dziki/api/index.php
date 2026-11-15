@@ -154,10 +154,11 @@ if ($gm === null) blad(422, 'Miejsce jest poza powiatem wołomińskim.');
 $ile = isset($p['ile']) ? (string) $p['ile'] : ''; $co = isset($p['co']) ? (string) $p['co'] : '';
 if (!in_array($ile, $ILE, true) || !in_array($co, $CO, true)) blad(422, 'Nieznana wartość.');
 $ts = isset($p['kiedy']) ? strtotime((string) $p['kiedy']) : time();
-if (!$ts || $ts > time() + 600 || $ts < time() - 3 * 86400) $ts = time();
+$imp = ma_klucz($cfg, isset($p['klucz']) ? $p['klucz'] : null);   // import przez moderatora: starsza data (do DNI dni), bez limitu
+if (!$ts || $ts > time() + 600 || $ts < time() - ($imp ? DNI : 3) * 86400) { if ($imp) blad(422, 'Data poza zakresem mapy.'); $ts = time(); }
 $zrodlo = isset($p['zrodlo']) ? substr(preg_replace('/[^a-z0-9\-]/', '', strtolower((string) $p['zrodlo'])), 0, 30) : '';
 
-if (!limit_ok($dir, $cfg, '', LIMIT_NA_GODZINE)) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
+if (!$imp && !limit_ok($dir, $cfg, '', LIMIT_NA_GODZINE)) blad(429, 'Za dużo zgłoszeń. Spróbuj za godzinę.');
 
 $nowy = array('id' => gmdate('ymdHis') . bin2hex(random_bytes(3)), 'lat' => round($lat, 4), 'lon' => round($lon, 4), 'gmina' => $gm, 'ile' => $ile, 'co' => $co, 'kiedy' => gmdate('c', $ts), 'zrodlo' => $zrodlo, 'media' => '');
 // Zdjęcie lub film: sprawdzany jest rzeczywisty typ pliku; media są widoczne publicznie dopiero po zatwierdzeniu przez moderatora.

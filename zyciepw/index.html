@@ -344,7 +344,7 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
 <script>
 (function(){
 'use strict';
-var VER='1.2 · 15.11.2026';
+var VER='1.3 · 15.11.2026';
 var SITE='https://www.zyciepw.pl',API=SITE+'/wp-json',DZAPI=SITE+'/mieszkaniec-api/?zasob=dziki';
 var SNAP=null;try{SNAP=JSON.parse(document.getElementById('snap').textContent)}catch(e){}
 var PREVIEW=!!(SNAP&&SNAP.podglad);
@@ -457,12 +457,14 @@ function okolica(){
    h+='<div class="ok"><span class="e">🚧</span><div><b>Drogi '+(dr.length?'<span class="badge w">'+dr.length+' '+pl(dr.length,'utrudnienie','utrudnienia','utrudnień')+'</span>':'<span class="badge">bez utrudnień</span>')+'</b><span>'+(dr.length?dr.slice(0,3).map(function(x){return x.u?'<a href="'+esc(x.u)+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>':esc(x.t||'')}).join('<br>'):'na Twojej ulicy · w gminie: '+(d.drogi_gmina||0))+' · <a href="https://www.zyciepw.pl/utrudnienia/" target="_blank" rel="noopener">mapa</a></span></div></div>';
    if(t.length)h+='<div class="ok"><span class="e">📰</span><div><b>O Twojej ulicy</b><span>'+t.slice(0,3).map(function(x){return '<a href="'+esc(x.u)+'" data-link="'+esc(x.u)+'">'+esc(x.t)+'</a> <span class="meta">'+esc(x.d)+'</span>'}).join('<br>')+'</span></div></div>';
   }
+  var HL='https://www.zyciepw.pl/powiat-praktycznie/odbior-odpadow/';
   if(o&&o.jest&&o.rejony&&o.rejony.length){
-   var rj=o.rejony[0],today=new Date().toISOString().slice(0,10),dn=Object.keys(rj.terminy||{}).filter(function(x){return x>=today}).sort().slice(0,3);
-   if(dn.length){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>'+esc(rj.nazwa)+'</span>'+dn.map(function(x){var dt=new Date(x+'T12:00');return '<div style="margin-top:6px"><span class="meta"><b style="display:inline;color:var(--ink)">'+dt.toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'short'})+'</b></span><div class="bins">'+rj.terminy[x].map(function(f){var q=(o.frakcje&&o.frakcje[f])||FR[f]||[f,'#888'];return '<span class="bin"><i style="background:'+q[1]+'"></i>'+esc(q[0])+'</span>'}).join('')+'</div></div>'}).join('')+(rj.kal?'<div style="margin-top:6px"><a href="'+esc(rj.kal)+'" target="_blank" rel="noopener">Dodaj terminy do kalendarza</a></div>':'')+'</div></div>'}
-  }else if(o&&!o.jest){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>Harmonogram dla gminy '+esc(g.n)+' dodamy wkrótce.</span></div></div>'}
+   S.or=S.or||{};var ok_=g.s+'|'+S.u.toLowerCase(),rj=o.rejony.filter(function(x){return x.id===S.or[ok_]})[0]||o.rejony[0],today=new Date().toISOString().slice(0,10),dn=Object.keys(rj.terminy||{}).filter(function(x){return x>=today}).sort().slice(0,4);
+   h+='<div class="ok"><span class="e">♻️</span><div style="min-width:0;flex:1"><b>Odbiór odpadów</b>'+(o.rejony.length>1?'<span>Wybierz swój rejon:</span><div class="bins" style="margin-bottom:4px">'+o.rejony.slice(0,6).map(function(x){return '<button class="chip'+(x.id===rj.id?' on':'')+'" style="padding:5px 10px;font-size:13px;white-space:normal;text-align:left" data-rj="'+esc(x.id)+'">'+esc(x.nazwa)+'</button>'}).join('')+'</div>':'<span>'+esc(rj.nazwa)+'</span>')+(dn.length?dn.map(function(x){var dt=new Date(x+'T12:00'),n=Math.round((dt-new Date(today+'T12:00'))/864e5);return '<div style="margin-top:6px"><span class="meta"><b style="display:inline;color:var(--ink)">'+(n===0?'dziś, ':n===1?'jutro, ':'')+dt.toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'short'})+'</b></span><div class="bins">'+rj.terminy[x].map(function(f){var q=(o.frakcje&&o.frakcje[f])||FR[f]||[f,'#888'];return '<span class="bin"><i style="background:'+q[1]+'"></i>'+esc(q[0])+'</span>'}).join('')+'</div></div>'}).join(''):'<div class="meta" style="margin-top:6px">Brak terminów w najbliższych tygodniach.</div>')+'<div class="meta" style="margin-top:8px">'+(rj.kal?'<a href="'+esc(rj.kal)+'" target="_blank" rel="noopener">Dodaj do kalendarza</a> · ':'')+(o.zrodlo?'<a href="'+esc(o.zrodlo)+'" target="_blank" rel="noopener">harmonogram urzędu</a>':'')+(o.kontakt?'<br>Nieodebrane odpady: '+esc(o.kontakt):'')+'</div></div></div>';
+  }else if(o&&o.jest){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>Nie znaleźliśmy „'+esc(S.u)+'” w harmonogramie gminy '+esc(g.n)+'. Sprawdź pisownię ulicy lub miejscowości albo zobacz <a href="'+esc(o.zrodlo||HL)+'" target="_blank" rel="noopener">harmonogram urzędu</a>.</span></div></div>'
+  }else if(o&&!o.jest){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>Terminów dla gminy '+esc(g.n)+' nie mamy jeszcze w aplikacji. <a href="'+HL+'" target="_blank" rel="noopener">Harmonogramy urzędów wszystkich gmin</a></span></div></div>'}
   if(!h)h='<div class="empty">Nie udało się sprawdzić Twojej okolicy.</div>';
-  C.innerHTML=h;C.querySelectorAll('[data-link]').forEach(function(a){a.onclick=function(e){var id=null;for(var i in POSTS)if(POSTS[i].link===a.dataset.link)id=+i;if(id){e.preventDefault();openArt(id)}else{e.preventDefault();openBySlug(a.dataset.link)}}});
+  C.innerHTML=h;C.querySelectorAll('[data-rj]').forEach(function(b){b.onclick=function(){S.or=S.or||{};S.or[g.s+'|'+S.u.toLowerCase()]=b.dataset.rj;save();ev('app_odpady_rejon',{gmina:g.s});okolica()}});C.querySelectorAll('[data-link]').forEach(function(a){a.onclick=function(e){var id=null;for(var i in POSTS)if(POSTS[i].link===a.dataset.link)id=+i;if(id){e.preventDefault();openArt(id)}else{e.preventDefault();openBySlug(a.dataset.link)}}});
  });
 }
 /* Powietrze i pogoda */

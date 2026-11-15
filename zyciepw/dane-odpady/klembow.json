@@ -1,0 +1,117 @@
+{
+ "zrodlo": "https://klembow.pl/strona-156-harmonogram_odbiorow.html",
+ "aktualizacja": "Zbiórka odpadów 2026 (PDF Rejon I-III + Bioodpady), odczyt 15.11.2026; rok 2027 nieopublikowany",
+ "kontakt": "RDF Sp. z o.o. (Ostrołęka) tel. 665 040 254; Urząd Gminy Klembów tel. 29 753 88 10 lub 29 753 88 19, odpady@klembow.pl; PSZOK ul. Miła 15, tel. 797 294 354",
+ "rejony": [
+  {
+   "id": "r1",
+   "nazwa": "Rejon I",
+   "ulice": [
+    "Tuł",
+    "Karolew",
+    "Ostrówek",
+    "Krzywica",
+    "Lipka"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-16",
+     "2026-11-30",
+     "2026-12-14",
+     "2026-12-28"
+    ],
+    "bio": [
+     "2026-12-08"
+    ],
+    "pap": [
+     "2026-12-11"
+    ],
+    "mtw": [
+     "2026-12-11"
+    ],
+    "szk": [
+     "2026-12-10"
+    ],
+    "pop": [
+     "2026-12-01"
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "nazwa": "Rejon II",
+   "ulice": [
+    "Pasek",
+    "Klembów",
+    "Michałów",
+    "Sitki",
+    "Pieńki",
+    "Dobczyn"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-17",
+     "2026-12-01",
+     "2026-12-15",
+     "2026-12-29"
+    ],
+    "bio": [
+     "2026-12-07"
+    ],
+    "pap": [
+     "2026-12-18"
+    ],
+    "mtw": [
+     "2026-12-18"
+    ],
+    "szk": [
+     "2026-12-16"
+    ],
+    "pop": [
+     "2026-11-16",
+     "2026-12-14"
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "nazwa": "Rejon III",
+   "ulice": [
+    "Nowy Kraszew",
+    "Stary Kraszew",
+    "Rasztów",
+    "Wola Rasztowska",
+    "Roszczep",
+    "Krusze"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-18",
+     "2026-12-02",
+     "2026-12-16",
+     "2026-12-30"
+    ],
+    "bio": [
+     "2026-11-19",
+     "2026-12-17"
+    ],
+    "pap": [
+     "2026-11-20",
+     "2026-12-17"
+    ],
+    "mtw": [
+     "2026-11-20",
+     "2026-12-17"
+    ],
+    "szk": [
+     "2026-11-19",
+     "2026-12-15"
+    ],
+    "pop": [
+     "2026-11-23",
+     "2026-12-14"
+    ]
+   }
+  }
+ ]
+}

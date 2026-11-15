@@ -1,0 +1,4 @@
+# Strachówka – nie udało się (brak json)
+Stan: 15.11.2026. Źródło: https://strachowka.com.pl/info/zawartosc/101 → podstrona https://strachowka.com.pl/info/zawartosc/147/ „Harmonogram odpadów od 1 stycznia 2025 r." (2 obrazy JPG: rejon 1 i 2, wykonawca KOMA, nagłówek „I półrocze roku 2025") oraz /148/ (aplikacja „Moje Odpady", mobilny harmonogram „na 2025 rok").
+Blokada: oficjalna witryna gminy zawiera wyłącznie harmonogram na 2025 r.; harmonogramu na 2026 brak (strony 103/105 puste, katalog /pliki/Urzad/2026/ → 403, wyszukiwanie nic nie wskazało). Harmonogram 2025 nie jest wiarygodny dla listopada–grudnia 2026, więc nic nie wpisano (żadnego wyliczania z rytmu).
+Do zrobienia: gdy gmina opublikuje harmonogram 2026 (KOMA, tel. 573-187-779) lub aplikacja „Moje Odpady" – odczytać ponownie; rozważyć kontakt z urzędem (25 756-28-25, a.barylkiewicz@strachowka.com.pl).

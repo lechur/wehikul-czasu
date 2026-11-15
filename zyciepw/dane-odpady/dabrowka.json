@@ -1,0 +1,135 @@
+{
+ "zrodlo": "https://bip.dabrowka.net.pl/index.php?cmd=zawartosc&opt=pokaz&id=17546",
+ "aktualizacja": "harmonogram na rok 2026 (styczeń–grudzień), odczyt 15.11.2026; na 2027 brak opublikowanego harmonogramu",
+ "kontakt": "Wykonawca: RDF Sp. z o.o., Ostrołęka ul. Kołobrzeska 5, oddział Wyszków, tel. 29 642-40-66; odbiory od godz. 7:00",
+ "rejony": [
+  {
+   "id": "r1",
+   "nazwa": "Rejon I",
+   "ulice": [
+    "Chruściele",
+    "Dąbrówka",
+    "Karolew",
+    "Karpin",
+    "Lasków",
+    "Małopole",
+    "Trojany",
+    "Wszebory",
+    "Zaścienie"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-23",
+     "2026-12-07",
+     "2026-12-21"
+    ],
+    "bio": [
+     "2026-11-27",
+     "2026-12-11"
+    ],
+    "pap": [
+     "2026-11-23",
+     "2026-12-08"
+    ],
+    "mtw": [
+     "2026-12-01"
+    ],
+    "szk": [
+     "2026-11-24",
+     "2026-12-09"
+    ],
+    "pop": [
+     "2026-11-23",
+     "2026-12-07",
+     "2026-12-19"
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "nazwa": "Rejon II",
+   "ulice": [
+    "Chajęty",
+    "Cisie",
+    "Działy Czarnowskie",
+    "Guzowatka",
+    "Józefów",
+    "Kowalicha",
+    "Ludwinów",
+    "Ostrówek",
+    "Sokołówek",
+    "Stanisławów",
+    "Teodorów"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-24",
+     "2026-12-08",
+     "2026-12-22"
+    ],
+    "bio": [
+     "2026-11-25",
+     "2026-12-11"
+    ],
+    "pap": [
+     "2026-11-30",
+     "2026-12-15"
+    ],
+    "mtw": [
+     "2026-11-20",
+     "2026-12-10"
+    ],
+    "szk": [
+     "2026-11-30",
+     "2026-12-29"
+    ],
+    "pop": [
+     "2026-11-24",
+     "2026-12-08",
+     "2026-12-19"
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "nazwa": "Rejon III",
+   "ulice": [
+    "Czarnów",
+    "Dręszew",
+    "Kołaków",
+    "Kuligów",
+    "Marianów",
+    "Stasiopole",
+    "Ślężany"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-25",
+     "2026-12-10",
+     "2026-12-22"
+    ],
+    "bio": [
+     "2026-11-24",
+     "2026-12-08"
+    ],
+    "pap": [
+     "2026-11-21",
+     "2026-12-11"
+    ],
+    "mtw": [
+     "2026-11-26",
+     "2026-12-15"
+    ],
+    "szk": [
+     "2026-11-21",
+     "2026-12-11"
+    ],
+    "pop": [
+     "2026-11-25",
+     "2026-12-10",
+     "2026-12-19"
+    ]
+   }
+  }
+ ]
+}

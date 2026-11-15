@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.3.1
+ * Version: 2.4.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -65,7 +65,7 @@ add_action('admin_post_zpw_dziki_podglad', function () {
 // Po aktualizacji wtyczki pliki mini-serwera są odświeżane (dane i klucz zostają).
 add_action('admin_init', function () {
     if (!current_user_can('manage_options')) return;
-    if (get_option('zpw_dziki_api_wersja') !== '2.2.1' && zpw_dziki_instaluj_api() === '') update_option('zpw_dziki_api_wersja', '2.2.1');
+    if (get_option('zpw_dziki_api_wersja') !== '2.4.0' && zpw_dziki_instaluj_api() === '') update_option('zpw_dziki_api_wersja', '2.4.0');
     // 2.2.1: naprawa – strona główna /dziki/ nie powstała, bo adres zajmowało zdjęcie; strony gmin trafiły pod to zdjęcie
     if (get_option('zpw_dziki_naprawa') !== '2.2.1' && !zpw_dziki_strona('dziki') && zpw_dziki_strona('dziki/kobylka') === null && get_page_by_path('dziki/kobylka', OBJECT, array('page', 'attachment'))) {
         $w = zpw_dziki_utworz_strony(); update_option('zpw_dziki_naprawa', '2.2.1');
@@ -94,11 +94,14 @@ function zpw_dziki_admin() {
     }
     if (isset($_POST['zpw_dziki_api']) && check_admin_referer('zpw_dziki_narz') && current_user_can('manage_options')) { $e = zpw_dziki_instaluj_api(); echo '<div class="notice notice-' . ($e ? 'error' : 'success') . '"><p>' . esc_html($e ? $e : 'Mini-serwer zainstalowany: ' . home_url('/mieszkaniec-api/')) . '</p></div>'; }
     if (isset($_POST['zpw_dziki_strony']) && check_admin_referer('zpw_dziki_narz') && current_user_can('publish_pages')) { echo '<div class="notice notice-success"><p>' . esc_html(zpw_dziki_utworz_strony()) . '</p></div>'; }
+    if (isset($_POST['zpw_dziki_import']) && check_admin_referer('zpw_dziki_narz') && current_user_can('manage_options')) { echo '<div class="notice notice-info"><p>' . esc_html(zpw_dziki_import(wp_unslash($_POST['zpw_dziki_import_json']))) . '</p></div>'; }
     $rows = zpw_dziki_lista();
     echo '<div class="wrap"><h1>Mapa dzików – obserwacje z ostatnich ' . (int) ZPW_DZIKI_DNI . ' dni</h1>';
     echo '<form method="post" style="margin:10px 0">'; wp_nonce_field('zpw_dziki_narz');
     echo '<button class="button button-primary" name="zpw_dziki_strony" value="1">Utwórz strony map i zgłoszeń (powiat + 12 gmin)</button> <button class="button" name="zpw_dziki_api" value="1">Zainstaluj ponownie mini-serwer</button> <span class="description">Strony: /dziki/ i /dziki/&lt;gmina&gt;/. Istniejących nie zmienia.</span></form>';
     echo '<p>Shortcode: <code>[zycie_dziki_mapa]</code> (powiat) albo <code>[zycie_dziki_mapa gmina="kobylka"]</code>. Dane trzyma samodzielny mini-serwer <code>' . esc_html(home_url('/mieszkaniec-api/')) . '</code>, do którego zgłaszają też aplikacje mieszkańców. Wpisy starsze niż ' . (int) ZPW_DZIKI_DNI . ' dni znikają same. Zgłoszenia nie zawierają danych osobowych. <strong>Zdjęcia i filmy są widoczne na mapie dopiero po zatwierdzeniu</strong>: nie zatwierdzaj, jeśli widać na nich twarze, tablice rejestracyjne albo cokolwiek poza dzikami.</p>';
+    echo '<details style="margin:10px 0"><summary>Import zgłoszeń (JSON) – np. z grup na Facebooku</summary><form method="post">'; wp_nonce_field('zpw_dziki_narz');
+    echo '<p><textarea name="zpw_dziki_import_json" rows="8" style="width:100%;font-family:monospace" placeholder=\'{"dziki":[{"lat":52.34,"lon":21.19,"ile":"2–5 dzików","co":"przechodzą","kiedy":"2026-11-14T18:30:00Z","zrodlo":"fb"}],"sprawy":[{"kat":"droga","lat":52.34,"lon":21.19,"opis":"…","kiedy":"…","zrodlo":"fb"}]}\'></textarea></p><p><button class="button" name="zpw_dziki_import" value="1">Importuj</button> <span class="description">Tylko fakty: miejsce, czas, rodzaj. Bez nazwisk i treści cudzych wpisów.</span></p></form></details>';
     if ($rows === null) { echo '<div class="notice notice-error"><p>Mini-serwer nie odpowiada. Użyj przycisku „Zainstaluj ponownie mini-serwer”.</p></div></div>'; return; }
     echo '<table class="widefat striped"><thead><tr><th>Kiedy</th><th>Gmina</th><th>Miejsce</th><th>Ile</th><th>Zachowanie</th><th>Zdjęcie / film</th><th>Źródło</th><th></th></tr></thead><tbody>';
     if (!$rows) echo '<tr><td colspan="8">Brak obserwacji.</td></tr>';
@@ -114,6 +117,23 @@ function zpw_dziki_admin() {
 }
 
 function zpw_zgl_url() { return home_url('/mieszkaniec-api/?zasob=zgloszenia'); }
+
+/** Import zgłoszeń przez moderatora (np. z grup na Facebooku): JSON {"dziki":[{lat,lon,ile,co,kiedy,zrodlo}],"sprawy":[{kat,lat,lon,opis,kiedy,zrodlo}]}. */
+function zpw_dziki_import($json) {
+    $d = json_decode((string) $json, true);
+    if (!is_array($d)) return 'Niepoprawny JSON.';
+    $k = zpw_dziki_klucz(); $ok = 0; $bl = array();
+    foreach (array('dziki' => zpw_dziki_api_url(), 'sprawy' => zpw_zgl_url()) as $co => $url) {
+        foreach ((array) (isset($d[$co]) ? $d[$co] : array()) as $i => $w) {
+            if (!is_array($w)) continue;
+            $w['klucz'] = $k;
+            $r = wp_remote_post($url, array('timeout' => 15, 'headers' => array('Content-Type' => 'application/json'), 'body' => wp_json_encode($w)));
+            $c = is_wp_error($r) ? 0 : (int) wp_remote_retrieve_response_code($r);
+            if ($c === 200 || $c === 201) $ok++; else { $b = is_wp_error($r) ? array() : json_decode(wp_remote_retrieve_body($r), true); $bl[] = $co . ' #' . ($i + 1) . ': ' . (isset($b['message']) ? $b['message'] : 'błąd ' . $c); }
+        }
+    }
+    return 'Dodano: ' . $ok . ($bl ? '. Pominięto: ' . implode('; ', $bl) : '.');
+}
 // Podgląd zdjęcia zgłoszenia dla moderatora.
 add_action('admin_post_zpw_zgl_podglad', function () {
     if (!current_user_can('moderate_comments')) wp_die('Brak uprawnień.', 403);
