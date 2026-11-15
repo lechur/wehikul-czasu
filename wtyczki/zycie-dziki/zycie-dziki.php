@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.2.0
+ * Version: 2.2.1
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -64,9 +64,15 @@ add_action('admin_post_zpw_dziki_podglad', function () {
 
 // Po aktualizacji wtyczki pliki mini-serwera są odświeżane (dane i klucz zostają).
 add_action('admin_init', function () {
-    if (get_option('zpw_dziki_api_wersja') === '2.2.0' || !current_user_can('manage_options')) return;
-    if (zpw_dziki_instaluj_api() === '') update_option('zpw_dziki_api_wersja', '2.2.0');
+    if (!current_user_can('manage_options')) return;
+    if (get_option('zpw_dziki_api_wersja') !== '2.2.1' && zpw_dziki_instaluj_api() === '') update_option('zpw_dziki_api_wersja', '2.2.1');
+    // 2.2.1: naprawa – strona główna /dziki/ nie powstała, bo adres zajmowało zdjęcie; strony gmin trafiły pod to zdjęcie
+    if (get_option('zpw_dziki_naprawa') !== '2.2.1' && !zpw_dziki_strona('dziki') && zpw_dziki_strona('dziki/kobylka') === null && get_page_by_path('dziki/kobylka', OBJECT, array('page', 'attachment'))) {
+        $w = zpw_dziki_utworz_strony(); update_option('zpw_dziki_naprawa', '2.2.1');
+        set_transient('zpw_dziki_komunikat', $w, 300);
+    } else if (get_option('zpw_dziki_naprawa') !== '2.2.1') update_option('zpw_dziki_naprawa', '2.2.1');
 });
+add_action('admin_notices', function () { $k = get_transient('zpw_dziki_komunikat'); if ($k) { delete_transient('zpw_dziki_komunikat'); echo '<div class="notice notice-success"><p><b>Mapa dzików:</b> ' . esc_html($k) . '</p></div>'; } });
 
 // Moderacja: redaktorzy i administratorzy (uprawnienie moderate_comments).
 add_action('admin_menu', function () {
@@ -151,28 +157,35 @@ function zpw_zgl_admin() {
     echo '</tbody></table></div>';
 }
 
+function zpw_dziki_strona($path) { return get_page_by_path($path, OBJECT, array('page')); } // bez załączników (zdjęć) o tym samym adresie
 function zpw_dziki_utworz_strony() {
-    $rodzic = get_page_by_path('dziki');
-    $nowe = 0;
+    $nowe = 0; $info = '';
+    $rodzic = zpw_dziki_strona('dziki');
     if (!$rodzic) {
+        // Adres /dziki/ może zajmować stare zdjęcie z biblioteki mediów; zmieniamy tylko jego adres strony załącznika (plik zostaje).
+        $zal = get_page_by_path('dziki', OBJECT, array('attachment'));
+        if ($zal) { wp_update_post(array('ID' => $zal->ID, 'post_name' => 'dziki-zdjecie-' . $zal->ID)); $info = ' Adres /dziki/ zajmowało zdjęcie z biblioteki mediów (ID ' . $zal->ID . '); jego strona załącznika ma teraz adres /dziki-zdjecie-' . $zal->ID . '/, plik zdjęcia się nie zmienił.'; }
         $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_name' => 'dziki', 'post_title' => 'Dziki w powiecie wołomińskim – mapa obserwacji', 'post_content' => '[zycie_dziki_mapa]'));
         if (!$id || is_wp_error($id)) return 'Nie udało się utworzyć strony głównej.';
+        if (get_post_field('post_name', $id) !== 'dziki') return 'Strona główna dostała adres ' . get_permalink($id) . ' zamiast /dziki/. Sprawdź, co zajmuje adres /dziki/.';
         $nowe++; $rid = $id;
+        // strony utworzone wcześniej pod zdjęciem przenosimy pod nową stronę główną
+        if ($zal) foreach (get_posts(array('post_type' => 'page', 'post_status' => 'any', 'post_parent' => $zal->ID, 'numberposts' => -1)) as $c) { wp_update_post(array('ID' => $c->ID, 'post_parent' => $rid)); $info .= ''; }
     } else $rid = $rodzic->ID;
     foreach (zpw_dziki_gminy() as $slug => $g) {
-        if (get_page_by_path('dziki/' . $slug)) continue;
+        if (zpw_dziki_strona('dziki/' . $slug)) continue;
         $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $rid, 'post_name' => $slug, 'post_title' => 'Dziki: ' . $g['n'] . ' – mapa obserwacji', 'post_content' => '[zycie_dziki_mapa gmina="' . $slug . '"]'));
         if ($id && !is_wp_error($id)) $nowe++;
     }
     // strony zgłoszeń: /dziki/zglos/ (gmina ustalana z położenia) i /dziki/<gmina>/zglos/
-    if (!get_page_by_path('dziki/zglos')) { $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $rid, 'post_name' => 'zglos', 'post_title' => 'Zgłoś dziki w powiecie wołomińskim', 'post_content' => '[zycie_dziki_zglos]')); if ($id && !is_wp_error($id)) $nowe++; }
+    if (!zpw_dziki_strona('dziki/zglos')) { $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $rid, 'post_name' => 'zglos', 'post_title' => 'Zgłoś dziki w powiecie wołomińskim', 'post_content' => '[zycie_dziki_zglos]')); if ($id && !is_wp_error($id)) $nowe++; }
     foreach (zpw_dziki_gminy() as $slug => $g) {
-        if (get_page_by_path('dziki/' . $slug . '/zglos')) continue;
-        $ro = get_page_by_path('dziki/' . $slug); if (!$ro) continue;
+        if (zpw_dziki_strona('dziki/' . $slug . '/zglos')) continue;
+        $ro = zpw_dziki_strona('dziki/' . $slug); if (!$ro) continue;
         $id = wp_insert_post(array('post_type' => 'page', 'post_status' => 'publish', 'post_parent' => $ro->ID, 'post_name' => 'zglos', 'post_title' => 'Zgłoś dziki: ' . $g['n'], 'post_content' => '[zycie_dziki_zglos gmina="' . $slug . '"]'));
         if ($id && !is_wp_error($id)) $nowe++;
     }
-    return 'Utworzono stron: ' . $nowe . '. Mapa powiatu: ' . home_url('/dziki/') . ' · Zgłoszenia: ' . home_url('/dziki/zglos/');
+    return 'Utworzono stron: ' . $nowe . '. Mapa powiatu: ' . home_url('/dziki/') . ' · Zgłoszenia: ' . home_url('/dziki/zglos/') . '.' . $info;
 }
 
 // Mapa na stronie: [zycie_dziki_mapa] (powiat) albo [zycie_dziki_mapa gmina="kobylka"]
