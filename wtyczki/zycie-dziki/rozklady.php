@@ -157,6 +157,8 @@ function krok(st){const m=st.maneuver,nm=st.name?` w ${/^(ul|al|pl|os)\.?\s/i.te
  if(m.type==='roundabout'||m.type==='rotary')return`Na rondzie idź w ${m.exit?m.exit+'. wylot':'wylot'}${nm}`;
  if(m.type==='new name'||m.type==='continue')return(MOD[m.modifier]&&m.modifier!=='straight'?MOD[m.modifier][0].toUpperCase()+MOD[m.modifier].slice(1):'Idź dalej')+nm;
  const a=MOD[m.modifier]||'idź dalej';return a[0].toUpperCase()+a.slice(1)+nm;}
+function uprosc(st,cel){const o=[];st.forEach(x=>{x=Object.assign({},x,{maneuver:Object.assign({},x.maneuver)});if(x.name&&cel&&cel.toLowerCase().includes(x.name.toLowerCase()))x.name='';const t=x.maneuver.type;const pr=o[o.length-1];
+ if(pr&&t!=='arrive'&&t!=='depart'&&(x.distance<25||(x.name&&x.name===pr.name&&(t==='continue'||t==='new name'))))pr.distance+=x.distance;else o.push(x);});return o;}
 const trasy={};let trasaL=null;
 function cel(){const M=MIEJSCA[S.gdzie];if(!M)return null;const sl=M.sl&&S.sl!=null&&M.sl[S.sl];return sl?{lat:sl.lat,lon:sl.lon}:(M.lat?{lat:M.lat,lon:M.lon}:null);}
 function mapsUrl(c){const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);return ios?`https://maps.apple.com/?daddr=${c.lat},${c.lon}&dirflg=w`:`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lon}&travelmode=walking`;}
@@ -170,7 +172,7 @@ async function dojscie(){const box=q('doj'),M=MIEJSCA[S.gdzie];if(!box||!M)retur
  let T=trasy[key];if(T===undefined){try{const j=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${S.me[1]},${S.me[0]};${c.lon},${c.lat}?overview=full&geometries=geojson&steps=true`).then(r=>r.json());T=trasy[key]=(j.routes&&j.routes[0])||null;}catch(e){T=null;}}
  const prosto=Math.hypot((c.lon-S.me[1])*68000,(c.lat-S.me[0])*111000);
  const dist=T?T.distance:prosto*1.3,min=Math.max(1,Math.round(dist/75));
- const st=T?T.legs[0].steps.filter((x,i,a)=>x.distance>3||i===a.length-1):[];
+ const st=T?uprosc(T.legs[0].steps,M.n):[];
  box.innerHTML=h+`<div class="zrj-czas"><b>${min} min</b><span>pieszo · ${dist<1000?Math.round(dist/10)*10+' m':(dist/1000).toFixed(1).replace('.',',')+' km'}${S.sl?' · do słupka '+E(S.sl):''}</span></div>`+
   (st.length?`<ol class="zrj-kroki">${st.map(x=>`<li><span>${krok(x)}</span><small>${x.maneuver.type==='arrive'?'':Math.round(x.distance/5)*5+' m'}</small></li>`).join('')}</ol>`:`<p class="zrj-mut">Nie udało się wyznaczyć trasy ulicami – kieruj się mapą.</p>`)+
   `<div class="zrj-row"><a class="zrj-btn" target="_blank" rel="noopener" href="${mapsUrl(c)}">Prowadź w mapach</a><button class="zrj-btn line" data-a="namapie">Pokaż na mapie</button></div>`+(dist>3000?'<p class="zrj-mut" style="margin:8px 0 0">To daleko – sprawdź, czy bliżej nie masz innego przystanku (przycisk „Najbliższy przystanek”).</p>':'');

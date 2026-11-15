@@ -107,6 +107,8 @@ function kKrok(st){const m=st.maneuver,nm=st.name?' w '+(/^(ul|al|pl|os)\.?\s/i.
  if(m.type==='arrive')return'Jesteś na miejscu'+(m.modifier==='left'?' – cel po lewej':m.modifier==='right'?' – cel po prawej':'');
  if(m.type==='roundabout'||m.type==='rotary')return'Na rondzie idź w '+(m.exit?m.exit+'. wylot':'wylot')+nm;
  const a=(m.type==='new name'||m.type==='continue')&&(!KMOD[m.modifier]||m.modifier==='straight')?'idź dalej':(KMOD[m.modifier]||'idź dalej');return a[0].toUpperCase()+a.slice(1)+nm;}
+function uprosc(st,cel){const o=[];st.forEach(x=>{x=Object.assign({},x,{maneuver:Object.assign({},x.maneuver)});if(x.name&&cel&&cel.toLowerCase().includes(x.name.toLowerCase()))x.name='';const t=x.maneuver.type;const pr=o[o.length-1];
+ if(pr&&t!=='arrive'&&t!=='depart'&&(x.distance<25||(x.name&&x.name===pr.name&&(t==='continue'||t==='new name'))))pr.distance+=x.distance;else o.push(x);});return o;}
 function kCel(){if(KS.cel)return KS.cel;const c=KST[KS.stacja];return c?{n:'stacja '+KS.stacja,lat:c[0],lon:c[1],typ:'stacja'}:null;}
 function kMapsUrl(c){return /iPhone|iPad|iPod/.test(navigator.userAgent)?`https://maps.apple.com/?daddr=${c.lat},${c.lon}&dirflg=w`:`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lon}&travelmode=walking`;}
 function kGps(ok){if(!navigator.geolocation){say('Telefon nie udostępnia lokalizacji.');return;}const b=Q('#k-doj');if(b)b.insertAdjacentHTML('beforeend','<p class="mut" id="k-gpsinfo">Ustalam Twoje położenie…</p>');navigator.geolocation.getCurrentPosition(p=>{KS.me=[+p.coords.latitude.toFixed(5),+p.coords.longitude.toFixed(5)];ok();},()=>{const g=Q('#k-gpsinfo');if(g)g.textContent='Brak zgody na lokalizację. Włącz ją w ustawieniach przeglądarki.';},{enableHighAccuracy:true,timeout:10000,maximumAge:60000});}
@@ -119,7 +121,7 @@ function kDoj(){const box=Q('#k-doj');if(!box)return;const c=kCel();if(!c){box.i
   `<div class="flex-wrap"><a class="btn sm" target="_blank" rel="noopener" href="${kMapsUrl(c)}">Prowadź w mapach</a><button class="btn sm line" data-dj="mapa">Pokaż na mapie</button><button class="btn sm line" data-dj="blisko">Najbliższy przystanek</button></div>`+(dist>3000?'<p class="mut" style="margin:8px 0 0">To daleko – sprawdź najbliższy przystanek.</p>':'');}
 async function kTrasa(){const c=kCel();if(!c||!KS.me)return;const box=Q('#k-doj');if(box)box.insertAdjacentHTML('beforeend','<p class="mut">Wyznaczam trasę…</p>');
  let T=null;try{const j=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${KS.me[1]},${KS.me[0]};${c.lon},${c.lat}?overview=full&geometries=geojson&steps=true`).then(r=>r.json());T=j.routes&&j.routes[0];}catch(e){}
- KS.trasaD=T?{dist:T.distance,kroki:T.legs[0].steps.filter((x,i,a)=>x.distance>3||i===a.length-1)}:{dist:Math.hypot((c.lon-KS.me[1])*68000,(c.lat-KS.me[0])*111000)*1.3,kroki:[]};
+ KS.trasaD=T?{dist:T.distance,kroki:uprosc(T.legs[0].steps,c.n)}:{dist:Math.hypot((c.lon-KS.me[1])*68000,(c.lat-KS.me[0])*111000)*1.3,kroki:[]};
  KS.trasa=T?T.geometry.coordinates.map(x=>[x[1],x[0]]):[KS.me,[c.lat,c.lon]];kDoj();if(kMapa)kMapa.draw();}
 function kNajblizsze(){
  const box=Q('#k-nast');if(!box)return;const st=KS.stacja,d=dzienTyp(),now=teraz(),o=[];
