@@ -123,7 +123,7 @@ article.r .body .vid{display:block;background:var(--soft);border-radius:12px;pad
 .rfoot{border-top:1px solid var(--line);margin-top:24px;padding-top:14px;display:grid;gap:10px}
 .rel h4{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:26px 0 8px}
 /* mapa */
-#dzmap{height:58vh;min-height:330px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#dfe6dc}
+#dzmap{height:58vh;min-height:330px;border-radius:16px;overflow:hidden;position:relative;z-index:0;isolation:isolate;border:1px solid var(--line);background:#dfe6dc}
 :root[data-theme=dark] #dzmap{background:#1b231c}
 .leaflet-container{font-family:inherit}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin:8px 2px}.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
@@ -198,7 +198,7 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
 
  <h2 class="sec"><span>Na skróty</span></h2>
  <div class="grid2" id="tiles">
-  <button class="tile" data-go="dziki"><div class="ic">🐗</div><b>Dziki w okolicy</b><small id="t-dz">Mapa i zgłoszenia</small></button>
+  <button class="tile" data-go="dziki"><div class="ic">🐗</div><b>Dziki i usterki</b><small id="t-dz">Mapa i zgłoszenia</small></button>
   <button class="tile" data-go="zglos"><div class="ic">✍️</div><b>Napisz do redakcji</b><small>Temat, zdjęcie, sygnał</small></button>
   <a class="tile" id="t-gaz" href="https://www.zyciepw.pl/archiwum-gazety" target="_blank" rel="noopener"><div class="ic">📰</div><b>Gazeta do pobrania</b><small id="t-gaz-s">Najnowszy numer</small></a>
   <button class="tile" data-go="zapisane"><div class="ic">🔖</div><b>Zapisane</b><small id="t-zap">Do przeczytania później</small></button>
@@ -216,12 +216,13 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
 
 <!-- DZIKI -->
 <section class="view" id="v-dziki">
- <div class="hello"><h1>Dziki w okolicy</h1><p id="dz-sum">Obserwacje mieszkańców z ostatnich 14 dni.</p></div>
+ <div class="hello"><h1 id="map-h">Dziki w okolicy</h1><p id="dz-sum">Obserwacje mieszkańców z ostatnich 14 dni.</p></div>
+ <div class="seg" id="mseg" style="grid-template-columns:1fr 1fr;margin:10px 0 2px"><button data-m="dziki" class="on">🐗 Dziki</button><button data-m="zgl">🛠️ Usterki i sprawy</button></div>
  <div class="chips" id="dz-chips" style="margin-top:10px"></div>
  <div id="dzmap"></div>
- <div class="legend"><span><i style="background:#d21f1f"></i>do 2 dni</span><span><i style="background:#f08a24"></i>3–7 dni</span><span><i style="background:#9aa3b2"></i>starsze</span></div>
+ <div class="legend" id="map-leg"></div>
  <button class="btn r w" id="dz-add" style="margin-top:6px">🐗 Widzę dziki – zgłoś</button>
- <p class="note">Zgłoszenia trafiają na wspólną mapę zyciepw.pl. Nie wysyłaj zdjęć, na których widać ludzi. Punkty znikają po 14 dniach. W razie zagrożenia dzwoń 112.</p>
+ <p class="note" id="map-note"></p>
 </section>
 
 <!-- ZGŁOŚ -->
@@ -308,22 +309,23 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
  <div class="grab"></div>
  <div class="steps"><i class="on"></i><i></i><i></i></div>
  <div id="dz-s1">
-  <h3>Gdzie są dziki?</h3>
+  <h3 id="dz-h1">Gdzie są dziki?</h3>
   <p class="note" style="margin-top:0">Zlokalizuj się albo zamknij okno i dotknij mapy w miejscu obserwacji.</p>
   <button class="btn w" id="dz-gps">📍 Zlokalizuj mnie</button>
   <p class="note" id="dz-where"></p>
   <button class="btn r w" id="dz-n1" disabled>Dalej</button>
  </div>
  <div id="dz-s2" hidden>
-  <h3>Ile i co robią?</h3>
+  <h3 id="dz-h2">Ile i co robią?</h3>
   <div class="opts2" id="dz-ile"></div>
   <div class="opts2" id="dz-co" style="margin-top:10px"></div>
+  <textarea id="zg-opis" maxlength="160" placeholder="Krótki opis (opcjonalnie, do 160 znaków). Bez nazwisk i danych osób." style="margin-top:10px;min-height:80px" hidden></textarea>
   <div class="row" style="margin-top:14px"><button class="btn gh" id="dz-b2">Wstecz</button><button class="btn r" id="dz-n2" disabled>Dalej</button></div>
  </div>
  <div id="dz-s3" hidden>
-  <h3>Zdjęcie lub film (opcjonalnie)</h3>
+  <h3 id="dz-h3">Zdjęcie lub film (opcjonalnie)</h3>
   <label class="file"><input type="file" id="dz-f" accept="image/*,video/*"><span>📷</span><span id="dz-fn">Dodaj zdjęcie lub krótki film</span></label>
-  <p class="note">Zdjęcie pojawi się na mapie po sprawdzeniu przez redakcję.</p>
+  <p class="note">Zdjęcie i opis pojawią się na mapie po sprawdzeniu przez redakcję.</p>
   <div class="row" style="margin-top:10px"><button class="btn gh" id="dz-b3">Wstecz</button><button class="btn r" id="dz-send">Wyślij zgłoszenie</button></div>
   <p class="note" id="dz-msg"></p>
  </div>
@@ -342,7 +344,7 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
 <script>
 (function(){
 'use strict';
-var VER='1.1 · 15.11.2026';
+var VER='1.2 · 15.11.2026';
 var SITE='https://www.zyciepw.pl',API=SITE+'/wp-json',DZAPI=SITE+'/mieszkaniec-api/?zasob=dziki';
 var SNAP=null;try{SNAP=JSON.parse(document.getElementById('snap').textContent)}catch(e){}
 var PREVIEW=!!(SNAP&&SNAP.podglad);
@@ -549,9 +551,11 @@ function dzInit(){
   MAP=L.map('dzmap',{zoomControl:true,attributionControl:true}).setView([52.39,21.35],10);
   if(!PREVIEW)L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(MAP);
   BOUND=L.layerGroup().addTo(MAP);DZL=L.layerGroup().addTo(MAP);
+  MAP.on('popupopen',function(e){var el=e.popup.getElement();if(!el)return;var a=el.querySelector('[data-tez]'),b=el.querySelector('[data-nap]');if(a)a.onclick=function(){zgGlos(a.dataset.tez,'tez',a)};if(b)b.onclick=function(){zgGlos(b.dataset.nap,'naprawione',b)}});
   MAP.on('click',function(e){if($('sh-dz').classList.contains('on')||ADD){setPin(e.latlng)}});
   dzChips();dzLoad();
  });
+ mapMode();
 }
 var GEO=null;
 function geo(){if(GEO)return Promise.resolve(GEO);var d=SNAP&&SNAP.geo;if(d){GEO=d;return Promise.resolve(d)}return getJ('gminy.json','geo').then(function(j){GEO=j;return j})}
@@ -563,6 +567,7 @@ function dzLoad(){
    if(PREVIEW){var c=pg.getBounds().getCenter();L.marker(c,{icon:L.divIcon({className:'',html:'<div style="font:600 11px system-ui;color:'+(dark?'#aab':'#4a5a48')+';white-space:nowrap;transform:translate(-50%,-50%)">'+esc(gm_[k].n)+'</div>'}),interactive:false}).addTo(BOUND)}});
   if(bb.length){var b=bb[0];bb.forEach(function(x){b.extend(x)});MAP.fitBounds(b,{padding:[10,10]})}
  }).catch(function(){});
+ if(MODE==='zgl'){zgLoad();return}
  getJ(DZAPI+(DZF?'&gmina='+DZF:''),'dziki_'+(DZF||'pow')).then(function(d){
   DZL.clearLayers();var now=Date.now(),O=d.obserwacje||[],t=0;
   O.slice().reverse().forEach(function(o){var w=(now-new Date(o.kiedy))/864e5;if(w<=7)t++;var col=w<2?'#d21f1f':w<=7?'#f08a24':'#9aa3b2';
@@ -571,17 +576,43 @@ function dzLoad(){
  }).catch(function(){$('dz-sum').textContent='Nie udało się pobrać zgłoszeń.'});
 }
 var ADD=false,DZ={ile:-1,co:-1,file:null};
+/* druga warstwa mapy: usterki i sprawy mieszkańców */
+var MODE='dziki',ZGAPI=SITE+'/mieszkaniec-api/?zasob=zgloszenia',ZG={kat:''};
+var ZKAT={droga:'Dziura w drodze lub chodniku',oswietlenie:'Nie świeci latarnia',woda:'Woda, kanalizacja, zalana ulica',odpady:'Śmieci, dzikie wysypisko',zielen:'Zieleń, drzewa',bezpieczenstwo:'Znak, przejście, bezpieczeństwo',potrzeba:'Potrzebna inwestycja',inne:'Inna sprawa'};
+var ZIC={droga:'🕳️',oswietlenie:'💡',woda:'💧',odpady:'🗑️',zielen:'🌳',bezpieczenstwo:'⚠️',potrzeba:'🏗️',inne:'📌'};
+if(!S.uid){S.uid=(Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)+Date.now().toString(36)).slice(0,24);save()}
+function mapMode(){
+ var z=MODE==='zgl';
+ document.querySelectorAll('#mseg button').forEach(function(b){b.classList.toggle('on',b.dataset.m===MODE)});
+ $('map-h').textContent=z?'Usterki i sprawy':'Dziki w okolicy';
+ $('map-leg').innerHTML=z?'<span><i style="background:#d7141a"></i>do naprawy</span><span><i style="background:#1f9d55"></i>naprawione</span>':'<span><i style="background:#d21f1f"></i>do 2 dni</span><span><i style="background:#f08a24"></i>3–7 dni</span><span><i style="background:#9aa3b2"></i>starsze</span>';
+ $('dz-add').textContent=z?'🛠️ Zgłoś usterkę lub sprawę':'🐗 Widzę dziki – zgłoś';
+ $('map-note').textContent=z?'Wspólna mapa zyciepw.pl: dziury, latarnie, zalane ulice, śmieci. Kilka zgłoszeń tego samego miejsca łączy się w jedną sprawę. To nie jest zgłoszenie do urzędu – redakcja przegląda mapę i pyta urzędy o najczęstsze sprawy. Nagłe zagrożenie: 112.':'Zgłoszenia trafiają na wspólną mapę zyciepw.pl. Nie wysyłaj zdjęć, na których widać ludzi. Punkty znikają po 14 dniach. W razie zagrożenia dzwoń 112.';
+ $('dz-f').accept=z?'image/*':'image/*,video/*';
+}
+document.querySelectorAll('#mseg button').forEach(function(b){b.onclick=function(){MODE=b.dataset.m;mapMode();ev('app_mapa',{warstwa:MODE});if(MAP)dzLoad()}});
+function zgLoad(){
+ getJ(ZGAPI+(DZF?'&gmina='+DZF:''),'zgl_'+(DZF||'pow')).catch(function(e){if(PREVIEW)return {sprawy:[]};throw e}).then(function(d){
+  DZL.clearLayers();var O=d.sprawy||[],ot=0;
+  O.forEach(function(s){var nap=s.status==='naprawione';if(!nap)ot++;
+   L.circleMarker([s.lat,s.lon],{radius:Math.min(16,9+(s.n||1)),color:'#fff',weight:2.5,fillColor:nap?'#1f9d55':'#d7141a',fillOpacity:.95}).bindPopup('<b>'+(ZIC[s.kat]||'📌')+' '+esc(ZKAT[s.kat]||(d.kategorie&&d.kategorie[s.kat])||'Sprawa')+'</b>'+(s.opis?'<br>'+esc(s.opis):'')+'<br><span style="color:#666">Zgłoszeń: '+(s.n||1)+' · od '+new Date(s.pierwsze).toLocaleDateString('pl-PL',{day:'numeric',month:'long'})+(nap?' · naprawione':'')+'</span>'+(s.plik&&!PREVIEW?'<br><img style="width:220px;border-radius:8px" loading="lazy" alt="Zdjęcie zgłoszenia" src="'+ZGAPI+'&plik='+s.plik+'">':'')+(nap?'':'<br><button data-tez="'+esc(s.id)+'" style="margin-top:6px;border:0;border-radius:8px;background:#16181b;color:#fff;padding:7px 10px;font-weight:700">Też to widzę</button> <button data-nap="'+esc(s.id)+'" style="margin-top:6px;border:1px solid #bbb;border-radius:8px;background:#fff;color:#16181b;padding:7px 10px;font-weight:700">Już naprawione</button>'),{minWidth:s.plik?220:160}).addTo(DZL)});
+  var gd=DZF?gm(DZF).n:'Powiat wołomiński';$('dz-sum').textContent=O.length?gd+': '+ot+' '+pl(ot,'sprawa','sprawy','spraw')+' do naprawy, '+(O.length-ot)+' naprawionych.':gd+': nie ma jeszcze zgłoszeń. Widzisz dziurę, zgasłą latarnię albo dzikie wysypisko? Zgłoś jako pierwszy.';
+ }).catch(function(){$('dz-sum').textContent='Nie udało się pobrać zgłoszeń.'});
+}
+function zgGlos(id,akcja,btn){if(PREVIEW){toast('Podgląd: głos nie został wysłany');return}btn.disabled=true;fetch(ZGAPI+'&akcja='+akcja,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:id,u:S.uid})}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){if(x[0]){ev('app_zgloszenie_glos',{akcja:akcja});toast(x[1].juz?'Twój głos jest już policzony':akcja==='tez'?'Dziękujemy – dopisane':'Dziękujemy za informację');MAP.closePopup();zgLoad()}else{btn.disabled=false;toast(x[1].message||'Nie udało się')}}).catch(function(){btn.disabled=false;toast('Brak połączenia')})}
 function setPin(ll){if(PIN)PIN.setLatLng(ll);else PIN=L.marker(ll,{draggable:true,icon:L.divIcon({className:'',iconSize:[34,34],iconAnchor:[17,32],html:'<div style="font-size:30px;line-height:34px;text-align:center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))">📍</div>'})}).addTo(MAP);$('dz-where').textContent='Miejsce zaznaczone ✓ ('+ll.lat.toFixed(4)+', '+ll.lng.toFixed(4)+'). Możesz przesunąć pinezkę.';$('dz-n1').disabled=false;if(ADD&&!$('sh-dz').classList.contains('on')){sheet('sh-dz',true)}}
 function step(n){[1,2,3].forEach(function(i){$('dz-s'+i).hidden=i!==n});document.querySelectorAll('#sh-dz .steps i').forEach(function(e,i){e.classList.toggle('on',i<n)})}
-$('dz-add').onclick=function(){ADD=true;DZ={ile:-1,co:-1,file:null};$('dz-fn').textContent='Dodaj zdjęcie lub krótki film';$('dz-msg').textContent='';$('dz-n1').disabled=!PIN;$('dz-where').textContent=PIN?'Miejsce zaznaczone ✓':'';step(1);optRender();sheet('sh-dz',true)};
+$('dz-add').onclick=function(){ADD=true;DZ={ile:-1,co:-1,file:null};ZG={kat:''};$('zg-opis').value='';var z=MODE==='zgl';$('dz-h1').textContent=z?'Gdzie to jest?':'Gdzie są dziki?';$('dz-h2').textContent=z?'Czego dotyczy sprawa?':'Ile i co robią?';$('dz-h3').textContent=z?'Zdjęcie (opcjonalnie)':'Zdjęcie lub film (opcjonalnie)';$('dz-co').hidden=z;$('zg-opis').hidden=!z;$('dz-f').value='';$('dz-fn').textContent=z?'Dodaj zdjęcie':'Dodaj zdjęcie lub krótki film';$('dz-msg').textContent='';$('dz-n1').disabled=!PIN;$('dz-where').textContent=PIN?'Miejsce zaznaczone ✓':'';step(1);optRender();sheet('sh-dz',true)};
 $('dz-gps').onclick=function(){var b=this;if(!navigator.geolocation){$('dz-where').textContent='Twój telefon nie udostępnia lokalizacji – zamknij okno i dotknij mapy.';return}b.disabled=true;b.textContent='Szukam…';navigator.geolocation.getCurrentPosition(function(p){b.disabled=false;b.textContent='📍 Zlokalizuj mnie';var ll=L.latLng(p.coords.latitude,p.coords.longitude);setPin(ll);MAP.setView(ll,16)},function(){b.disabled=false;b.textContent='📍 Zlokalizuj mnie';$('dz-where').textContent='Nie udało się ustalić lokalizacji. Zamknij okno i dotknij mapy w miejscu obserwacji.'},{enableHighAccuracy:true,timeout:12000})};
-function optRender(){$('dz-ile').innerHTML=DZILE.map(function(o,i){return '<button class="opt'+(DZ.ile===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-co').innerHTML=DZCO.map(function(o,i){return '<button class="opt'+(DZ.co===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-ile').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.ile=+b.dataset.i;optRender()}});$('dz-co').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.co=+b.dataset.i;optRender()}});$('dz-n2').disabled=DZ.ile<0||DZ.co<0}
+function optRender(){if(MODE==='zgl'){$('dz-ile').innerHTML=Object.keys(ZKAT).map(function(k){return '<button class="opt'+(ZG.kat===k?' on':'')+'" data-k="'+k+'">'+ZIC[k]+' '+ZKAT[k]+'</button>'}).join('');$('dz-ile').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){ZG.kat=b.dataset.k;optRender()}});$('dz-n2').disabled=!ZG.kat;return}$('dz-ile').innerHTML=DZILE.map(function(o,i){return '<button class="opt'+(DZ.ile===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-co').innerHTML=DZCO.map(function(o,i){return '<button class="opt'+(DZ.co===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-ile').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.ile=+b.dataset.i;optRender()}});$('dz-co').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.co=+b.dataset.i;optRender()}});$('dz-n2').disabled=DZ.ile<0||DZ.co<0}
 $('dz-n1').onclick=function(){step(2)};$('dz-b2').onclick=function(){step(1)};$('dz-n2').onclick=function(){step(3)};$('dz-b3').onclick=function(){step(2)};
 $('dz-f').onchange=function(){var f=this.files[0];if(!f){DZ.file=null;return}if(/^video/.test(f.type)){if(f.size>40*1048576){$('dz-fn').textContent='Film jest za duży (do 40 MB, ok. 20 s)';DZ.file=null;return}DZ.file={b:f,n:f.name};$('dz-fn').textContent='✓ Film dodany';return}var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(b){DZ.file={b:b,n:'dziki.jpg'};$('dz-fn').textContent='✓ Zdjęcie dodane (dotknij, aby zmienić)'},'image/jpeg',.82)};im.onerror=function(){$('dz-fn').textContent='Nie udało się odczytać zdjęcia'};im.src=u};
 $('dz-send').onclick=function(){
  if(!PIN){step(1);return}var b=this,ll=PIN.getLatLng();
  if(PREVIEW){$('dz-msg').textContent='To podgląd – w aplikacji na telefonie zgłoszenie trafi na mapę zyciepw.pl.';return}
  b.disabled=true;$('dz-msg').textContent='Wysyłam…';
+ if(MODE==='zgl'){var f2=new FormData();f2.append('kat',ZG.kat);f2.append('lat',ll.lat);f2.append('lon',ll.lng);f2.append('opis',$('zg-opis').value.trim());f2.append('zrodlo','zyciepw-app');f2.append('u',S.uid);if(DZ.file)f2.append('plik',DZ.file.b,DZ.file.n);
+  fetch(ZGAPI,{method:'POST',body:f2}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){b.disabled=false;if(x[0]){ev('app_zgloszenie',{kat:ZG.kat,gmina:DZF||S.g||'',zdjecie:DZ.file?1:0});sheet('sh-dz',false);ADD=false;if(PIN){MAP.removeLayer(PIN);PIN=null}toast(x[1].dolaczono?'Dopisano do istniejącej sprawy w tym miejscu':'Dodano. Opis pojawi się po sprawdzeniu');zgLoad()}else $('dz-msg').textContent=x[1]&&x[1].message||'Nie udało się dodać.'}).catch(function(){b.disabled=false;$('dz-msg').textContent='Brak połączenia. Spróbuj ponownie.'});return}
  var fd=new FormData();fd.append('lat',ll.lat);fd.append('lon',ll.lng);fd.append('ile',DZILE[DZ.ile]);fd.append('co',DZCO[DZ.co]);fd.append('kiedy',new Date().toISOString());fd.append('zrodlo','zyciepw');if(DZ.file)fd.append('plik',DZ.file.b,DZ.file.n);
  fetch(DZAPI,{method:'POST',body:fd}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){b.disabled=false;if(x[0]){ev('app_dzik',{gmina:DZF||S.g||'',plik:DZ.file?1:0});sheet('sh-dz',false);ADD=false;if(PIN){MAP.removeLayer(PIN);PIN=null}toast(x[1].media_blad?'Dodano bez pliku: '+x[1].media_blad:DZ.file?'Dodano. Zdjęcie pojawi się po sprawdzeniu':'Dodano. Dziękujemy!');dzLoad();dzikiTile()}else $('dz-msg').textContent=x[1]&&x[1].message||'Nie udało się dodać.'}).catch(function(){b.disabled=false;$('dz-msg').textContent='Brak połączenia. Spróbuj ponownie.'});
 };
