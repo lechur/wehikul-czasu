@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.2.2
+ * Version: 2.2.3
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
   nav.innerHTML = h; var on = nav.querySelector('.on'); if (on && on.scrollIntoView) on.scrollIntoView({inline: 'center', block: 'nearest'});
   // mapa
   var all = [52.2562, 21.0646, 52.5561, 21.738], b = cur ? cur.b : all, bounds = L.latLngBounds([b[0], b[1]], [b[2], b[3]]);
-  var map = L.map('zdz-map', {scrollWheelZoom: false, zoomSnap: 0.5, maxBounds: L.latLngBounds([all[0] - 0.08, all[1] - 0.15], [all[2] + 0.08, all[3] + 0.15]), minZoom: 10});
+  var map = L.map('zdz-map', {scrollWheelZoom: false, zoomSnap: 0.5, maxBounds: L.latLngBounds([all[0] - 0.08, all[1] - 0.15], [all[2] + 0.08, all[3] + 0.15]), minZoom: 9});
   map.fitBounds(bounds, {padding: [10, 10]});
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
   map.on('focus click', function () { map.scrollWheelZoom.enable(); });
