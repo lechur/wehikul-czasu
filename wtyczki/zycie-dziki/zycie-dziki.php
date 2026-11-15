@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Życie – Mapa dzików
  * Description: Mapy obserwacji dzików dla powiatu wołomińskiego i każdej gminy: [zycie_dziki_mapa] albo [zycie_dziki_mapa gmina="kobylka"]. Dane pochodzą z samodzielnego mini-serwera /mieszkaniec-api/ (niezależnego od WordPressa), do którego zgłaszają też aplikacje mieszkańców. Wtyczka instaluje ten mini-serwer, pokazuje mapy i pozwala moderować wpisy.
- * Version: 2.2.3
+ * Version: 2.3.0
  * Author: Życie Powiatu
  */
 if (!defined('ABSPATH')) exit;
@@ -190,6 +190,7 @@ function zpw_dziki_utworz_strony() {
 
 // Mapa na stronie: [zycie_dziki_mapa] (powiat) albo [zycie_dziki_mapa gmina="kobylka"]
 require_once __DIR__ . '/zglos.php';
+require_once __DIR__ . '/zgloszenia-mapa.php';
 
 add_shortcode('zycie_dziki_mapa', function ($atts) {
     $atts = shortcode_atts(array('gmina' => ''), $atts);
