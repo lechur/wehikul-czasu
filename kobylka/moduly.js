@@ -100,6 +100,27 @@ function kRenderPoc(){
   return `<div class="krow${cur}"><div class="kt"><b>${E(x.g)}</b><span>${E(x.nr||'')}</span></div><div class="ka">→</div><div class="kt" style="flex:3"><b style="font-size:15px">${E(kto)}</b><span>${x.z&&kier==='do_warszawy'?'jedzie z: '+E(x.z):x.z?'z: '+E(x.z):''}${x.daty?' · tylko wybrane dni':''}</span></div></div>`;}).join('');
  const c=box.querySelector('.cur');if(c&&box.scrollTo)box.scrollTo({top:c.offsetTop-box.offsetTop-40});
 }
+const KST={'Kobyłka':[52.33695,21.21557],'Kobyłka Ossów':[52.3273,21.19331]};
+const KMOD={left:'skręć w lewo',right:'skręć w prawo','slight left':'odbij lekko w lewo','slight right':'odbij lekko w prawo','sharp left':'skręć ostro w lewo','sharp right':'skręć ostro w prawo',straight:'idź prosto',uturn:'zawróć'},KKIER=['północ','północny wschód','wschód','południowy wschód','południe','południowy zachód','zachód','północny zachód'];
+function kKrok(st){const m=st.maneuver,nm=st.name?' w '+(/^(ul|al|pl|os)\.?\s/i.test(st.name)?'':'ul. ')+E(st.name):'';
+ if(m.type==='depart')return'Ruszaj na '+KKIER[Math.round(((m.bearing_after||0)%360)/45)%8]+(st.name?' ulicą '+E(st.name):'');
+ if(m.type==='arrive')return'Jesteś na miejscu'+(m.modifier==='left'?' – cel po lewej':m.modifier==='right'?' – cel po prawej':'');
+ if(m.type==='roundabout'||m.type==='rotary')return'Na rondzie idź w '+(m.exit?m.exit+'. wylot':'wylot')+nm;
+ const a=(m.type==='new name'||m.type==='continue')&&(!KMOD[m.modifier]||m.modifier==='straight')?'idź dalej':(KMOD[m.modifier]||'idź dalej');return a[0].toUpperCase()+a.slice(1)+nm;}
+function kCel(){if(KS.cel)return KS.cel;const c=KST[KS.stacja];return c?{n:'stacja '+KS.stacja,lat:c[0],lon:c[1],typ:'stacja'}:null;}
+function kMapsUrl(c){return /iPhone|iPad|iPod/.test(navigator.userAgent)?`https://maps.apple.com/?daddr=${c.lat},${c.lon}&dirflg=w`:`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lon}&travelmode=walking`;}
+function kGps(ok){if(!navigator.geolocation){say('Telefon nie udostępnia lokalizacji.');return;}const b=Q('#k-doj');if(b)b.insertAdjacentHTML('beforeend','<p class="mut" id="k-gpsinfo">Ustalam Twoje położenie…</p>');navigator.geolocation.getCurrentPosition(p=>{KS.me=[+p.coords.latitude.toFixed(5),+p.coords.longitude.toFixed(5)];ok();},()=>{const g=Q('#k-gpsinfo');if(g)g.textContent='Brak zgody na lokalizację. Włącz ją w ustawieniach przeglądarki.';},{enableHighAccuracy:true,timeout:10000,maximumAge:60000});}
+function kDoj(){const box=Q('#k-doj');if(!box)return;const c=kCel();if(!c){box.innerHTML='';return;}
+ let h=`<b>🚶 Jak dojść: ${E(c.n)}</b>`;
+ if(!KS.me||!KS.trasaD){box.innerHTML=h+`<div class="flex-wrap" style="margin-top:10px"><button class="btn sm" data-dj="gps">📍 Pokaż drogę z mojego miejsca</button><button class="btn sm line" data-dj="blisko">Najbliższy przystanek</button><a class="btn sm line" target="_blank" rel="noopener" href="${kMapsUrl(c)}">Otwórz w mapach</a></div><p class="mut" style="margin:8px 0 0">Trasa piesza krok po kroku i czas dojścia.</p>`;return;}
+ const T=KS.trasaD,dist=T.dist,min=Math.max(1,Math.round(dist/75));
+ box.innerHTML=h+`<div style="display:flex;gap:12px;align-items:baseline;background:var(--soft,#f3f6f9);border-radius:14px;padding:10px 12px;margin:10px 0"><b style="font-size:28px;color:#0E7C6B">${min} min</b><span class="mut">pieszo · ${dist<1000?Math.round(dist/10)*10+' m':(dist/1000).toFixed(1).replace('.',',')+' km'}</span></div>`+
+  (T.kroki.length?`<ol style="margin:0 0 10px;padding-left:22px">${T.kroki.map(x=>`<li style="padding:5px 0;border-bottom:1px solid var(--line,#e3e7ee)">${kKrok(x)}${x.maneuver.type!=='arrive'?` <span class="mut">· ${Math.round(x.distance/5)*5} m</span>`:''}</li>`).join('')}</ol>`:'<p class="mut">Nie udało się wyznaczyć trasy ulicami – kieruj się mapą.</p>')+
+  `<div class="flex-wrap"><a class="btn sm" target="_blank" rel="noopener" href="${kMapsUrl(c)}">Prowadź w mapach</a><button class="btn sm line" data-dj="mapa">Pokaż na mapie</button><button class="btn sm line" data-dj="blisko">Najbliższy przystanek</button></div>`+(dist>3000?'<p class="mut" style="margin:8px 0 0">To daleko – sprawdź najbliższy przystanek.</p>':'');}
+async function kTrasa(){const c=kCel();if(!c||!KS.me)return;const box=Q('#k-doj');if(box)box.insertAdjacentHTML('beforeend','<p class="mut">Wyznaczam trasę…</p>');
+ let T=null;try{const j=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/foot/${KS.me[1]},${KS.me[0]};${c.lon},${c.lat}?overview=full&geometries=geojson&steps=true`).then(r=>r.json());T=j.routes&&j.routes[0];}catch(e){}
+ KS.trasaD=T?{dist:T.distance,kroki:T.legs[0].steps.filter((x,i,a)=>x.distance>3||i===a.length-1)}:{dist:Math.hypot((c.lon-KS.me[1])*68000,(c.lat-KS.me[0])*111000)*1.3,kroki:[]};
+ KS.trasa=T?T.geometry.coordinates.map(x=>[x[1],x[0]]):[KS.me,[c.lat,c.lon]];kDoj();if(kMapa)kMapa.draw();}
 function kNajblizsze(){
  const box=Q('#k-nast');if(!box)return;const st=KS.stacja,d=dzienTyp(),now=teraz(),o=[];
  const P=K.pociagi&&K.pociagi.stacje&&K.pociagi.stacje[st];
@@ -108,6 +129,9 @@ function kNajblizsze(){
  const n=o.filter(x=>x.m>=now).sort((a,b)=>a.m-b.m).slice(0,6);
  box.innerHTML=n.length?n.map(x=>`<div class="kn"><i style="background:${x.c}">${E(x.t)}</i><span>${E(x.do)}</span><b>${x.m-now<1?'teraz':x.m-now<60?'za '+(x.m-now)+' min':m2t(x.m)}</b><small>${x.m-now<60?m2t(x.m):''}</small></div>`).join(''):'<p class="mut" style="margin:0">Dziś nie ma już odjazdów z tej stacji.</p>';
 }
+function kRysujTr(c,X,Y,dk,faza){if(!KS.trasa||!KS.trasa.length)return;const P=KS.trasa.map(x=>EN(x[0],x[1]));
+ c.save();c.strokeStyle=dk?'#9cc3ff':'#14315a';c.lineWidth=5;c.setLineDash(KS.trasa.length===2?[6,8]:[]);c.beginPath();P.forEach((p,i)=>i?c.lineTo(X(p[0]),Y(p[1])):c.moveTo(X(p[0]),Y(p[1])));c.stroke();c.setLineDash([]);
+ const a=P[0],b=P[P.length-1];c.fillStyle='#2563eb';c.strokeStyle='#fff';c.lineWidth=3;c.beginPath();c.arc(X(a[0]),Y(a[1]),8,0,7);c.fill();c.stroke();c.fillStyle='#0E7C6B';c.beginPath();c.arc(X(b[0]),Y(b[1]),9,0,7);c.fill();c.stroke();c.restore();}
 function kPozycje(k){ /* współrzędne przystanków w metrach; brakujące uzupełniamy między sąsiadami */
  const P=k.przystanki.map(p=>p.lat&&p.lon?EN(p.lat,p.lon):null);
  for(let i=0;i<P.length;i++){if(P[i])continue;let a=i-1,b=i+1;while(a>=0&&!P[a])a--;while(b<P.length&&!P[b])b++;if(a>=0&&b<P.length){const f=(i-a)/(b-a);P[i]=[P[a][0]+(P[b][0]-P[a][0])*f,P[a][1]+(P[b][1]-P[a][1])*f];P[i].przybl=1;}}
@@ -118,7 +142,7 @@ function kRysuj(c,X,Y,v,dk,w,h){const byl={};
   c.strokeStyle=col;c.lineWidth=KS.mapaL?5:3.5;c.globalAlpha=.9;c.beginPath();let st=false;P.forEach(p=>{if(!p)return;if(!st){c.moveTo(X(p[0]),Y(p[1]));st=true;}else c.lineTo(X(p[0]),Y(p[1]));});c.stroke();c.globalAlpha=1;
   P.forEach((p,i)=>{if(!p)return;const st=(k.stacje||[]).some(s=>s.i===i);c.beginPath();c.arc(X(p[0]),Y(p[1]),st?7:4,0,7);c.fillStyle=st?'#14315a':(dk?'#0d131d':'#fff');c.fill();c.lineWidth=2;c.strokeStyle=col;c.stroke();
    const nz=k.przystanki[i].nazwa;if((v.w<4200||st)&&!byl[nz]){byl[nz]=1;c.font=(st?'700 ':'')+'11px system-ui';c.fillStyle=dk?'#e5e9f0':'#14213d';c.strokeStyle=dk?'#0d131d':'#fff';c.lineWidth=3;const t=nz;c.strokeText(t,X(p[0])+8,Y(p[1])+4);c.fillText(t,X(p[0])+8,Y(p[1])+4);}});});
- if(K.linie.every(l=>!(l._p||[]).some(Boolean))){c.fillStyle=dk?'#e5e9f0':'#14213d';c.font='13px system-ui';c.fillText('Brak współrzędnych przystanków w danych.',12,22);}
+ kRysujTr(c,X,Y,dk);if(K.linie.every(l=>!(l._p||[]).some(Boolean))){c.fillStyle=dk?'#e5e9f0':'#14213d';c.font='13px system-ui';c.fillText('Brak współrzędnych przystanków w danych.',12,22);}
 }
 async function komInit(){
  const box=Q('#v-kom');if(!K){box.innerHTML='<h2>Komunikacja</h2><p class="mut">Wczytuję rozkłady…</p>';K=await load('komunikacja');}
@@ -136,6 +160,7 @@ async function komInit(){
  ${S.length>1?`<div class="seg k2" id="k-st">${S.map(s=>`<button data-s="${E(s)}" class="${s===KS.stacja?'on':''}">Stacja ${E(s)}</button>`).join('')}</div>`:''}
  <div class="sec"><h3>Najbliższe odjazdy</h3><span class="mut" id="k-zegar"></span></div>
  <div class="card" id="k-nast"></div>
+ <div class="card" id="k-doj"></div>
  <h3>Ile czasu na przesiadkę</h3>
  <div class="card">
   <div class="seg k2" id="k-tryb"><button data-t="na" class="on">Autobusem na pociąg do Warszawy</button><button data-t="z">Z pociągu na autobus</button></div>
@@ -151,7 +176,7 @@ async function komInit(){
  <h3>Rozkład jazdy</h3>
  <div class="card"><div class="kchips" id="k-linie"></div><div class="kchips" id="k-kier" style="margin-top:8px"></div>
   <label for="k-przyst">Przystanek</label><select id="k-przyst"></select>${dzSeg('k-dz2')}
-  <div class="ktab" id="k-tab"></div><p class="mut" id="k-tab-info" style="margin:10px 0 0"></p></div>
+  <button class="btn sm line" id="k-dojdz" style="margin:4px 0 8px">🚶 Jak dojść do tego przystanku</button><div class="ktab" id="k-tab"></div><p class="mut" id="k-tab-info" style="margin:10px 0 0"></p></div>
  ${maPociagi()?`<h3>Rozkład pociągów</h3>
  <div class="card"><div class="seg k2" id="k-pk"><button data-pk="do_warszawy" class="on">Do Warszawy</button><button data-pk="z_warszawy">Z Warszawy</button></div>${dzSeg('k-dz3')}
   <div class="klist" id="k-poc"></div></div>`:''}
@@ -162,7 +187,7 @@ async function komInit(){
  const pts=[];K.linie.forEach(l=>{l._p=kPozycje(l.kierunki[0]||{przystanki:[]});l._p.forEach(p=>p&&pts.push(p));});
  const sp=[];K.linie.forEach(l=>l.kierunki.forEach(k=>(k.stacje||[]).forEach(x=>{const P=kPozycje(k)[x.i];if(P)sp.push(P);})));const cc=sp.length?sp:pts;if(cc.length){const xs=cc.map(p=>p[0]),ys=cc.map(p=>p[1]);kMapa.cel((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,6500);}else kMapa.draw();
  box.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.s){KS.stacja=b.dataset.s;LS('kom_stacja',KS.stacja);QA('#k-st button').forEach(x=>x.classList.toggle('on',x===b));kNajblizsze();kRenderPrzes();kRenderPoc();}
+  if(b.dataset.s){KS.stacja=b.dataset.s;LS('kom_stacja',KS.stacja);QA('#k-st button').forEach(x=>x.classList.toggle('on',x===b));KS.cel=null;KS.trasa=null;kDoj();kNajblizsze();kRenderPrzes();kRenderPoc();}
   else if(b.dataset.t){KS.tryb=b.dataset.t;QA('#k-tryb button').forEach(x=>x.classList.toggle('on',x===b));kRenderPrzes();}
   else if(b.dataset.pk){KS.pk=b.dataset.pk;QA('#k-pk button').forEach(x=>x.classList.toggle('on',x===b));kRenderPoc();}
   else if(b.dataset.d){KS.dzien=b.dataset.d;kRenderPoc();QA('#k-dz1 button,#k-dz2 button,#k-dz3 button').forEach(x=>x.classList.toggle('on',x.dataset.d===KS.dzien));kRenderPrzes();kRenderRozklad();}
@@ -171,10 +196,14 @@ async function komInit(){
   else if(b.dataset.z==='k'){kMapa.zoom(+b.dataset.k);}
   else if(b.dataset.l!==undefined&&b.parentNode.id==='k-lchips'){KS.mapaL=b.dataset.l||null;chips('#k-lchips',1);kMapa.draw();}
   else if(b.dataset.l!==undefined&&b.parentNode.id==='k-linie'){KS.linia=b.dataset.l;KS.kier=0;KS.przyst=0;chips('#k-linie',0);kRenderRozklad();}
-  else if(b.id==='k-radni')kDoRadnych();});
+  else if(b.id==='k-radni')kDoRadnych();
+  else if(b.id==='k-dojdz'){const l=K.linie.find(x=>x.id===KS.linia),k=l.kierunki[KS.kier],p=k.przystanki[KS.przyst];if(!p.lat){say('Nie mamy położenia tego przystanku.');return;}KS.cel={n:p.nazwa+(p.slupek?' (słupek '+p.slupek+')':''),lat:p.lat,lon:p.lon,typ:'przystanek'};KS.trasa=null;kDoj();Q('#k-doj').scrollIntoView({behavior:'smooth',block:'start'});if(KS.me)kTrasa();}
+  else if(b.dataset.dj==='gps')kGps(()=>kTrasa());
+  else if(b.dataset.dj==='blisko')kGps(()=>{let best=null,bd=1e9;K.linie.forEach(l=>l.kierunki.forEach((k,ki)=>k.przystanki.forEach((p,i)=>{if(!p.lat||i===k.przystanki.length-1)return;const d=Math.hypot((p.lon-KS.me[1])*68000,(p.lat-KS.me[0])*111000);if(d<bd){bd=d;best=p;}})));if(best){KS.cel={n:best.nazwa+(best.slupek?' (słupek '+best.slupek+')':''),lat:best.lat,lon:best.lon,typ:'przystanek'};kTrasa();}});
+  else if(b.dataset.dj==='mapa'){Q('#k-map').scrollIntoView({behavior:'smooth',block:'center'});if(KS.trasa&&kMapa){const P=KS.trasa.map(x=>EN(x[0],x[1])),xs=P.map(p=>p[0]),ys=P.map(p=>p[1]);kMapa.cel((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,Math.max(800,(Math.max(...xs)-Math.min(...xs))*1.4,(Math.max(...ys)-Math.min(...ys))*1.8));}}});
  Q('#k-przyst').onchange=e=>{KS.przyst=+e.target.value;kRenderRozklad();};
  if(!maPociagi()){const pc=Q('#k-prz').closest('.card');pc.innerHTML='<b>Przesiadki na pociąg: wkrótce</b><p class="mut" style="margin:4px 0 0">Rozkłady autobusów L są już w aplikacji. Gdy dodamy godziny pociągów Kolei Mazowieckich, pokażemy tu, ile minut według rozkładu jest na przesiadkę na stacjach Kobyłka i Kobyłka Ossów.</p>';}
- kNajblizsze();if(maPociagi()){kRenderPrzes();kRenderPoc();}kRenderRozklad();
+ kDoj();kNajblizsze();if(maPociagi()){kRenderPrzes();kRenderPoc();}kRenderRozklad();
  const tick=()=>{const z=Q('#k-zegar');if(z)z.textContent=new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});};tick();setInterval(()=>{if(Q('#v-kom.on')){tick();kNajblizsze();}},30000);
 }
 function kDoRadnych(){
