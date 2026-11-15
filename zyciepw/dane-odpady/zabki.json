@@ -1,0 +1,522 @@
+{
+ "zrodlo": "https://www.zabki.pl/godspodarka-odpadami/harmonogram-odbioru-odpadow-2025 (strona zatytułowana 'Harmonogram odbioru odpadów 2026'; PDF REJON 1–10)",
+ "aktualizacja": "harmonogram na rok 2026 (do 31.12.2026), odczyt 15.11.2026; harmonogram 2027 nieopublikowany",
+ "kontakt": "PGO Ząbki sp. z o.o. (reklamacje): tel. 609 112 990, pgo.zabki@gmail.com; Urząd Miasta Ząbki (gabaryty, zgłoszenia) tel. 22 51 09 756/753",
+ "rejony": [
+  {
+   "id": "r1",
+   "nazwa": "Rejon 1 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "11 Listopada",
+    "Gałczyńskiego",
+    "Górnośląska",
+    "Konopnickiej",
+    "Leszyckiego",
+    "Lisa Kuli",
+    "Piaskowa",
+    "Rychlińskiego",
+    "Sobieskiego",
+    "Stwosza",
+    "Tetmajera",
+    "Wojska Polskiego",
+    "Wyspiańskiego",
+    "Wyszyńskiego",
+    "Żeromskiego"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-26",
+     "2026-12-10",
+     "2026-12-19"
+    ],
+    "bio": [
+     "2026-11-26",
+     "2026-12-10",
+     "2026-12-19"
+    ],
+    "pap": [
+     "2026-12-03",
+     "2026-12-31"
+    ],
+    "mtw": [
+     "2026-12-03",
+     "2026-12-31"
+    ],
+    "szk": [
+     "2026-12-03",
+     "2026-12-31"
+    ]
+   }
+  },
+  {
+   "id": "r2",
+   "nazwa": "Rejon 2 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "3 Maja",
+    "17 Września",
+    "Asnyka",
+    "Cisowa",
+    "Dębowa",
+    "Gdyńska",
+    "Klonowa",
+    "Kolejowa",
+    "Krótka",
+    "Langiewicza",
+    "Modrzewiowa",
+    "Moniuszki",
+    "Norwida",
+    "Okrężna",
+    "Orzeszkowej",
+    "Paderewskiego",
+    "Prusa",
+    "Sienkiewicza",
+    "Sióstr Biendarzewskich",
+    "Słoneczna",
+    "Słowackiego",
+    "Topolowa",
+    "Wierzbowa"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-16",
+     "2026-11-30",
+     "2026-12-14",
+     "2026-12-28"
+    ],
+    "bio": [
+     "2026-11-16",
+     "2026-11-30",
+     "2026-12-14",
+     "2026-12-28"
+    ],
+    "pap": [
+     "2026-12-10"
+    ],
+    "mtw": [
+     "2026-12-10"
+    ],
+    "szk": [
+     "2026-12-10"
+    ]
+   }
+  },
+  {
+   "id": "r3",
+   "nazwa": "Rejon 3 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Akacjowa",
+    "Bratnia",
+    "Dzika",
+    "Jagiellońska",
+    "Jasna",
+    "Kaszubska",
+    "Kopernika",
+    "Maczka",
+    "Reymonta",
+    "Różana",
+    "Szwoleżerów",
+    "Świerkowa",
+    "Tęczowa",
+    "Ułańska",
+    "Wybickiego"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-18",
+     "2026-12-02",
+     "2026-12-16",
+     "2026-12-30"
+    ],
+    "bio": [
+     "2026-11-18",
+     "2026-12-02",
+     "2026-12-16",
+     "2026-12-30"
+    ],
+    "pap": [
+     "2026-12-09"
+    ],
+    "mtw": [
+     "2026-12-09"
+    ],
+    "szk": [
+     "2026-12-09"
+    ]
+   }
+  },
+  {
+   "id": "r4",
+   "nazwa": "Rejon 4 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Andersa",
+    "Broniewskiego",
+    "Bukowa",
+    "Czołgistów",
+    "Gajowa",
+    "Jaśminowa",
+    "Jodłowa",
+    "Kosynierów",
+    "Kościuszki",
+    "Kręta",
+    "Krucza",
+    "Kwiatowa",
+    "Okrzei",
+    "Pułaskiego",
+    "Reja",
+    "Rembertowska",
+    "Saperów",
+    "Sasanki",
+    "Sikorskiego",
+    "Sosnowa",
+    "Spacerowa",
+    "Stefczyka",
+    "Tulipanowa",
+    "Wronia",
+    "Zieleniecka"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-24",
+     "2026-12-08",
+     "2026-12-22"
+    ],
+    "bio": [
+     "2026-11-24",
+     "2026-12-08",
+     "2026-12-22"
+    ],
+    "pap": [
+     "2026-12-02",
+     "2026-12-30"
+    ],
+    "mtw": [
+     "2026-12-02",
+     "2026-12-30"
+    ],
+    "szk": [
+     "2026-12-02",
+     "2026-12-30"
+    ],
+    "gab": [
+     "2026-11-19"
+    ]
+   }
+  },
+  {
+   "id": "r5",
+   "nazwa": "Rejon 5 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Andersena",
+    "Baczyńskiego",
+    "Baśniowa",
+    "Calineczki",
+    "Chełmońskiego",
+    "Herberta",
+    "Kościelna",
+    "Krasickiego",
+    "Lipowa",
+    "Malczewskiego",
+    "Mazowiecka",
+    "Miła",
+    "Podleśna",
+    "Powstańców",
+    "Wrzosowa",
+    "Wyzwolenia",
+    "Złota"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-23",
+     "2026-12-07",
+     "2026-12-21"
+    ],
+    "bio": [
+     "2026-11-23",
+     "2026-12-07",
+     "2026-12-21"
+    ],
+    "pap": [
+     "2026-11-18",
+     "2026-12-16"
+    ],
+    "mtw": [
+     "2026-11-18",
+     "2026-12-16"
+    ],
+    "szk": [
+     "2026-11-18",
+     "2026-12-16"
+    ]
+   }
+  },
+  {
+   "id": "r6",
+   "nazwa": "Rejon 6 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Bartosza",
+    "Błękitna",
+    "Bociania",
+    "Brukowa",
+    "Ceglana",
+    "Dolna",
+    "Fiedlera",
+    "Harcerska",
+    "Jesienna",
+    "Jeziorna",
+    "Kamienna",
+    "Kossaka",
+    "Krzywa",
+    "Łabędzia",
+    "Łagodna",
+    "Mała",
+    "Morcinka",
+    "Olszewskiego",
+    "Rómmla",
+    "Rybna",
+    "Skowronka",
+    "Skrajna",
+    "Słowicza",
+    "Sokola",
+    "Staszica",
+    "Szczęśliwa",
+    "Szkolna",
+    "Westerplatte",
+    "Wspólna",
+    "Zielona",
+    "Zimna",
+    "Zycha",
+    "Żabia",
+    "Żurawia"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-20",
+     "2026-12-04",
+     "2026-12-18"
+    ],
+    "bio": [
+     "2026-11-20",
+     "2026-12-04",
+     "2026-12-18"
+    ],
+    "pap": [
+     "2026-11-25",
+     "2026-12-18"
+    ],
+    "mtw": [
+     "2026-11-25",
+     "2026-12-18"
+    ],
+    "szk": [
+     "2026-11-25",
+     "2026-12-18"
+    ]
+   }
+  },
+  {
+   "id": "r7",
+   "nazwa": "Rejon 7 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "I Brygady",
+    "Batorego",
+    "Bortnowskiego",
+    "Brzozowa",
+    "Budkiewicza",
+    "Hallera",
+    "Gwiaździsta",
+    "Jana Pawła II",
+    "Klamrowa",
+    "Kombatantów",
+    "Mokra",
+    "Na Bagnie",
+    "Ogrodowa",
+    "Piastowska",
+    "Pogodna",
+    "Polna",
+    "Skargi",
+    "Składkowskiego",
+    "Słowiańska",
+    "Sosnkowskiego",
+    "Starzyńskiego",
+    "Wilcza",
+    "Wiśniowa",
+    "Wolności"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-17",
+     "2026-12-01",
+     "2026-12-15",
+     "2026-12-29"
+    ],
+    "bio": [
+     "2026-11-17",
+     "2026-12-01",
+     "2026-12-15",
+     "2026-12-29"
+    ],
+    "pap": [
+     "2026-12-08"
+    ],
+    "mtw": [
+     "2026-12-08"
+    ],
+    "szk": [
+     "2026-12-08"
+    ]
+   }
+  },
+  {
+   "id": "r8",
+   "nazwa": "Rejon 8 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Bema",
+    "Chabrowa",
+    "Chłopickiego",
+    "Dąbrowskiego",
+    "Łąkowa",
+    "Mickiewicza",
+    "Niepodległości",
+    "Nowa",
+    "Parkowa",
+    "Sezamkowa",
+    "Sowińskiego",
+    "Torfowa",
+    "Wesoła",
+    "Wysockiego"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-25",
+     "2026-12-09",
+     "2026-12-23"
+    ],
+    "bio": [
+     "2026-11-25",
+     "2026-12-09",
+     "2026-12-23"
+    ],
+    "pap": [
+     "2026-11-19",
+     "2026-12-17"
+    ],
+    "mtw": [
+     "2026-11-19",
+     "2026-12-17"
+    ],
+    "szk": [
+     "2026-11-19",
+     "2026-12-17"
+    ]
+   }
+  },
+  {
+   "id": "r9",
+   "nazwa": "Rejon 9 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Chopina",
+    "Flisowskiej",
+    "Karolaka",
+    "Kołłątaja",
+    "Legionów",
+    "Lotnicza",
+    "Łodygowa",
+    "Matejki",
+    "Obrońców",
+    "Orla",
+    "Piłsudskiego",
+    "Poniatowskiego",
+    "Skorupki",
+    "Targowa",
+    "Traugutta",
+    "Warszawska",
+    "Wąska",
+    "Wiosenna",
+    "Zaciszna"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-19",
+     "2026-12-03",
+     "2026-12-17",
+     "2026-12-31"
+    ],
+    "bio": [
+     "2026-11-19",
+     "2026-12-03",
+     "2026-12-17",
+     "2026-12-31"
+    ],
+    "pap": [
+     "2026-11-17",
+     "2026-12-15"
+    ],
+    "mtw": [
+     "2026-11-17",
+     "2026-12-15"
+    ],
+    "szk": [
+     "2026-11-17",
+     "2026-12-15"
+    ],
+    "gab": [
+     "2026-11-19"
+    ]
+   }
+  },
+  {
+   "id": "r10",
+   "nazwa": "Rejon 10 (zabudowa jednorodzinna)",
+   "typ": "j",
+   "ulice": [
+    "Cicha",
+    "Drewnicka",
+    "Graniczna",
+    "Kochanowskiego",
+    "Kuleszy",
+    "Leśna",
+    "Narutowicza",
+    "Popiełuszki",
+    "Prosta",
+    "Spokojna",
+    "Szpitalna",
+    "Wigury",
+    "Zakopiańska",
+    "Żwirki"
+   ],
+   "terminy": {
+    "zm": [
+     "2026-11-27",
+     "2026-12-11",
+     "2026-12-22"
+    ],
+    "bio": [
+     "2026-11-27",
+     "2026-12-11",
+     "2026-12-22"
+    ],
+    "pap": [
+     "2026-11-26",
+     "2026-12-29"
+    ],
+    "mtw": [
+     "2026-11-26",
+     "2026-12-29"
+    ],
+    "szk": [
+     "2026-11-26",
+     "2026-12-29"
+    ]
+   }
+  }
+ ]
+}
