@@ -1,0 +1,102 @@
+{
+ "dabrowka": {
+  "n": "Dąbrówka",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/dabrowka.json",
+  "linie": 2,
+  "stacje": []
+ },
+ "jadow": {
+  "n": "Jadów",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/jadow.json",
+  "linie": 2,
+  "stacje": [
+   "Szewnica",
+   "Urle"
+  ]
+ },
+ "klembow": {
+  "n": "Klembów",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/klembow.json",
+  "linie": 4,
+  "stacje": [
+   "Dobczyn",
+   "Klembów",
+   "Krusze"
+  ]
+ },
+ "kobylka": {
+  "n": "Kobyłka",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/kobylka.json",
+  "linie": 5,
+  "stacje": [
+   "Kobyłka",
+   "Kobyłka Ossów"
+  ],
+  "app": "https://lechur.github.io/wehikul-czasu/kobylka/#kom"
+ },
+ "marki": {
+  "n": "Marki",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/marki.json",
+  "linie": 10,
+  "stacje": []
+ },
+ "poswietne": {
+  "n": "Poświętne",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/poswietne.json",
+  "linie": 3,
+  "stacje": []
+ },
+ "radzymin": {
+  "n": "Radzymin",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/radzymin.json",
+  "linie": 21,
+  "stacje": [
+   "Radzymin"
+  ]
+ },
+ "strachowka": {
+  "n": "Strachówka",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/strachowka.json",
+  "linie": 2,
+  "stacje": []
+ },
+ "tluszcz": {
+  "n": "Tłuszcz",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/tluszcz.json",
+  "linie": 5,
+  "stacje": [
+   "Jasienica Maz.",
+   "Chrzęsne",
+   "Mokra Wieś",
+   "Tłuszcz",
+   "Jarzębia Łąka"
+  ]
+ },
+ "wolomin": {
+  "n": "Wołomin",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/wolomin.json",
+  "linie": 11,
+  "stacje": [
+   "Wołomin",
+   "Wołomin Słoneczna",
+   "Zagościniec"
+  ]
+ },
+ "zielonka": {
+  "n": "Zielonka",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/zielonka.json",
+  "linie": 4,
+  "stacje": [
+   "Zielonka",
+   "Zielonka Bankowa"
+  ]
+ },
+ "zabki": {
+  "n": "Ząbki",
+  "plik": "https://lechur.github.io/wehikul-czasu/rozklady/zabki.json",
+  "linie": 17,
+  "stacje": [
+   "Ząbki"
+  ]
+ }
+}
