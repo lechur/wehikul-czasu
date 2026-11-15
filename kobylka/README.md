@@ -23,3 +23,6 @@ Radni: adres e-mail do przyjmowania spraw dopisuje się w `radni.json`.
 - `budzet.json`: uchwała budżetowa, plan po zmianach, wykonanie, procedura (BIP: kobylka.bipgmina.pl, dział budżet).
 - `bo.json`: budżet obywatelski (budzet.kobylka.pl): zasady, edycje, projekty ze współrzędnymi i statusem.
 - W cotygodniowej aktualizacji sprawdzaj: nowy projekt budżetu (do 15 XI), zmiany planu, ogłoszenie nowej edycji BO, statusy realizacji projektów BO, zmiany rozkładów.
+
+## Adres publiczny: https://chiawiem.pl/stacja-kobylka/
+Od 15.11.2026 aplikacja jest udostępniana pod adresem chiawiem.pl/stacja-kobylka/ (kopia plików w repo `lechur/chiawiem`, folder `stacja-kobylka/`; wdrożenie na Hostinger następuje po pushu do `main`). Ten folder pozostaje źródłem. Po KAŻDEJ zmianie (także cotygodniowej aktualizacji danych) skopiuj pliki do `chiawiem/stacja-kobylka/` (bez `scripts/` i `README.md`, zachowaj tamtejszy `.htaccess`) i wypchnij oba repozytoria. Stary adres lechur.github.io/wehikul-czasu/kobylka/ działa dalej (zainstalowane ikony), ale w postach i kodzie QR podajemy nowy.

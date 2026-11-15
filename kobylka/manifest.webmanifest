@@ -1,6 +1,6 @@
 {
  "name": "Aplikacja mieszkańca Kobyłki",
- "short_name": "Kobyłka",
+ "short_name": "Stacja Kobyłka",
  "description": "Odpady, wydarzenia, zgłoszenia i pisma do Urzędu, sprawy do radnych, niebo nad Kobyłką.",
  "start_url": "./",
  "scope": "./",

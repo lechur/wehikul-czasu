@@ -10,8 +10,8 @@
 <link rel="icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Kobyłka">
-<meta property="og:type" content="website"><meta property="og:url" content="https://lechur.github.io/wehikul-czasu/kobylka/"><meta property="og:title" content="Aplikacja mieszkańca Kobyłki"><meta property="og:description" content="Wywóz odpadów pod Twoim adresem, wydarzenia, sprawy do Urzędu i radnych, firmy sąsiadów i niebo nad Kobyłką. Bezpłatnie, w telefonie."><meta property="og:image" content="https://lechur.github.io/wehikul-czasu/kobylka/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="pl_PL"><meta name="twitter:card" content="summary_large_image">
+<meta name="apple-mobile-web-app-title" content="Stacja Kobyłka">
+<link rel="canonical" href="https://chiawiem.pl/stacja-kobylka/"><meta property="og:type" content="website"><meta property="og:url" content="https://chiawiem.pl/stacja-kobylka/"><meta property="og:title" content="Aplikacja mieszkańca Kobyłki"><meta property="og:description" content="Wywóz odpadów pod Twoim adresem, wydarzenia, sprawy do Urzędu i radnych, firmy sąsiadów i niebo nad Kobyłką. Bezpłatnie, w telefonie."><meta property="og:image" content="https://chiawiem.pl/stacja-kobylka/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="pl_PL"><meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Aplikacja mieszkańca Kobyłki: odpady, wydarzenia, zgłoszenia i pisma do Urzędu, sprawy do radnych, niebo nad miastem.">
 <style>
 :root{--night:#0F1B2D;--night2:#16263f;--star:#F3EAD7;--gold:#E7C46C;--ink:#1d2430;--mut:#6b7280;--bg:#f6f3ec;--card:#fff;--line:#e8e2d6;--acc:#C8553D;--ok:#2E7D4F;--warn:#C27C0E}
@@ -85,7 +85,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,
 header.app{position:sticky;top:0;z-index:12;background:var(--hdrbg);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);color:var(--ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid transparent}
 header.app.sc{border-bottom-color:var(--line)}
 header.app .logo{width:38px;height:38px;border-radius:11px;background:var(--pri);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;letter-spacing:-.02em;flex:none}
-header.app h1{font-family:inherit;font-weight:800;font-size:20px;letter-spacing:-.02em;margin:0;line-height:1.1}
+header.app h1{font-family:inherit;font-weight:800;font-size:20px;letter-spacing:-.02em;margin:0;line-height:1.1}header.app h1 .st{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);line-height:1.15}
 header.app .hdate{font-size:12.5px;color:var(--mut);text-transform:capitalize}
 .ib{width:42px;height:42px;border-radius:12px;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,33,61,.08);cursor:pointer}
 main{max-width:720px;padding:6px 16px calc(110px + env(safe-area-inset-bottom))}
@@ -275,7 +275,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <body>
 <header class="app"><canvas id="hsky" hidden></canvas><span id="hsub" hidden></span>
   <button class="back" onclick="history.length>1?history.back():go('miasto')" aria-label="Wróć"><svg class="i" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button><div class="logo" aria-hidden="true"><span>K</span></div>
-  <div class="grow"><h1>Kobyłka</h1><div class="hdate" id="hdate">Aplikacja mieszkańca</div></div>
+  <div class="grow"><h1><small class="st">Stacja</small>Kobyłka</h1><div class="hdate" id="hdate">Aplikacja mieszkańca</div></div>
   <button class="ib" data-polec aria-label="Poleć aplikację"><svg class="i" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4M8.2 13.2l7.6 4"/></svg></button>
 </header>
 <main>
@@ -1079,7 +1079,7 @@ $('#install-btn').onclick=async()=>{const t=$('#install-txt'),b=$('#install-btn'
  t.innerHTML=_inApp?'Otwierasz aplikację w przeglądarce Facebooka. Stuknij menu ⋯ i wybierz „Otwórz w przeglądarce”, a potem dodaj ikonę z menu '+(_iOS?'Safari':'Chrome')+'.':_iOS?'1. Stuknij <b>Udostępnij ⬆</b> na dole ekranu.<br>2. Wybierz <b>„Do ekranu początkowego”</b>.<br>3. Potwierdź <b>Dodaj</b>.':'1. Otwórz menu przeglądarki <b>⋮</b>.<br>2. Wybierz <b>„Dodaj do ekranu głównego”</b> albo „Zainstaluj aplikację”.<br>3. Potwierdź.';};
 $('#install-x').onclick=()=>{inst.style.display='none';store('noinstall',1);};
 
-const APP_URL='https://lechur.github.io/wehikul-czasu/kobylka/';
+const APP_URL='https://chiawiem.pl/stacja-kobylka/';
 async function polec(){const d={title:'Aplikacja mieszkańca Kobyłki',text:'Kiedy wywóz śmieci, wydarzenia, sprawy do Urzędu i niebo nad Kobyłką. Bezpłatna aplikacja w telefonie:',url:APP_URL};
  try{if(navigator.share){await navigator.share(d);return;}}catch(e){if(e.name==='AbortError')return;}
  try{await navigator.clipboard.writeText(d.text+' '+APP_URL);toast('Link skopiowany. Wklej go na Messengerze, WhatsAppie albo w grupie.');}catch(e){prompt('Skopiuj link:',APP_URL);}}
