@@ -15,3 +15,6 @@ Wzorowana na Aplikacji mieszkańca Kobyłki (`../kobylka`). Wszystkie dane pobie
 - Ustawienia (gmina, ulica, zapisane artykuły, głosy) zostają w telefonie czytelnika (localStorage).
 
 Po każdej zmianie `index.html` podnieś wersję w `sw.js` (const C).
+
+## Komunikacja (odjazdy.js)
+`odjazdy.js` to samodzielny moduł „Autobusy i pociągi” (tablica odjazdów z wybranego przystanku, połączenia do/z Warszawy). Logika pochodzi z aplikacji Stacja Kobyłka (`kobylka/moduly.js`, część „Komunikacja 2”); dane: `komunikacja.json` – kopia `kobylka/komunikacja.json` z gałęzi main (po cotygodniowej aktualizacji trzeba ją skopiować i wgrać wtyczkę ponownie). Osadzenie na stronie portalu: `<div id="zpkom"></div>` + skrypt ładujący `/aplikacja/odjazdy.js` i `ZPKom.mount(el,{dane:'/aplikacja/komunikacja.json'})`.
