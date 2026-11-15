@@ -1,5 +1,5 @@
 {
-"pobrano": "2026-11-14T00:45Z",
+"pobrano": "2026-11-15T21:30Z",
 "zrodlo": "Oficjalne kalendarze Google wywozu odpadów Urzędu Miasta Kobyłka",
 "rejony": {
 "Rejon I": [
@@ -37,10 +37,6 @@
 }
 ],
 "Rejon II": [
-{
-"data": "2026-11-10",
-"frakcja": "Zmieszane (niesegregowane)"
-},
 {
 "data": "2026-11-16",
 "frakcja": "Bioodpady"
@@ -151,10 +147,6 @@
 }
 ],
 "Rejon V": [
-{
-"data": "2026-11-12",
-"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
-},
 {
 "data": "2026-11-18",
 "frakcja": "Bioodpady"
@@ -396,10 +388,6 @@
 ],
 "Rejon XI": [
 {
-"data": "2026-11-12",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
 "data": "2026-11-18",
 "frakcja": "Bioodpady"
 },
@@ -437,10 +425,6 @@
 }
 ],
 "Rejon XII": [
-{
-"data": "2026-11-12",
-"frakcja": "Zmieszane (niesegregowane)"
-},
 {
 "data": "2026-11-18",
 "frakcja": "Bioodpady"
