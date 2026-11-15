@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16181b">
+<meta name="color-scheme" content="light dark">
+<title>Życie Powiatu – aplikacja</title>
+<meta name="description" content="Aplikacja czytelnika zyciepw.pl: wiadomości z Twojej gminy, Pytanie dnia, wyłączenia prądu i utrudnienia na Twojej ulicy, powietrze, mapa dzików i kontakt z redakcją.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Życie Powiatu">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.zyciepw.pl/aplikacja/">
+<link rel="canonical" href="https://www.zyciepw.pl/aplikacja/">
+<meta property="og:title" content="Życie Powiatu – aplikacja dla czytelników">
+<meta property="og:description" content="Wiadomości z Twojej gminy, Pytanie dnia, Twoja ulica, powietrze i mapa dzików. Bezpłatnie, w telefonie.">
+<meta property="og:image" content="https://www.zyciepw.pl/aplikacja/og.png">
+<meta property="og:locale" content="pl_PL">
+<style>
+:root{--brand:#16181b;--y:#ffd23f;--r:#d7141a;--bg:#f3f1ec;--card:#fff;--ink:#16181b;--mut:#626873;--line:#e6e2d9;--soft:#efece5;--acc:#d7141a;--ok:#1f7a45;--okbg:#e6f4ea;--warnbg:#fff6da;--warnbd:#f0d98a;--hdr:rgba(22,24,27,.97);--nav:rgba(255,255,255,.97);--shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(0,0,0,.05);--fs:17px;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1012;--card:#1a1c20;--ink:#eceae5;--mut:#a2a6ad;--line:#2a2d33;--soft:#24272c;--acc:#ff5a5f;--okbg:#14301f;--warnbg:#352c10;--warnbd:#6b5517;--nav:rgba(22,24,27,.97);--shadow:none;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0f1012;--card:#1a1c20;--ink:#eceae5;--mut:#a2a6ad;--line:#2a2d33;--soft:#24272c;--acc:#ff5a5f;--okbg:#14301f;--warnbg:#352c10;--warnbd:#6b5517;--nav:rgba(22,24,27,.97);--shadow:none;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;font-size:16px}
+a{color:var(--acc)}
+button{font-family:inherit;font-size:inherit;color:inherit}
+header.top{position:sticky;top:0;z-index:40;background:var(--hdr);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;min-width:0}
+.logo b{background:var(--y);color:var(--brand);font-weight:900;font-size:15px;letter-spacing:-.02em;border-radius:7px;padding:5px 7px;line-height:1}
+.logo span{font-family:Georgia,"Times New Roman",serif;font-size:20px;white-space:nowrap}
+.gchip{margin-left:auto;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:7px 12px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.gchip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--y)}
+.strip{background:var(--r);color:#fff;font-size:14px;display:flex;gap:10px;align-items:center;padding:8px 14px;overflow:hidden}
+.strip b{text-transform:uppercase;font-size:11px;letter-spacing:.08em;background:rgba(0,0,0,.18);padding:3px 7px;border-radius:5px;flex:none}
+.strip a{color:#fff;text-decoration:none;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+main{max-width:760px;margin:0 auto;padding:12px 14px calc(96px + env(safe-area-inset-bottom))}
+.view{display:none}.view.on{display:block;animation:fi .18s ease}
+@keyframes fi{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+h2.sec{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);margin:22px 2px 8px;display:flex;justify-content:space-between;align-items:baseline}
+h2.sec a,h2.sec button{font-size:13px;letter-spacing:0;text-transform:none;font-weight:600;color:var(--acc);background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.hello{margin:4px 2px 0}.hello h1{font-family:Georgia,serif;font-weight:400;font-size:27px;line-height:1.15;margin:0}.hello p{margin:3px 0 0;color:var(--mut);font-size:14px}
+.lead{display:block;text-decoration:none;color:inherit;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);cursor:pointer}
+.lead .im{aspect-ratio:2/1;background:linear-gradient(135deg,#2b2f36,#16181b);background-size:cover;background-position:center;position:relative}
+.lead .im .k{position:absolute;left:12px;top:12px}
+.lead .tx{padding:12px 14px 14px}.lead h3{font-family:Georgia,serif;font-weight:400;font-size:22px;line-height:1.2;margin:4px 0 6px}
+.lead p{margin:0;color:var(--mut);font-size:15px}
+.kat{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--y);color:var(--brand);border-radius:5px;padding:3px 7px}
+.kat.g{background:var(--brand);color:#fff}
+.meta{font-size:12.5px;color:var(--mut)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.it{display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;align-items:flex-start;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.it:last-child{border-bottom:0}.it:active{background:var(--soft)}
+.it .th{width:84px;height:66px;border-radius:10px;flex:none;background:var(--soft) center/cover no-repeat;display:grid;place-items:center;font-size:24px;color:var(--mut)}
+.it h4{margin:0 0 4px;font-size:16px;line-height:1.28;font-weight:650}
+.it .new{color:var(--r);font-weight:800;font-size:11px;letter-spacing:.06em;margin-right:4px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none;margin:0 -14px;padding-left:14px;padding-right:14px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 13px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+:root[data-theme=dark] .chip.on{background:var(--y);color:var(--brand)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .chip.on{background:var(--y);color:var(--brand)}}
+.srch{display:flex;gap:8px;margin:2px 0 10px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+textarea{min-height:110px;resize:vertical}
+label.l{display:block;font-size:13px;font-weight:700;color:var(--mut);margin:12px 2px 5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 16px;font-weight:700;background:var(--brand);color:#fff;cursor:pointer;text-decoration:none;font-size:16px}
+.btn.y{background:var(--y);color:var(--brand)}.btn.r{background:var(--r);color:#fff}.btn.gh{background:var(--soft);color:var(--ink)}
+.btn.w{width:100%}.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;cursor:pointer;box-shadow:var(--shadow);text-align:left;display:block;text-decoration:none;color:inherit;width:100%}
+.tile .ic{font-size:22px}.tile b{display:block;font-size:15px;margin-top:6px}.tile small{color:var(--mut);font-size:12.5px;display:block;margin-top:2px}
+.big{font-size:30px;font-weight:800;line-height:1.05;letter-spacing:-.02em}
+/* pytanie dnia */
+.pd{background:var(--brand);color:#fff;border-radius:18px;padding:16px}
+.pd .k{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--y)}
+.pd h3{font-family:Georgia,serif;font-weight:400;font-size:22px;line-height:1.2;margin:6px 0 12px}
+.pd .opts{display:grid;gap:8px}
+.pd .opts button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:12px 14px;text-align:left;font-weight:600;cursor:pointer;color:#fff}
+.pd .opts button:active{background:rgba(255,210,63,.25)}
+.pd select{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2);padding:9px 10px;font-size:15px;margin-bottom:10px}
+.pd select option{color:#16181b}
+.res{margin:8px 0}.res .bar{height:30px;border-radius:9px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.res .bar i{position:absolute;inset:0 auto 0 0;background:rgba(255,255,255,.22);border-radius:9px}
+.res.me .bar i{background:rgba(255,210,63,.42);box-shadow:inset 3px 0 0 var(--y)}
+.res .bar span{position:relative;display:flex;justify-content:space-between;padding:5px 10px;font-size:14px;font-weight:600}
+.pd small{opacity:.7;font-size:12.5px}
+/* okolica */
+.ok{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}.ok:last-child{border-bottom:0}
+.ok .e{font-size:20px;width:28px;text-align:center;flex:none}
+.ok b{display:block;font-size:15px}.ok span{font-size:13.5px;color:var(--mut)}
+.badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700;background:var(--okbg);color:var(--ok)}
+.badge.w{background:var(--warnbg);color:#8a5b00}
+.air{display:flex;align-items:center;gap:14px}
+.air .dot{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;font-size:13px;flex:none;text-align:center;line-height:1.1}
+.wdays{display:flex;gap:8px;margin-top:10px}
+.wd{flex:1;background:var(--soft);border-radius:12px;padding:8px;text-align:center;font-size:13px}.wd b{display:block;font-size:17px}
+.bins{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.bin{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;background:var(--soft);border-radius:10px;padding:5px 9px}.bin i{width:10px;height:10px;border-radius:50%}
+/* artykuł */
+#reader{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
+#reader.on{display:block;animation:sl .2s ease}
+@keyframes sl{from{transform:translateX(30px);opacity:.5}to{transform:none;opacity:1}}
+.rbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:6px;background:var(--hdr);color:#fff;padding:calc(8px + env(safe-area-inset-top)) 8px 8px}
+.rbar button,.rbar a{background:none;border:0;color:#fff;font-size:15px;font-weight:600;padding:9px 11px;border-radius:10px;cursor:pointer;text-decoration:none}
+.rbar .sp{flex:1}
+.rprog{position:sticky;top:calc(52px + env(safe-area-inset-top));height:3px;background:var(--y);width:0;z-index:2}
+article.r{max-width:700px;margin:0 auto;padding:16px 18px 120px;font-size:var(--fs)}
+article.r h1{font-family:Georgia,serif;font-weight:400;font-size:calc(var(--fs) * 1.65);line-height:1.18;margin:10px 0 8px}
+article.r .hero{width:100%;border-radius:14px;aspect-ratio:2/1;object-fit:cover;background:var(--soft);display:block;margin:10px 0}
+article.r .body{line-height:1.65}
+article.r .body p{margin:0 0 1em}
+article.r .body img{max-width:100%;height:auto;border-radius:10px}
+article.r .body figure{margin:1em 0}article.r .body figcaption{font-size:13px;color:var(--mut)}
+article.r .body h2,article.r .body h3{font-family:Georgia,serif;font-weight:400;line-height:1.25}
+article.r .body blockquote{margin:1em 0;padding:4px 14px;border-left:4px solid var(--y);color:var(--mut)}
+article.r .body iframe{display:none}
+article.r .body .vid{display:block;background:var(--soft);border-radius:12px;padding:12px 14px;font-weight:700;text-decoration:none;margin:1em 0}
+.rfoot{border-top:1px solid var(--line);margin-top:24px;padding-top:14px;display:grid;gap:10px}
+.rel h4{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:26px 0 8px}
+/* mapa */
+#dzmap{height:58vh;min-height:330px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#dfe6dc}
+:root[data-theme=dark] #dzmap{background:#1b231c}
+.leaflet-container{font-family:inherit}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin:8px 2px}.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);padding:10px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;transform:translateY(105%);transition:transform .25s ease;max-width:760px;margin:0 auto}
+.sheet.on{transform:none}
+.sheet .grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 10px}
+.sheet h3{margin:4px 0 4px;font-size:20px}
+.dim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:65;display:none}.dim.on{display:block}
+.opts2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px;font-weight:600;text-align:left;cursor:pointer;font-size:15px}
+.opt.on{border-color:var(--r);background:rgba(215,20,26,.07)}
+.gtiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.gt{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 6px;font-weight:700;cursor:pointer;font-size:14.5px}
+.gt.on{border-color:var(--r);background:rgba(215,20,26,.07)}
+.steps{display:flex;gap:6px;margin:6px 0 10px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}.steps i.on{background:var(--r)}
+.file{display:flex;align-items:center;gap:10px;border:1.5px dashed var(--line);border-radius:12px;padding:14px;cursor:pointer;font-weight:600}
+.file input{display:none}
+.note{font-size:13px;color:var(--mut);margin:8px 2px}
+.warn{background:var(--warnbg);border:1px solid var(--warnbd);border-radius:12px;padding:10px 12px;font-size:14px;margin:10px 0}
+/* nav */
+nav.tab{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--nav);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+nav.tab button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11.5px;font-weight:600;color:var(--mut);padding:5px 0;cursor:pointer;position:relative}
+nav.tab button svg{width:24px;height:24px}
+nav.tab button.on{color:var(--ink)}nav.tab button.on svg{color:var(--r)}
+nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);color:#fff;border-radius:999px;font-size:10.5px;padding:1px 6px;font-weight:800}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;background:var(--brand);color:#fff;padding:11px 16px;border-radius:12px;font-size:14.5px;z-index:90;transition:.2s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--soft);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;border-radius:9px;padding:9px;font-weight:600;cursor:pointer;font-size:14px}
+.seg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.menu{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.menu a,.menu button{display:flex;align-items:center;gap:12px;padding:14px;border:0;border-bottom:1px solid var(--line);width:100%;background:none;text-align:left;text-decoration:none;color:var(--ink);font-size:15.5px;cursor:pointer}
+.menu a:last-child,.menu button:last-child{border-bottom:0}
+.menu .e{font-size:20px;width:26px;text-align:center}.menu small{display:block;color:var(--mut);font-size:12.5px}
+.menu .ar{margin-left:auto;color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:26px 10px;font-size:15px}
+.skel{background:linear-gradient(90deg,var(--soft),var(--line),var(--soft));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:10px}
+@keyframes sk{to{background-position:-200% 0}}
+.offline{background:var(--warnbg);border:1px solid var(--warnbd);color:var(--ink);border-radius:12px;padding:9px 12px;font-size:13.5px;margin:0 0 10px;display:none}
+.more{display:block;margin:12px auto 0}
+.inst{display:none;background:var(--brand);color:#fff;border-radius:16px;padding:14px;margin-top:14px;gap:12px;align-items:center}
+.inst.on{display:flex}.inst b{display:block}.inst small{opacity:.8}
+.qr{width:120px;height:120px;border-radius:10px;background:#fff;padding:6px;flex:none}.qr img,.qr canvas{width:108px!important;height:108px!important;display:block}
+@media (min-width:900px){main{padding-top:20px}.grid2{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header class="top">
+ <a class="logo" href="#dzis" aria-label="Życie Powiatu – start"><b>ŻP</b><span>Życie Powiatu</span></a>
+ <button class="gchip" id="gchip" aria-label="Zmień gminę">Wybierz gminę</button>
+</header>
+<div class="strip" id="strip" hidden><b>Ważne</b><a id="strip-a" href="#"></a></div>
+
+<main>
+<div class="offline" id="offline"></div>
+
+<!-- DZIŚ -->
+<section class="view on" id="v-dzis">
+ <div class="hello"><h1 id="hi">Dzień dobry</h1><p id="hidate"></p></div>
+ <h2 class="sec"><span id="lead-t">Najważniejsze</span><button data-go="wiadomosci">Wszystkie</button></h2>
+ <div id="s-lead"><div class="skel" style="height:300px;border-radius:18px"></div></div>
+ <div class="list" id="s-list" style="margin-top:10px"></div>
+
+ <h2 class="sec"><span>Pytanie dnia</span><a href="https://www.zyciepw.pl/pytanie-dnia/" target="_blank" rel="noopener">Archiwum</a></h2>
+ <div class="pd" id="pd"><div class="k">Pytanie dnia</div><h3>Ładuję…</h3></div>
+
+ <h2 class="sec"><span id="ok-t">Twoja okolica</span><button id="ok-edit">Zmień</button></h2>
+ <div class="card" id="okolica"></div>
+
+ <h2 class="sec"><span>Powietrze i pogoda</span><a href="https://www.zyciepw.pl/smog-powiat-wolominski/" target="_blank" rel="noopener">Więcej</a></h2>
+ <div class="card" id="air"></div>
+
+ <h2 class="sec"><span>Na skróty</span></h2>
+ <div class="grid2" id="tiles">
+  <button class="tile" data-go="dziki"><div class="ic">🐗</div><b>Dziki w okolicy</b><small id="t-dz">Mapa i zgłoszenia</small></button>
+  <button class="tile" data-go="zglos"><div class="ic">✍️</div><b>Napisz do redakcji</b><small>Temat, zdjęcie, sygnał</small></button>
+  <a class="tile" id="t-gaz" href="https://www.zyciepw.pl/archiwum-gazety" target="_blank" rel="noopener"><div class="ic">📰</div><b>Gazeta do pobrania</b><small id="t-gaz-s">Najnowszy numer</small></a>
+  <button class="tile" data-go="zapisane"><div class="ic">🔖</div><b>Zapisane</b><small id="t-zap">Do przeczytania później</small></button>
+ </div>
+ <div class="inst" id="inst"><div style="font-size:30px">📲</div><div style="flex:1"><b>Dodaj do ekranu głównego</b><small id="inst-txt">Jedno dotknięcie i masz Życie Powiatu jak aplikację.</small></div><button class="btn y" id="inst-btn">Dodaj</button></div>
+</section>
+
+<!-- WIADOMOŚCI -->
+<section class="view" id="v-wiadomosci">
+ <div class="srch"><input id="q" type="search" placeholder="Szukaj w zyciepw.pl" enterkeyhint="search" autocomplete="off"></div>
+ <div class="chips" id="fchips"></div>
+ <div class="list" id="n-list"></div>
+ <button class="btn gh more" id="n-more" hidden>Pokaż starsze</button>
+</section>
+
+<!-- DZIKI -->
+<section class="view" id="v-dziki">
+ <div class="hello"><h1>Dziki w okolicy</h1><p id="dz-sum">Obserwacje mieszkańców z ostatnich 14 dni.</p></div>
+ <div class="chips" id="dz-chips" style="margin-top:10px"></div>
+ <div id="dzmap"></div>
+ <div class="legend"><span><i style="background:#d21f1f"></i>do 2 dni</span><span><i style="background:#f08a24"></i>3–7 dni</span><span><i style="background:#9aa3b2"></i>starsze</span></div>
+ <button class="btn r w" id="dz-add" style="margin-top:6px">🐗 Widzę dziki – zgłoś</button>
+ <p class="note">Zgłoszenia trafiają na wspólną mapę zyciepw.pl. Nie wysyłaj zdjęć, na których widać ludzi. Punkty znikają po 14 dniach. W razie zagrożenia dzwoń 112.</p>
+</section>
+
+<!-- ZGŁOŚ -->
+<section class="view" id="v-zglos">
+ <div class="hello"><h1>Napisz do redakcji</h1><p>Coś się dzieje w Twojej okolicy? Daj znać – sprawdzimy i opiszemy.</p></div>
+ <form id="zf" class="card" style="margin-top:12px" novalidate>
+  <label class="l" for="zf-g">Gmina</label><select id="zf-g"></select>
+  <label class="l" for="zf-gdzie">Gdzie? (ulica, miejsce)</label><input id="zf-gdzie" placeholder="np. ul. Lipowa przy szkole">
+  <label class="l" for="zf-co">Co się stało?</label><textarea id="zf-co" placeholder="Opisz krótko: co, kiedy, kogo dotyczy."></textarea>
+  <label class="l">Zdjęcie (opcjonalnie)</label>
+  <label class="file"><input type="file" id="zf-f" accept="image/*"><span>📷</span><span id="zf-fn">Dodaj zdjęcie</span></label>
+  <label class="l" for="zf-k">Twój kontakt (opcjonalnie)</label><input id="zf-k" placeholder="telefon lub e-mail – tylko dla redakcji">
+  <button class="btn r w" style="margin-top:14px" type="submit">Wyślij do redakcji</button>
+  <p class="note" id="zf-note">Wiadomość otworzy się w Twojej poczcie (lub w menu udostępniania razem ze zdjęciem). Adres redakcji: <b>redakcja@zyciepw.pl</b></p>
+ </form>
+</section>
+
+<!-- ZAPISANE -->
+<section class="view" id="v-zapisane">
+ <div class="hello"><h1>Zapisane</h1><p>Artykuły do przeczytania później. Działają też bez internetu.</p></div>
+ <div class="list" id="z-list" style="margin-top:12px"></div>
+</section>
+
+<!-- WIĘCEJ -->
+<section class="view" id="v-wiecej">
+ <div class="hello"><h1>Więcej</h1><p>Ustawienia i narzędzia portalu.</p></div>
+ <h2 class="sec"><span>Moja okolica</span></h2>
+ <div class="menu">
+  <button id="m-gmina"><span class="e">📍</span><span>Moja gmina i ulica<small id="m-gmina-s">nie ustawiono</small></span><span class="ar">›</span></button>
+ </div>
+ <h2 class="sec"><span>Wygląd</span></h2>
+ <div class="card">
+  <div class="seg" id="theme"><button data-t="auto">Auto</button><button data-t="light">Jasny</button><button data-t="dark">Ciemny</button></div>
+  <label class="l">Wielkość tekstu w artykułach</label>
+  <div class="seg" id="fsz"><button data-f="16">A</button><button data-f="18" style="font-size:17px">A</button><button data-f="21" style="font-size:20px">A</button></div>
+ </div>
+ <h2 class="sec"><span>Narzędzia zyciepw.pl</span></h2>
+ <div class="menu">
+  <a href="https://www.zyciepw.pl/wylaczenia-pradu/" target="_blank" rel="noopener"><span class="e">⚡</span><span>Wyłączenia prądu<small>Planowane, w każdej gminie</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/utrudnienia/" target="_blank" rel="noopener"><span class="e">🚧</span><span>Utrudnienia drogowe<small>Zamknięcia i objazdy na mapie</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/moja-ulica/" target="_blank" rel="noopener"><span class="e">🏠</span><span>Moja ulica<small>Wszystko o Twojej ulicy</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/budzety-gmin/" target="_blank" rel="noopener"><span class="e">💰</span><span>Budżety gmin<small>Na co idą nasze pieniądze</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/wehikul-czasu/" target="_blank" rel="noopener"><span class="e">🕰️</span><span>Wehikuł czasu<small>Miasta z lotu ptaka: wtedy i dziś</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/kino/" target="_blank" rel="noopener"><span class="e">🎬</span><span>Kino<small>Repertuar w okolicy</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/firmy/" target="_blank" rel="noopener"><span class="e">🏪</span><span>Katalog firm<small>Lokalni przedsiębiorcy</small></span><span class="ar">↗</span></a>
+  <a id="m-kob" href="https://lechur.github.io/wehikul-czasu/kobylka/" target="_blank" rel="noopener" hidden><span class="e">🏛️</span><span>Aplikacja mieszkańca Kobyłki<small>Odpady, sprawy do radnych, komunikacja</small></span><span class="ar">↗</span></a>
+ </div>
+ <h2 class="sec"><span>Życie Powiatu</span></h2>
+ <div class="menu">
+  <a href="https://www.zyciepw.pl/redakcja/" target="_blank" rel="noopener"><span class="e">👥</span><span>Redakcja i kontakt<small>redakcja@zyciepw.pl</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/reklama/" target="_blank" rel="noopener"><span class="e">📣</span><span>Reklama dla firm<small>Portal, gazeta, aplikacja</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/polityka-prywatnosci/" target="_blank" rel="noopener"><span class="e">🔒</span><span>Prywatność<small>Ustawienia zostają w telefonie; statystyki jak na portalu</small></span><span class="ar">↗</span></a>
+  <button id="m-share"><span class="e">💬</span><span>Poleć aplikację znajomym<small>Wyślij link</small></span><span class="ar">›</span></button>
+ </div>
+ <div class="card" style="margin-top:14px;display:flex;gap:14px;align-items:center">
+  <div class="qr" id="qr" role="img" aria-label="Kod QR aplikacji"></div>
+  <div><b>Otwórz w telefonie</b><p class="meta" style="margin:4px 0 0">Zeskanuj kod aparatem, a potem wybierz „Dodaj do ekranu głównego”.</p></div>
+ </div>
+ <p class="note" style="text-align:center;margin-top:16px">Życie Powiatu na Mazowszu · bezpłatny tygodnik powiatu wołomińskiego<br><span id="ver"></span></p>
+</section>
+</main>
+
+<!-- czytnik -->
+<div id="reader" aria-modal="true" role="dialog">
+ <div class="rbar"><button id="r-back">‹ Wróć</button><span class="sp"></span><button id="r-fs" aria-label="Wielkość tekstu">Aa</button><button id="r-save" aria-label="Zapisz">🔖</button><button id="r-share" aria-label="Udostępnij">↗︎</button></div>
+ <div class="rprog" id="rprog"></div>
+ <article class="r" id="r-art"></article>
+</div>
+
+<!-- arkusze -->
+<div class="dim" id="dim"></div>
+<div class="sheet" id="sh-g">
+ <div class="grab"></div>
+ <h3>Twoja gmina</h3>
+ <p class="note" style="margin-top:0">Pokażemy wiadomości, powietrze i sprawy z Twojej okolicy.</p>
+ <div class="gtiles" id="gtiles"></div>
+ <label class="l" for="g-u">Twoja ulica lub miejscowość (opcjonalnie)</label>
+ <input id="g-u" placeholder="np. Mickiewicza albo Nowe Lipiny" autocomplete="address-line1">
+ <p class="note">Po ulicy sprawdzimy wyłączenia prądu, utrudnienia, teksty o Twojej ulicy i – tam, gdzie gmina publikuje harmonogram – odbiór odpadów. Zapisujemy to tylko w Twoim telefonie.</p>
+ <button class="btn r w" id="g-ok">Gotowe</button>
+</div>
+
+<div class="sheet" id="sh-dz">
+ <div class="grab"></div>
+ <div class="steps"><i class="on"></i><i></i><i></i></div>
+ <div id="dz-s1">
+  <h3>Gdzie są dziki?</h3>
+  <p class="note" style="margin-top:0">Zlokalizuj się albo zamknij okno i dotknij mapy w miejscu obserwacji.</p>
+  <button class="btn w" id="dz-gps">📍 Zlokalizuj mnie</button>
+  <p class="note" id="dz-where"></p>
+  <button class="btn r w" id="dz-n1" disabled>Dalej</button>
+ </div>
+ <div id="dz-s2" hidden>
+  <h3>Ile i co robią?</h3>
+  <div class="opts2" id="dz-ile"></div>
+  <div class="opts2" id="dz-co" style="margin-top:10px"></div>
+  <div class="row" style="margin-top:14px"><button class="btn gh" id="dz-b2">Wstecz</button><button class="btn r" id="dz-n2" disabled>Dalej</button></div>
+ </div>
+ <div id="dz-s3" hidden>
+  <h3>Zdjęcie lub film (opcjonalnie)</h3>
+  <label class="file"><input type="file" id="dz-f" accept="image/*,video/*"><span>📷</span><span id="dz-fn">Dodaj zdjęcie lub krótki film</span></label>
+  <p class="note">Zdjęcie pojawi się na mapie po sprawdzeniu przez redakcję.</p>
+  <div class="row" style="margin-top:10px"><button class="btn gh" id="dz-b3">Wstecz</button><button class="btn r" id="dz-send">Wyślij zgłoszenie</button></div>
+  <p class="note" id="dz-msg"></p>
+ </div>
+</div>
+
+<nav class="tab" id="tabbar">
+ <button data-go="dzis" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Dziś</button>
+ <button data-go="wiadomosci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>Wiadomości<span class="cnt" id="cnt" hidden></span></button>
+ <button data-go="dziki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Mapa</button>
+ <button data-go="zglos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>Do redakcji</button>
+ <button data-go="wiecej"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Więcej</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script id="snap" type="application/json">null</script>
+<script>
+(function(){
+'use strict';
+var VER='1.1 · 15.11.2026';
+var SITE='https://www.zyciepw.pl',API=SITE+'/wp-json',DZAPI=SITE+'/mieszkaniec-api/?zasob=dziki';
+var SNAP=null;try{SNAP=JSON.parse(document.getElementById('snap').textContent)}catch(e){}
+var PREVIEW=!!(SNAP&&SNAP.podglad);
+var APPURL=PREVIEW?'https://www.zyciepw.pl/aplikacja/':location.href.split('#')[0];
+function qr(){var e=$('qr');if(e.firstChild)return;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=function(){try{new QRCode(e,{text:APPURL,width:216,height:216,correctLevel:QRCode.CorrectLevel.M})}catch(x){e.parentNode.style.display='none'}};s.onerror=function(){e.parentNode.style.display='none'};document.body.appendChild(s)}
+var G=[{s:'wolomin',n:'Wołomin',c:153,la:52.3449,lo:21.242},{s:'kobylka',n:'Kobyłka',c:159,la:52.3394,lo:21.1957},{s:'marki',n:'Marki',c:616,la:52.3263,lo:21.1047},{s:'zabki',n:'Ząbki',c:722,la:52.2925,lo:21.1062},{s:'zielonka',n:'Zielonka',c:168,la:52.3054,lo:21.1604},{s:'radzymin',n:'Radzymin',c:174,la:52.4147,lo:21.184},{s:'tluszcz',n:'Tłuszcz',c:718,la:52.4329,lo:21.4386},{s:'klembow',n:'Klembów',c:190,la:52.4048,lo:21.3324},{s:'dabrowka',n:'Dąbrówka',c:777,la:52.489,lo:21.259},{s:'jadow',n:'Jadów',c:744,la:52.4808,lo:21.6242},{s:'poswietne',n:'Poświętne',c:733,la:52.36,lo:21.4},{s:'strachowka',n:'Strachówka',c:732,la:52.433,lo:21.666}];
+var GC={};G.forEach(function(g){GC[g.c]=g});
+var KAT={85:'Samorząd',79:'Sport',88:'Kultura',90:'Zdrowie',91:'Ekologia',80:'Oświata',93:'Bezpieczeństwo',12451:'Na sygnale',75:'Wydarzenia',82:'Felietony',452:'Historia',83:'Gospodarka',87:'Polityka',1365:'Fotoreportaż',1602:'Prawo i biznes',1650:'Kulinaria',3:'Aktualności',380:'Powiat'};
+var FILTRY=[{id:'moja',n:'Moja gmina'},{id:'all',n:'Najnowsze'},{id:'powiat',n:'Powiat',q:'categories=380'},{id:'sam',n:'Samorząd',q:'categories=85'},{id:'bez',n:'Na sygnale',q:'categories=93,12451'},{id:'sport',n:'Sport',q:'categories=79'},{id:'kul',n:'Kultura',q:'categories=88,75'},{id:'zdr',n:'Zdrowie',q:'categories=90'},{id:'osw',n:'Oświata',q:'categories=80'},{id:'eko',n:'Ekologia',q:'categories=91'}];
+var DZILE=['1 dzik','2–5 dzików','więcej niż 5 dzików','locha z młodymi'],DZCO=['przechodzą','żerują, ryją','są przy śmietnikach','zachowują się agresywnie'];
+var FR={zm:['zmieszane','#4b4f55'],bio:['bio','#8a5a2b'],pap:['papier','#1f6fd1'],mtw:['metale i tworzywa','#e2b100'],szk:['szkło','#1f8a4c'],seg:['segregowane','#1f6fd1'],gab:['gabaryty','#7a3db8'],pop:['popiół','#8c8c8c'],cho:['choinki','#2e7d32']};
+
+/* ---------- stan ---------- */
+var S={g:'',u:'',theme:'auto',fs:18,saved:[],seen:0,votes:{}};
+try{var x=JSON.parse(localStorage.getItem('zp_app')||'null');if(x)for(var k in x)S[k]=x[k]}catch(e){}
+function save(){try{localStorage.setItem('zp_app',JSON.stringify(S))}catch(e){}}
+function cacheGet(k){try{return JSON.parse(localStorage.getItem('zp_c_'+k)||'null')}catch(e){return null}}
+function cacheSet(k,v){try{localStorage.setItem('zp_c_'+k,JSON.stringify(v))}catch(e){}}
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function txt(h){var d=document.createElement('div');d.innerHTML=h||'';return (d.textContent||'').replace(/\s+/g,' ').trim()}
+function gm(s){for(var i=0;i<G.length;i++)if(G[i].s===s)return G[i];return null}
+function pl(n,a,b,c){return n===1?a:(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?b:c}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},2600)}
+function ago(d){var t=new Date(d),m=(Date.now()-t)/6e4;if(m<1)return 'przed chwilą';if(m<60)return Math.round(m)+' min temu';if(m<60*24&&t.getDate()===new Date().getDate())return 'dziś, '+t.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});var y=new Date();y.setDate(y.getDate()-1);if(t.toDateString()===y.toDateString())return 'wczoraj, '+t.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});return t.toLocaleDateString('pl-PL',{day:'numeric',month:'long'})}
+function tmo(p,ms){return Promise.race([p,new Promise(function(_,r){setTimeout(function(){r(new Error('timeout'))},ms||9000)})])}
+var offlineShown=false;
+function offline(){if(offlineShown)return;offlineShown=true;var o=$('offline');o.style.display='block';o.textContent=PREVIEW?'Podgląd aplikacji: dane zapisane '+(SNAP.stan||'')+'. Po instalacji na telefonie wszystko odświeża się na żywo.':'Brak połączenia – pokazuję ostatnio pobrane dane.'}
+/* GET z zapasem: sieć → pamięć telefonu → migawka */
+function getJ(url,key){
+ if(PREVIEW){var v=SNAP.r[key];if(v===undefined&&key)v=SNAP.r[key.split('_').slice(0,2).join('_')];offline();return v!==undefined?Promise.resolve(v):Promise.reject(new Error('brak'))}
+ return tmo(fetch(url).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}),9000).then(function(j){if(key)cacheSet(key,j);return j}).catch(function(e){var c=key&&cacheGet(key);if(c){offline();return c}throw e})}
+
+/* ---------- analityka (GA4 portalu, tylko pod adresem zyciepw.pl) ---------- */
+var GAID='G-GL4YCNRT2Y',GA=!PREVIEW&&/(^|\.)zyciepw\.pl$/.test(location.hostname);
+var INSTALLED=!!(matchMedia('(display-mode: standalone)').matches||navigator.standalone);
+window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments)}
+if(GA){var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id='+GAID;document.head.appendChild(gs);gtag('js',new Date());gtag('config',GAID,{content_group:'aplikacja',send_page_view:false});gtag('set','user_properties',{app_tryb:INSTALLED?'zainstalowana':'przegladarka',app_gmina:S.g||'brak'})}
+function ev(n,p){if(GA)try{gtag('event',n,p||{})}catch(e){}}
+function pv(path,title){ev('page_view',{page_location:'https://www.zyciepw.pl/aplikacja/'+path,page_title:title})}
+window.addEventListener('appinstalled',function(){ev('app_instalacja')});
+
+/* ---------- motyw ---------- */
+function theme(){if(S.theme==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',S.theme);document.querySelectorAll('#theme button').forEach(function(b){b.classList.toggle('on',b.dataset.t===S.theme)});document.querySelectorAll('#fsz button').forEach(function(b){b.classList.toggle('on',+b.dataset.f===S.fs)});document.documentElement.style.setProperty('--fs',S.fs+'px')}
+document.querySelectorAll('#theme button').forEach(function(b){b.onclick=function(){S.theme=b.dataset.t;save();theme()}});
+document.querySelectorAll('#fsz button').forEach(function(b){b.onclick=function(){S.fs=+b.dataset.f;save();theme()}});
+
+/* ---------- posty ---------- */
+var F='_fields=id,date,link,title,excerpt,categories,tags,_links,_embedded&_embed=wp:featuredmedia';
+function img(p,size){
+ if(p._img!==undefined)return p._img;
+ try{var m=p._embedded['wp:featuredmedia'][0],s=m.media_details&&m.media_details.sizes||{};var o=s[size]||s['zycie-card']||s.medium_large||s.large||s.medium;return (o&&o.source_url)||m.source_url||''}catch(e){return ''}}
+function kat(p){var c=p.categories||[],g='',k='';c.forEach(function(i){if(GC[i]&&!g)g=GC[i].n;if(KAT[i]&&!k&&i!==3&&i!==380)k=KAT[i]});return {g:g,k:k}}
+function isNew(p){return S.seen&&new Date(p.date)>new Date(S.seen)}
+var POSTS={};
+function keep(arr){(arr||[]).forEach(function(p){POSTS[p.id]=p})}
+function item(p){var k=kat(p),im=img(p,'zycie-square');return '<button class="it" data-p="'+p.id+'"><div class="th"'+(im?' style="background-image:url(\''+esc(im)+'\')"':'')+'>'+(im?'':'📰')+'</div><div><h4>'+(isNew(p)?'<span class="new">NOWE</span>':'')+esc(txt(p.title.rendered))+'</h4><div class="meta">'+esc([k.g,k.k].filter(Boolean).join(' · '))+(k.g||k.k?' · ':'')+ago(p.date)+'</div></div></button>'}
+function bindItems(el){el.querySelectorAll('[data-p]').forEach(function(b){b.onclick=function(){openArt(+b.dataset.p)}})}
+
+/* ---------- DZIŚ ---------- */
+function hello(){var h=new Date().getHours();$('hi').textContent=h>=18?'Dobry wieczór':'Dzień dobry';var g=gm(S.g);$('hidate').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})+(g?' · '+g.n:' · powiat wołomiński');$('gchip').textContent=g?g.n:'Wybierz gminę';$('m-gmina-s').textContent=g?(g.n+(S.u?', '+S.u:'')):'nie ustawiono';$('m-kob').hidden=S.g!=='kobylka'}
+function loadStart(){
+ var g=gm(S.g),key='lead_'+(g?g.s:'pow'),q=g?'categories='+g.c:'categories=380';
+ $('lead-t').textContent=g?'Najnowsze: '+g.n:'Najnowsze w powiecie';
+ getJ(API+'/wp/v2/posts?per_page=6&'+q+'&'+F,key).then(function(a){keep(a);if(!a.length){$('s-lead').innerHTML='<div class="empty">Brak nowych wiadomości.</div>';return}
+  var p=a[0],k=kat(p),im=img(p,'zycie-lead');
+  $('s-lead').innerHTML='<div class="lead" data-p="'+p.id+'"><div class="im"'+(im?' style="background-image:url(\''+esc(im)+'\')"':'')+'><span class="k"><span class="kat">'+esc(k.k||k.g||'Powiat')+'</span></span></div><div class="tx"><div class="meta">'+ago(p.date)+'</div><h3>'+esc(txt(p.title.rendered))+'</h3><p>'+esc(txt(p.excerpt.rendered).slice(0,170))+'</p></div></div>';
+  $('s-list').innerHTML=a.slice(1,6).map(item).join('');bindItems($('s-lead'));bindItems($('s-list'));newCount();
+ }).catch(function(){$('s-lead').innerHTML='<div class="empty">Nie udało się pobrać wiadomości. Sprawdź internet.</div>';$('s-list').innerHTML=''});
+ // pasek „Ważne”
+ getJ(API+'/wp/v2/posts?per_page=1&tags=41864&_fields=id,date,link,title,excerpt,categories','wazne').then(function(a){if(!a||!a[0])return;var p=a[0];if((Date.now()-new Date(p.date))/864e5>3)return;keep(a);$('strip').hidden=false;$('strip-a').textContent=txt(p.title.rendered);$('strip-a').onclick=function(e){e.preventDefault();openArt(p.id)}}).catch(function(){});
+ pytanie();okolica();powietrze();dzikiTile();gazeta();
+}
+function newCount(){
+ if(!S.seen){S.seen=Date.now();save();return}
+ getJ(API+'/wp/v2/posts?per_page=30&after='+new Date(S.seen).toISOString().slice(0,19)+'&_fields=id','nowe').then(function(a){var n=(a||[]).length;$('cnt').hidden=!n;$('cnt').textContent=n>29?'30+':n}).catch(function(){});
+}
+/* Pytanie dnia */
+function pytanie(){
+ var A=$('pd');
+ getJ(API+'/zr/v1/pytanie','pytanie').then(function(d){
+  if(!d||!d.opcje){A.innerHTML='<div class="k">Pytanie dnia</div><h3>Nowe pytanie pojawi się wkrótce.</h3>';return}
+  var moj=S.votes[d.id];
+  if(moj!==undefined)return wyniki(d,moj);
+  A.innerHTML='<div class="k">Pytanie dnia · '+esc(d.data||'')+'</div><h3>'+esc(d.pytanie)+'</h3><select id="pd-g" aria-label="Twoja gmina">'+G.map(function(g){return '<option value="'+g.s+'"'+(S.g===g.s?' selected':'')+'>'+g.n+'</option>'}).join('')+'</select><div class="opts">'+d.opcje.map(function(o,i){return '<button data-i="'+i+'">'+esc(o)+'</button>'}).join('')+'</div><small>Wyniki zobaczysz po oddaniu głosu.</small>';
+  A.querySelectorAll('.opts button').forEach(function(b){b.onclick=function(){
+   var i=+b.dataset.i,g=$('pd-g').value;A.querySelectorAll('.opts button').forEach(function(x){x.disabled=true});
+   if(PREVIEW){d.suma[i]++;d.razem++;S.votes[d.id]=i;save();wyniki(d,i);toast('Podgląd: głos nie został wysłany');return}
+   fetch(API+'/zr/v1/pytanie',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,o:i,g:g})}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){if(x[0]){ev('app_glos',{pytanie_id:d.id,gmina:g});S.votes[d.id]=i;save();wyniki(x[1].opcje?x[1]:d,i);toast('Dziękujemy za głos!')}else{toast(x[1].message||'Nie udało się zapisać głosu');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})}}).catch(function(){toast('Brak połączenia – spróbuj za chwilę');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})});
+  }});
+ }).catch(function(){A.innerHTML='<div class="k">Pytanie dnia</div><h3>Nie udało się pobrać pytania.</h3>'});
+}
+function wyniki(d,moj){
+ var A=$('pd'),r=d.razem||0;
+ A.innerHTML='<div class="k">Pytanie dnia · wyniki</div><h3>'+esc(d.pytanie)+'</h3>'+d.opcje.map(function(o,i){var v=d.suma[i]||0,p=r?Math.round(v*100/r):0;return '<div class="res'+(i===moj?' me':'')+'"><div class="bar"><i style="width:'+p+'%"></i><span><span>'+(i===moj?'✓ ':'')+esc(o)+'</span><span>'+p+'%</span></span></div></div>'}).join('')+'<small>Głosów: '+r+'. Sonda czytelników, nie badanie reprezentatywne.</small>';
+}
+/* Okolica: ulica + odpady */
+function okolica(){
+ var C=$('okolica'),g=gm(S.g);
+ if(!g){C.innerHTML='<div class="ok"><span class="e">📍</span><div><b>Ustaw swoją gminę i ulicę</b><span>Pokażemy wyłączenia prądu, utrudnienia i teksty o Twojej okolicy.</span></div></div><button class="btn r w" style="margin-top:8px" id="ok-set">Ustaw okolicę</button>';$('ok-set').onclick=openG;return}
+ $('ok-t').textContent=S.u?S.u+', '+g.n:'Gmina '+g.n;
+ if(!S.u){C.innerHTML='<div class="ok"><span class="e">🏠</span><div><b>Dodaj ulicę</b><span>Wtedy sprawdzimy prąd, drogi i odbiór odpadów pod Twoim adresem.</span></div></div><button class="btn gh w" style="margin-top:8px" id="ok-set">Dodaj ulicę</button>';$('ok-set').onclick=openG;return}
+ C.innerHTML='<div class="skel" style="height:120px"></div>';
+ var k='ul_'+g.s+'_'+S.u.toLowerCase();
+ Promise.all([getJ(API+'/zr/v1/ulica?g='+g.s+'&u='+encodeURIComponent(S.u),k).catch(function(){return null}),getJ(API+'/zr/v1/odpady?g='+g.s+'&u='+encodeURIComponent(S.u),'od_'+g.s+'_'+S.u.toLowerCase()).catch(function(){return null})]).then(function(r){
+  var d=r[0],o=r[1],h='';
+  if(d){
+   var p=d.prad||[],dr=d.drogi||[],t=d.ulica_teksty||[];
+   h+='<div class="ok"><span class="e">⚡</span><div><b>Prąd '+(p.length?'<span class="badge w">'+p.length+' '+pl(p.length,'wyłączenie','wyłączenia','wyłączeń')+'</span>':'<span class="badge">bez planowanych wyłączeń</span>')+'</b><span>'+(p.length?p.slice(0,3).map(function(x){var a=new Date(String(x.od).replace(' ','T')),b=new Date(String(x.do).replace(' ','T'));return '<b style="display:inline">'+a.toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'numeric'})+' '+a.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})+'–'+b.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})+'</b> '+esc(x.gdzie||'')}).join('<br>'):'na Twojej ulicy · w całej gminie: '+(d.prad_gmina||0))+'</span></div></div>';
+   h+='<div class="ok"><span class="e">🚧</span><div><b>Drogi '+(dr.length?'<span class="badge w">'+dr.length+' '+pl(dr.length,'utrudnienie','utrudnienia','utrudnień')+'</span>':'<span class="badge">bez utrudnień</span>')+'</b><span>'+(dr.length?dr.slice(0,3).map(function(x){return x.u?'<a href="'+esc(x.u)+'" target="_blank" rel="noopener">'+esc(x.t)+'</a>':esc(x.t||'')}).join('<br>'):'na Twojej ulicy · w gminie: '+(d.drogi_gmina||0))+' · <a href="https://www.zyciepw.pl/utrudnienia/" target="_blank" rel="noopener">mapa</a></span></div></div>';
+   if(t.length)h+='<div class="ok"><span class="e">📰</span><div><b>O Twojej ulicy</b><span>'+t.slice(0,3).map(function(x){return '<a href="'+esc(x.u)+'" data-link="'+esc(x.u)+'">'+esc(x.t)+'</a> <span class="meta">'+esc(x.d)+'</span>'}).join('<br>')+'</span></div></div>';
+  }
+  if(o&&o.jest&&o.rejony&&o.rejony.length){
+   var rj=o.rejony[0],today=new Date().toISOString().slice(0,10),dn=Object.keys(rj.terminy||{}).filter(function(x){return x>=today}).sort().slice(0,3);
+   if(dn.length){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>'+esc(rj.nazwa)+'</span>'+dn.map(function(x){var dt=new Date(x+'T12:00');return '<div style="margin-top:6px"><span class="meta"><b style="display:inline;color:var(--ink)">'+dt.toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'short'})+'</b></span><div class="bins">'+rj.terminy[x].map(function(f){var q=(o.frakcje&&o.frakcje[f])||FR[f]||[f,'#888'];return '<span class="bin"><i style="background:'+q[1]+'"></i>'+esc(q[0])+'</span>'}).join('')+'</div></div>'}).join('')+(rj.kal?'<div style="margin-top:6px"><a href="'+esc(rj.kal)+'" target="_blank" rel="noopener">Dodaj terminy do kalendarza</a></div>':'')+'</div></div>'}
+  }else if(o&&!o.jest){h+='<div class="ok"><span class="e">♻️</span><div><b>Odbiór odpadów</b><span>Harmonogram dla gminy '+esc(g.n)+' dodamy wkrótce.</span></div></div>'}
+  if(!h)h='<div class="empty">Nie udało się sprawdzić Twojej okolicy.</div>';
+  C.innerHTML=h;C.querySelectorAll('[data-link]').forEach(function(a){a.onclick=function(e){var id=null;for(var i in POSTS)if(POSTS[i].link===a.dataset.link)id=+i;if(id){e.preventDefault();openArt(id)}else{e.preventDefault();openBySlug(a.dataset.link)}}});
+ });
+}
+/* Powietrze i pogoda */
+function powietrze(){
+ var g=gm(S.g)||G[0],C=$('air');C.innerHTML='<div class="skel" style="height:80px"></div>';
+ Promise.all([getJ(API+'/zr/v1/powietrze','powietrze').catch(function(){return null}),getJ('https://api.open-meteo.com/v1/forecast?latitude='+g.la+'&longitude='+g.lo+'&current=temperature_2m,weather_code&daily=temperature_2m_min,temperature_2m_max,precipitation_probability_max,weather_code&forecast_days=3&timezone=Europe%2FWarsaw','pogoda_'+g.s).catch(function(){return null})]).then(function(r){
+  var a=r[0]&&r[0].gminy&&r[0].gminy[g.s],w=a&&a.w,h='';
+  var col={1:'#1f9d55',2:'#7cb342',3:'#f2b01e',4:'#ef6c00',5:'#d32f2f',6:'#7b1fa2',0:'#1f9d55'};
+  if(w){var pm=w.pm25||w.pm10||{};h+='<div class="air"><div class="dot" style="background:'+(col[w.idx]||'#888')+'">'+esc(w.idx_n||'–')+'</div><div><b>Powietrze: '+esc(w.idx_n||'brak danych')+'</b><div class="meta">'+(w.pm25?'PM2,5: '+w.pm25.v+' µg/m³ · ':'')+(w.pm10?'PM10: '+w.pm10.v+' µg/m³':'')+'</div><div class="meta">Stacja: '+esc(w.stacja)+' ('+w.km+' km)'+(w.km>30?', wynik orientacyjny':'')+' · GIOŚ</div></div></div>'}
+  var m=r[1];
+  if(m&&m.daily){var ic=function(c){return c===0?'☀️':c<=2?'🌤️':c===3?'☁️':c<=48?'🌫️':c<=67?'🌧️':c<=77?'🌨️':c<=82?'🌦️':'⛈️'};
+   h+='<div class="wdays">'+m.daily.time.map(function(t,i){return '<div class="wd">'+(i===0?'Dziś':new Date(t+'T12:00').toLocaleDateString('pl-PL',{weekday:'short'}))+'<b>'+ic(m.daily.weather_code[i])+' '+Math.round(m.daily.temperature_2m_max[i])+'°</b><span class="meta">'+Math.round(m.daily.temperature_2m_min[i])+'° · ☔ '+(m.daily.precipitation_probability_max[i]||0)+'%</span></div>'}).join('')+'</div><div class="meta" style="margin-top:6px">'+esc(g.n)+(m.current?' · teraz '+Math.round(m.current.temperature_2m)+'°C':'')+' · Open-Meteo</div>'}
+  C.innerHTML=h||'<div class="empty">Brak danych o powietrzu.</div>';
+ });
+}
+function dzikiTile(){getJ(DZAPI+(S.g?'&gmina='+S.g:''),'dziki_'+(S.g||'pow')).then(function(d){var O=d.obserwacje||[],n=O.filter(function(o){return (Date.now()-new Date(o.kiedy))/864e5<=7}).length;$('t-dz').textContent=n?n+' '+pl(n,'obserwacja','obserwacje','obserwacji')+' w 7 dni':'Brak zgłoszeń w 7 dni'}).catch(function(){})}
+function gazeta(){getJ(API+'/wp/v2/posts?search='+encodeURIComponent('Nowy numer Życia Powiatu do pobrania')+'&per_page=1&_fields=id,date,link,title','gazeta').then(function(a){if(a&&a[0]){$('t-gaz').href=a[0].link;$('t-gaz-s').textContent='Numer z '+new Date(a[0].date).toLocaleDateString('pl-PL',{day:'numeric',month:'long'})}}).catch(function(){})}
+
+/* ---------- WIADOMOŚCI ---------- */
+var NF={f:'moja',page:1,q:''};
+function chips(){$('fchips').innerHTML=FILTRY.map(function(f){var n=f.id==='moja'?(gm(S.g)?gm(S.g).n:'Moja gmina'):f.n;return '<button class="chip'+(NF.f===f.id&&!NF.q?' on':'')+'" data-f="'+f.id+'">'+esc(n)+'</button>'}).join('');$('fchips').querySelectorAll('.chip').forEach(function(b){b.onclick=function(){NF.f=b.dataset.f;NF.q='';$('q').value='';NF.page=1;chips();news()}})}
+function nq(){if(NF.q)return 'search='+encodeURIComponent(NF.q);if(NF.f==='moja'){var g=gm(S.g);return g?'categories='+g.c:'categories=380'}var f=FILTRY.filter(function(x){return x.id===NF.f})[0];return f&&f.q||''}
+function news(more){
+ var L=$('n-list'),k='n_'+nq()+'_'+NF.page;
+ if(!more)L.innerHTML='<div style="padding:14px"><div class="skel" style="height:60px;margin-bottom:10px"></div><div class="skel" style="height:60px;margin-bottom:10px"></div><div class="skel" style="height:60px"></div></div>';
+ $('n-more').hidden=true;
+ getJ(API+'/wp/v2/posts?per_page=15&page='+NF.page+'&'+nq()+'&'+F,k).then(function(a){keep(a);var h=a.map(item).join('');if(more)L.insertAdjacentHTML('beforeend',h);else L.innerHTML=h||'<div class="empty">Nic nie znaleźliśmy.</div>';bindItems(L);$('n-more').hidden=a.length<15||PREVIEW;if(NF.f==='all'&&NF.page===1&&!NF.q){S.seen=Date.now();save();$('cnt').hidden=true}}).catch(function(){if(!more)L.innerHTML='<div class="empty">Nie udało się pobrać wiadomości.</div>'});
+}
+$('n-more').onclick=function(){NF.page++;news(true)};
+var qt;$('q').oninput=function(){clearTimeout(qt);var v=this.value.trim();qt=setTimeout(function(){NF.q=v.length>2?v:'';if(NF.q)ev('search',{search_term:NF.q});NF.page=1;chips();news()},450)};
+
+/* ---------- CZYTNIK ---------- */
+var CUR=null;
+function clean(html){
+ var d=new DOMParser().parseFromString('<div>'+html+'</div>','text/html'),r=d.body.firstChild;
+ r.querySelectorAll('script,style,form,ins,noscript,object,embed,.sharedaddy,.jp-relatedposts,.wp-block-buttons').forEach(function(e){e.remove()});
+ r.querySelectorAll('iframe').forEach(function(f){var s=f.getAttribute('src')||'';var a=d.createElement('a');a.className='vid';a.href=s;a.target='_blank';a.rel='noopener';a.textContent=/youtu/.test(s)?'▶ Obejrzyj film na YouTube':/facebook/.test(s)?'▶ Zobacz na Facebooku':'▶ Otwórz osadzony materiał';f.replaceWith(a)});
+ r.querySelectorAll('*').forEach(function(e){for(var i=e.attributes.length-1;i>=0;i--){var n=e.attributes[i].name;if(/^on/i.test(n)||n==='style'||n==='class'&&e.className!=='vid')e.removeAttribute(n)}});
+ r.querySelectorAll('a').forEach(function(a){var h=a.getAttribute('href')||'';if(/^javascript:/i.test(h))a.removeAttribute('href');a.target='_blank';a.rel='noopener'});
+ r.querySelectorAll('img').forEach(function(i){i.loading='lazy';i.decoding='async';i.removeAttribute('width');i.removeAttribute('height');if(PREVIEW)i.remove()});
+ return r.innerHTML;
+}
+function openArt(id,noPush){
+ var p=POSTS[id];CUR=id;
+ var R=$('reader'),A=$('r-art');R.classList.add('on');R.scrollTop=0;document.body.style.overflow='hidden';
+ if(!noPush)try{history.pushState({a:id},'','#a'+id)}catch(e){location.hash='a'+id}
+ var head=function(p){var k=kat(p),im=img(p,'zycie-lead');return '<div><span class="kat">'+esc(k.k||k.g||'Powiat')+'</span>'+(k.g&&k.k?' <span class="kat g">'+esc(k.g)+'</span>':'')+'</div><h1>'+esc(txt(p.title.rendered))+'</h1><div class="meta">'+new Date(p.date).toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · '+new Date(p.date).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})+'<!--min--></div>'+(im?'<img class="hero" alt="" src="'+esc(im)+'">':'')};
+ A.innerHTML=p?head(p)+'<div class="body"><p>'+esc(txt(p.excerpt.rendered))+'</p><div class="skel" style="height:220px"></div></div>':'<div class="skel" style="height:300px;margin-top:20px"></div>';
+ $('r-save').textContent=S.saved.some(function(x){return x.id===id})?'✅':'🔖';
+ var sv=S.saved.filter(function(x){return x.id===id})[0];
+ var src=sv&&sv.content?Promise.resolve(sv):getJ(API+'/wp/v2/posts/'+id+'?_fields=id,date,link,title,excerpt,content,categories,tags,_links,_embedded&_embed=wp:featuredmedia','a_'+id);
+ src.then(function(full){POSTS[id]=Object.assign({},POSTS[id]||{},full);var q=POSTS[id];
+  var words=txt(q.content.rendered).split(' ').length,min=Math.max(1,Math.round(words/200));
+  A.innerHTML=head(q).replace('<!--min-->',' · '+min+' min czytania')+'<div class="body">'+clean(q.content.rendered)+'</div><div class="rfoot"><button class="btn y w" id="rf-share">Udostępnij znajomym</button><a class="btn gh w" href="'+esc(q.link)+'" target="_blank" rel="noopener">Otwórz na zyciepw.pl</a></div><div class="rel" id="rel"></div>';
+  $('rf-share').onclick=share;related(q);pv('artykul/'+q.id,txt(q.title.rendered));ev('app_artykul',{post_id:q.id,czas_min:min});
+ }).catch(function(){if(p)A.querySelector('.skel')&&(A.querySelector('.skel').outerHTML='<p class="note">Nie udało się pobrać pełnego tekstu. <a href="'+esc(p.link)+'" target="_blank" rel="noopener">Czytaj na zyciepw.pl</a></p>');else A.innerHTML='<p class="empty">Nie udało się otworzyć artykułu.</p>'});
+}
+function openBySlug(link){var slug=link.replace(/\/$/,'').split('/').pop();getJ(API+'/wp/v2/posts?slug='+encodeURIComponent(slug)+'&'+F,'s_'+slug).then(function(a){if(a&&a[0]){keep(a);openArt(a[0].id)}else window.open(link,'_blank')}).catch(function(){window.open(link,'_blank')})}
+function related(q){var g=(q.categories||[]).filter(function(c){return GC[c]})[0]||380;getJ(API+'/wp/v2/posts?per_page=4&categories='+g+'&exclude='+q.id+'&'+F,'rel_'+q.id).then(function(a){keep(a);if(!a.length)return;$('rel').innerHTML='<h4>Czytaj także</h4><div class="list">'+a.slice(0,3).map(item).join('')+'</div>';bindItems($('rel'))}).catch(function(){})}
+function closeArt(){$('reader').classList.remove('on');document.body.style.overflow='';CUR=null}
+$('r-back').onclick=function(){if(history.state&&history.state.a)history.back();else{closeArt();location.hash=TAB||'dzis'}};
+$('r-fs').onclick=function(){S.fs=S.fs>=21?16:S.fs===16?18:21;save();theme()};
+$('r-save').onclick=function(){var p=POSTS[CUR];if(!p)return;var i=S.saved.findIndex(function(x){return x.id===CUR});if(i>-1){S.saved.splice(i,1);toast('Usunięto z zapisanych');this.textContent='🔖'}else{S.saved.unshift({id:p.id,date:p.date,link:p.link,title:p.title,excerpt:p.excerpt,content:p.content,categories:p.categories,_img:img(p,'zycie-square')});S.saved=S.saved.slice(0,40);ev('app_zapis',{post_id:p.id});toast('Zapisano – przeczytasz też bez internetu');this.textContent='✅'}save();zapisane()};
+function share(){var p=POSTS[CUR];if(!p)return;ev('share',{method:'aplikacja',content_type:'artykul',item_id:String(p.id)});var t=txt(p.title.rendered);if(navigator.share){navigator.share({title:t,text:t+' – Życie Powiatu',url:p.link}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(p.link).then(function(){toast('Link skopiowany')},function(){toast(p.link)})}else toast(p.link)}
+$('r-share').onclick=share;
+$('reader').addEventListener('scroll',function(){var r=this,h=r.scrollHeight-r.clientHeight;$('rprog').style.width=(h>0?Math.min(100,r.scrollTop/h*100):0)+'%'});
+window.addEventListener('popstate',function(){if(!/^#a\d+/.test(location.hash))closeArt();route(true)});
+
+/* ---------- ZAPISANE ---------- */
+function zapisane(){var L=$('z-list');keep(S.saved);$('t-zap').textContent=S.saved.length?S.saved.length+' '+pl(S.saved.length,'artykuł','artykuły','artykułów'):'Do przeczytania później';L.innerHTML=S.saved.length?S.saved.map(item).join(''):'<div class="empty">Nic jeszcze nie zapisano.<br>W artykule dotknij 🔖, aby zapisać go na później.</div>';bindItems(L)}
+
+/* ---------- GMINA ---------- */
+var selG='';
+function openG(){selG=S.g;$('gtiles').innerHTML=G.map(function(g){return '<button class="gt'+(g.s===selG?' on':'')+'" data-g="'+g.s+'">'+g.n+'</button>'}).join('');$('gtiles').querySelectorAll('.gt').forEach(function(b){b.onclick=function(){selG=b.dataset.g;$('gtiles').querySelectorAll('.gt').forEach(function(x){x.classList.toggle('on',x===b)})}});$('g-u').value=S.u||'';sheet('sh-g',true)}
+$('g-ok').onclick=function(){if(!selG){toast('Wybierz gminę');return}var ch=selG!==S.g||$('g-u').value.trim()!==S.u;S.g=selG;S.u=$('g-u').value.trim();save();if(ch){ev('app_gmina',{gmina:S.g,ulica:S.u?1:0});if(GA)gtag('set','user_properties',{app_gmina:S.g})}sheet('sh-g',false);hello();if(ch){loadStart();NF.f='moja';NF.page=1;chips();if(TAB==='wiadomosci')news();if(MAP)dzLoad();zfG()}};
+$('gchip').onclick=openG;$('ok-edit').onclick=openG;$('m-gmina').onclick=openG;
+function sheet(id,on){$(id).classList.toggle('on',on);$('dim').classList.toggle('on',on);if(on)$(id).scrollTop=0}
+$('dim').onclick=function(){document.querySelectorAll('.sheet.on').forEach(function(s){s.classList.remove('on')});$('dim').classList.remove('on')};
+
+/* ---------- DZIKI ---------- */
+var MAP=null,DZL=null,PIN=null,DZF='',BOUND=null,DZI=false;
+function leaflet(cb){if(window.L)return cb();var c=document.getElementById('lcss')?{}:0;if(!c)c=document.createElement('link');if(!c.rel&&c.tagName){c.rel='stylesheet';c.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';document.head.appendChild(c)}var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';s.onload=cb;s.onerror=function(){$('dzmap').innerHTML='<div class="empty">Mapa wymaga internetu.</div>'};document.body.appendChild(s)}
+function dzInit(){
+ if(MAP||DZI)return;DZI=true;DZF=S.g||'';
+ leaflet(function(){
+  MAP=L.map('dzmap',{zoomControl:true,attributionControl:true}).setView([52.39,21.35],10);
+  if(!PREVIEW)L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(MAP);
+  BOUND=L.layerGroup().addTo(MAP);DZL=L.layerGroup().addTo(MAP);
+  MAP.on('click',function(e){if($('sh-dz').classList.contains('on')||ADD){setPin(e.latlng)}});
+  dzChips();dzLoad();
+ });
+}
+var GEO=null;
+function geo(){if(GEO)return Promise.resolve(GEO);var d=SNAP&&SNAP.geo;if(d){GEO=d;return Promise.resolve(d)}return getJ('gminy.json','geo').then(function(j){GEO=j;return j})}
+function dzChips(){var C=$('dz-chips');C.innerHTML='<button class="chip'+(!DZF?' on':'')+'" data-g="">Cały powiat</button>'+G.map(function(g){return '<button class="chip'+(DZF===g.s?' on':'')+'" data-g="'+g.s+'">'+g.n+'</button>'}).join('');C.querySelectorAll('.chip').forEach(function(b){b.onclick=function(){DZF=b.dataset.g;dzChips();dzLoad()}});var on=C.querySelector('.on');if(on)on.scrollIntoView({inline:'center',block:'nearest'})}
+function dzLoad(){
+ if(!MAP)return;
+ geo().then(function(gm_){BOUND.clearLayers();var dark=document.documentElement.getAttribute('data-theme')==='dark'||(S.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches),bb=[];
+  Object.keys(gm_).forEach(function(k){var on=!DZF||DZF===k;var pg=L.polygon(gm_[k].p,{color:on?'#d7141a':(dark?'#555':'#9aa'),weight:on&&DZF?3:1.5,fillColor:on?(PREVIEW?(dark?'#2b3a2c':'#cfdcc7'):'#d7141a'):(dark?'#1d241e':'#e4ebe0'),fillOpacity:PREVIEW?(on?.9:.6):(on&&DZF?.06:.03),interactive:false}).addTo(BOUND);if(on)bb.push(pg.getBounds());
+   if(PREVIEW){var c=pg.getBounds().getCenter();L.marker(c,{icon:L.divIcon({className:'',html:'<div style="font:600 11px system-ui;color:'+(dark?'#aab':'#4a5a48')+';white-space:nowrap;transform:translate(-50%,-50%)">'+esc(gm_[k].n)+'</div>'}),interactive:false}).addTo(BOUND)}});
+  if(bb.length){var b=bb[0];bb.forEach(function(x){b.extend(x)});MAP.fitBounds(b,{padding:[10,10]})}
+ }).catch(function(){});
+ getJ(DZAPI+(DZF?'&gmina='+DZF:''),'dziki_'+(DZF||'pow')).then(function(d){
+  DZL.clearLayers();var now=Date.now(),O=d.obserwacje||[],t=0;
+  O.slice().reverse().forEach(function(o){var w=(now-new Date(o.kiedy))/864e5;if(w<=7)t++;var col=w<2?'#d21f1f':w<=7?'#f08a24':'#9aa3b2';
+   L.circleMarker([o.lat,o.lon],{radius:w<2?11:9,color:'#fff',weight:2.5,fillColor:col,fillOpacity:.95}).bindPopup('<b>'+esc(o.ile)+'</b>, '+esc(o.co)+'<br>'+new Date(o.kiedy).toLocaleString('pl-PL',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})+(o.plik&&!PREVIEW?(o.media==='film'?'<br><video controls preload="none" playsinline style="width:220px" src="'+DZAPI+'&plik='+o.plik+'"></video>':'<br><img style="width:220px;border-radius:8px" loading="lazy" alt="Zdjęcie dzików" src="'+DZAPI+'&plik='+o.plik+'">'):'')).addTo(DZL)});
+  var gd=DZF?gm(DZF).n:'Powiat wołomiński';$('dz-sum').textContent=O.length?gd+': '+t+' '+pl(t,'obserwacja','obserwacje','obserwacji')+' w ostatnich 7 dniach, '+O.length+' w ostatnich '+(d.dni||14)+' dniach.':gd+': brak zgłoszeń w ostatnich '+(d.dni||14)+' dniach. Widzisz dziki? Zgłoś jako pierwszy.';
+ }).catch(function(){$('dz-sum').textContent='Nie udało się pobrać zgłoszeń.'});
+}
+var ADD=false,DZ={ile:-1,co:-1,file:null};
+function setPin(ll){if(PIN)PIN.setLatLng(ll);else PIN=L.marker(ll,{draggable:true,icon:L.divIcon({className:'',iconSize:[34,34],iconAnchor:[17,32],html:'<div style="font-size:30px;line-height:34px;text-align:center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))">📍</div>'})}).addTo(MAP);$('dz-where').textContent='Miejsce zaznaczone ✓ ('+ll.lat.toFixed(4)+', '+ll.lng.toFixed(4)+'). Możesz przesunąć pinezkę.';$('dz-n1').disabled=false;if(ADD&&!$('sh-dz').classList.contains('on')){sheet('sh-dz',true)}}
+function step(n){[1,2,3].forEach(function(i){$('dz-s'+i).hidden=i!==n});document.querySelectorAll('#sh-dz .steps i').forEach(function(e,i){e.classList.toggle('on',i<n)})}
+$('dz-add').onclick=function(){ADD=true;DZ={ile:-1,co:-1,file:null};$('dz-fn').textContent='Dodaj zdjęcie lub krótki film';$('dz-msg').textContent='';$('dz-n1').disabled=!PIN;$('dz-where').textContent=PIN?'Miejsce zaznaczone ✓':'';step(1);optRender();sheet('sh-dz',true)};
+$('dz-gps').onclick=function(){var b=this;if(!navigator.geolocation){$('dz-where').textContent='Twój telefon nie udostępnia lokalizacji – zamknij okno i dotknij mapy.';return}b.disabled=true;b.textContent='Szukam…';navigator.geolocation.getCurrentPosition(function(p){b.disabled=false;b.textContent='📍 Zlokalizuj mnie';var ll=L.latLng(p.coords.latitude,p.coords.longitude);setPin(ll);MAP.setView(ll,16)},function(){b.disabled=false;b.textContent='📍 Zlokalizuj mnie';$('dz-where').textContent='Nie udało się ustalić lokalizacji. Zamknij okno i dotknij mapy w miejscu obserwacji.'},{enableHighAccuracy:true,timeout:12000})};
+function optRender(){$('dz-ile').innerHTML=DZILE.map(function(o,i){return '<button class="opt'+(DZ.ile===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-co').innerHTML=DZCO.map(function(o,i){return '<button class="opt'+(DZ.co===i?' on':'')+'" data-i="'+i+'">'+o+'</button>'}).join('');$('dz-ile').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.ile=+b.dataset.i;optRender()}});$('dz-co').querySelectorAll('.opt').forEach(function(b){b.onclick=function(){DZ.co=+b.dataset.i;optRender()}});$('dz-n2').disabled=DZ.ile<0||DZ.co<0}
+$('dz-n1').onclick=function(){step(2)};$('dz-b2').onclick=function(){step(1)};$('dz-n2').onclick=function(){step(3)};$('dz-b3').onclick=function(){step(2)};
+$('dz-f').onchange=function(){var f=this.files[0];if(!f){DZ.file=null;return}if(/^video/.test(f.type)){if(f.size>40*1048576){$('dz-fn').textContent='Film jest za duży (do 40 MB, ok. 20 s)';DZ.file=null;return}DZ.file={b:f,n:f.name};$('dz-fn').textContent='✓ Film dodany';return}var im=new Image(),u=URL.createObjectURL(f);im.onload=function(){var k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(b){DZ.file={b:b,n:'dziki.jpg'};$('dz-fn').textContent='✓ Zdjęcie dodane (dotknij, aby zmienić)'},'image/jpeg',.82)};im.onerror=function(){$('dz-fn').textContent='Nie udało się odczytać zdjęcia'};im.src=u};
+$('dz-send').onclick=function(){
+ if(!PIN){step(1);return}var b=this,ll=PIN.getLatLng();
+ if(PREVIEW){$('dz-msg').textContent='To podgląd – w aplikacji na telefonie zgłoszenie trafi na mapę zyciepw.pl.';return}
+ b.disabled=true;$('dz-msg').textContent='Wysyłam…';
+ var fd=new FormData();fd.append('lat',ll.lat);fd.append('lon',ll.lng);fd.append('ile',DZILE[DZ.ile]);fd.append('co',DZCO[DZ.co]);fd.append('kiedy',new Date().toISOString());fd.append('zrodlo','zyciepw');if(DZ.file)fd.append('plik',DZ.file.b,DZ.file.n);
+ fetch(DZAPI,{method:'POST',body:fd}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){b.disabled=false;if(x[0]){ev('app_dzik',{gmina:DZF||S.g||'',plik:DZ.file?1:0});sheet('sh-dz',false);ADD=false;if(PIN){MAP.removeLayer(PIN);PIN=null}toast(x[1].media_blad?'Dodano bez pliku: '+x[1].media_blad:DZ.file?'Dodano. Zdjęcie pojawi się po sprawdzeniu':'Dodano. Dziękujemy!');dzLoad();dzikiTile()}else $('dz-msg').textContent=x[1]&&x[1].message||'Nie udało się dodać.'}).catch(function(){b.disabled=false;$('dz-msg').textContent='Brak połączenia. Spróbuj ponownie.'});
+};
+
+/* ---------- DO REDAKCJI ---------- */
+function zfG(){$('zf-g').innerHTML=G.map(function(g){return '<option value="'+g.s+'"'+(S.g===g.s?' selected':'')+'>'+g.n+'</option>'}).join('');if(!S.g)$('zf-g').insertAdjacentHTML('afterbegin','<option value="" selected>– wybierz –</option>')}
+var ZF=null;
+$('zf-f').onchange=function(){ZF=this.files[0]||null;$('zf-fn').textContent=ZF?'✓ '+ZF.name:'Dodaj zdjęcie'};
+$('zf').onsubmit=function(e){e.preventDefault();var g=gm($('zf-g').value),co=$('zf-co').value.trim();if(co.length<10){toast('Opisz sprawę w kilku słowach');$('zf-co').focus();return}
+ ev('app_do_redakcji',{gmina:g?g.s:'',zdjecie:ZF?1:0});
+ var sub='Sygnał od czytelnika'+(g?' – '+g.n:''),body='Gmina: '+(g?g.n:'-')+'\nGdzie: '+$('zf-gdzie').value.trim()+'\n\n'+co+'\n\nKontakt: '+($('zf-k').value.trim()||'nie podano')+'\n\n(wysłane z aplikacji Życie Powiatu)';
+ if(ZF&&navigator.canShare&&navigator.canShare({files:[ZF]})){navigator.share({title:sub,text:'Do: redakcja@zyciepw.pl\n'+body,files:[ZF]}).then(function(){toast('Dziękujemy! Wybierz pocztę i wyślij na redakcja@zyciepw.pl')}).catch(function(){});return}
+ location.href='mailto:redakcja@zyciepw.pl?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body+(ZF?'\n\n[Dołącz zdjęcie w poczcie]':''));
+ $('zf-note').innerHTML='Jeśli poczta się nie otworzyła, napisz na <b>redakcja@zyciepw.pl</b>.'+(ZF?' Pamiętaj, aby dołączyć zdjęcie.':'');
+};
+
+/* ---------- nawigacja ---------- */
+var TAB='dzis',VIEWS=['dzis','wiadomosci','dziki','zglos','zapisane','wiecej'];
+function go(v){location.hash=v}
+function route(fromPop){
+ var h=(location.hash||'').slice(1);
+ var m=/^a(\d+)$/.exec(h);if(m){if(!$('reader').classList.contains('on')||CUR!==+m[1])openArt(+m[1],true);return}
+ if($('reader').classList.contains('on'))closeArt();
+ if(VIEWS.indexOf(h)<0)h='dzis';TAB=h;
+ VIEWS.forEach(function(v){$('v-'+v).classList.toggle('on',v===h)});
+ document.querySelectorAll('#tabbar button').forEach(function(b){b.classList.toggle('on',b.dataset.go===h||(h==='zapisane'&&b.dataset.go==='dzis'))});
+ if(h==='wiadomosci'&&!$('n-list').children.length){chips();news()}
+ if(h==='dziki'){dzInit();if(MAP)setTimeout(function(){MAP.invalidateSize()},60)}
+ if(h==='zapisane')zapisane();
+ if(h==='wiecej')qr();
+ window.scrollTo(0,0);
+ pv(h==='dzis'?'':h,'Aplikacja: '+({dzis:'Dziś',wiadomosci:'Wiadomości',dziki:'Mapa dzików',zglos:'Do redakcji',zapisane:'Zapisane',wiecej:'Więcej'})[h]);
+}
+document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
+window.addEventListener('hashchange',function(){route()});
+
+/* ---------- instalacja ---------- */
+var DP=null,standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DP=e;if(!standalone)$('inst').classList.add('on')});
+if(!standalone&&!PREVIEW&&/iphone|ipad/i.test(navigator.userAgent)){$('inst').classList.add('on');$('inst-txt').textContent='Dotknij ⎋ Udostępnij, a potem „Do ekranu początkowego”.';$('inst-btn').hidden=true}
+$('inst-btn').onclick=function(){if(DP){DP.prompt();DP.userChoice.then(function(){$('inst').classList.remove('on');DP=null})}};
+$('m-share').onclick=function(){ev('share',{method:'aplikacja',content_type:'aplikacja'});var u=APPURL;if(navigator.share)navigator.share({title:'Życie Powiatu – aplikacja',text:'Wiadomości z Twojej gminy, Pytanie dnia, mapa dzików. Bezpłatnie:',url:u}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast('Link skopiowany')},function(){toast(u)});else toast(u)};
+if('serviceWorker' in navigator&&!PREVIEW&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(function(){});
+
+/* ---------- start ---------- */
+$('ver').textContent='Wersja '+VER+(PREVIEW?' · podgląd':'');
+theme();hello();zfG();zapisane();loadStart();route();
+if(!S.g)setTimeout(openG,700);
+setInterval(function(){if(!document.hidden&&TAB==='dzis'&&!PREVIEW)newCount()},300000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&!PREVIEW&&S._last&&Date.now()-S._last>15*60000){loadStart()}S._last=Date.now()});
+})();
+</script>
+</body>
+</html>

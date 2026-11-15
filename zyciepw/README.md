@@ -1,6 +1,8 @@
 # Życie Powiatu – aplikacja dla czytelników (PWA)
 
-Adres: https://lechur.github.io/wehikul-czasu/zyciepw/
+Adres: https://www.zyciepw.pl/aplikacja/ (pliki wgrywa na serwer wtyczka `../wtyczki/zycie-aplikacja`, do `ABSPATH/aplikacja/`)
+
+Analityka: GA4 portalu (G-GL4YCNRT2Y), content_group = aplikacja, tylko pod adresem zyciepw.pl. Zdarzenia: page_view (ekrany i artykuły), app_artykul, app_glos, app_dzik, app_do_redakcji, app_gmina, app_zapis, app_instalacja, search, share. Właściwości użytkownika: app_tryb, app_gmina. Reklam brak.
 
 Wzorowana na Aplikacji mieszkańca Kobyłki (`../kobylka`). Wszystkie dane pobiera na żywo z zyciepw.pl – nie wymaga cotygodniowej aktualizacji plików.
 

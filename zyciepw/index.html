@@ -13,9 +13,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Życie Powiatu">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.zyciepw.pl/aplikacja/">
+<link rel="canonical" href="https://www.zyciepw.pl/aplikacja/">
 <meta property="og:title" content="Życie Powiatu – aplikacja dla czytelników">
 <meta property="og:description" content="Wiadomości z Twojej gminy, Pytanie dnia, Twoja ulica, powietrze i mapa dzików. Bezpłatnie, w telefonie.">
-<meta property="og:image" content="https://lechur.github.io/wehikul-czasu/zyciepw/og.png">
+<meta property="og:image" content="https://www.zyciepw.pl/aplikacja/og.png">
 <meta property="og:locale" content="pl_PL">
 <style>
 :root{--brand:#16181b;--y:#ffd23f;--r:#d7141a;--bg:#f3f1ec;--card:#fff;--ink:#16181b;--mut:#626873;--line:#e6e2d9;--soft:#efece5;--acc:#d7141a;--ok:#1f7a45;--okbg:#e6f4ea;--warnbg:#fff6da;--warnbd:#f0d98a;--hdr:rgba(22,24,27,.97);--nav:rgba(255,255,255,.97);--shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(0,0,0,.05);--fs:17px;color-scheme:light}
@@ -271,7 +273,7 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
  <div class="menu">
   <a href="https://www.zyciepw.pl/redakcja/" target="_blank" rel="noopener"><span class="e">👥</span><span>Redakcja i kontakt<small>redakcja@zyciepw.pl</small></span><span class="ar">↗</span></a>
   <a href="https://www.zyciepw.pl/reklama/" target="_blank" rel="noopener"><span class="e">📣</span><span>Reklama dla firm<small>Portal, gazeta, aplikacja</small></span><span class="ar">↗</span></a>
-  <a href="https://www.zyciepw.pl/polityka-prywatnosci/" target="_blank" rel="noopener"><span class="e">🔒</span><span>Prywatność<small>Ustawienia zostają w Twoim telefonie</small></span><span class="ar">↗</span></a>
+  <a href="https://www.zyciepw.pl/polityka-prywatnosci/" target="_blank" rel="noopener"><span class="e">🔒</span><span>Prywatność<small>Ustawienia zostają w telefonie; statystyki jak na portalu</small></span><span class="ar">↗</span></a>
   <button id="m-share"><span class="e">💬</span><span>Poleć aplikację znajomym<small>Wyślij link</small></span><span class="ar">›</span></button>
  </div>
  <div class="card" style="margin-top:14px;display:flex;gap:14px;align-items:center">
@@ -340,11 +342,11 @@ nav.tab .cnt{position:absolute;top:0;left:calc(50% + 6px);background:var(--r);co
 <script>
 (function(){
 'use strict';
-var VER='1.0 · 15.11.2026';
+var VER='1.1 · 15.11.2026';
 var SITE='https://www.zyciepw.pl',API=SITE+'/wp-json',DZAPI=SITE+'/mieszkaniec-api/?zasob=dziki';
 var SNAP=null;try{SNAP=JSON.parse(document.getElementById('snap').textContent)}catch(e){}
 var PREVIEW=!!(SNAP&&SNAP.podglad);
-var APPURL=PREVIEW?'https://lechur.github.io/wehikul-czasu/zyciepw/':location.href.split('#')[0];
+var APPURL=PREVIEW?'https://www.zyciepw.pl/aplikacja/':location.href.split('#')[0];
 function qr(){var e=$('qr');if(e.firstChild)return;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=function(){try{new QRCode(e,{text:APPURL,width:216,height:216,correctLevel:QRCode.CorrectLevel.M})}catch(x){e.parentNode.style.display='none'}};s.onerror=function(){e.parentNode.style.display='none'};document.body.appendChild(s)}
 var G=[{s:'wolomin',n:'Wołomin',c:153,la:52.3449,lo:21.242},{s:'kobylka',n:'Kobyłka',c:159,la:52.3394,lo:21.1957},{s:'marki',n:'Marki',c:616,la:52.3263,lo:21.1047},{s:'zabki',n:'Ząbki',c:722,la:52.2925,lo:21.1062},{s:'zielonka',n:'Zielonka',c:168,la:52.3054,lo:21.1604},{s:'radzymin',n:'Radzymin',c:174,la:52.4147,lo:21.184},{s:'tluszcz',n:'Tłuszcz',c:718,la:52.4329,lo:21.4386},{s:'klembow',n:'Klembów',c:190,la:52.4048,lo:21.3324},{s:'dabrowka',n:'Dąbrówka',c:777,la:52.489,lo:21.259},{s:'jadow',n:'Jadów',c:744,la:52.4808,lo:21.6242},{s:'poswietne',n:'Poświętne',c:733,la:52.36,lo:21.4},{s:'strachowka',n:'Strachówka',c:732,la:52.433,lo:21.666}];
 var GC={};G.forEach(function(g){GC[g.c]=g});
@@ -373,6 +375,15 @@ function offline(){if(offlineShown)return;offlineShown=true;var o=$('offline');o
 function getJ(url,key){
  if(PREVIEW){var v=SNAP.r[key];if(v===undefined&&key)v=SNAP.r[key.split('_').slice(0,2).join('_')];offline();return v!==undefined?Promise.resolve(v):Promise.reject(new Error('brak'))}
  return tmo(fetch(url).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}),9000).then(function(j){if(key)cacheSet(key,j);return j}).catch(function(e){var c=key&&cacheGet(key);if(c){offline();return c}throw e})}
+
+/* ---------- analityka (GA4 portalu, tylko pod adresem zyciepw.pl) ---------- */
+var GAID='G-GL4YCNRT2Y',GA=!PREVIEW&&/(^|\.)zyciepw\.pl$/.test(location.hostname);
+var INSTALLED=!!(matchMedia('(display-mode: standalone)').matches||navigator.standalone);
+window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments)}
+if(GA){var gs=document.createElement('script');gs.async=true;gs.src='https://www.googletagmanager.com/gtag/js?id='+GAID;document.head.appendChild(gs);gtag('js',new Date());gtag('config',GAID,{content_group:'aplikacja',send_page_view:false});gtag('set','user_properties',{app_tryb:INSTALLED?'zainstalowana':'przegladarka',app_gmina:S.g||'brak'})}
+function ev(n,p){if(GA)try{gtag('event',n,p||{})}catch(e){}}
+function pv(path,title){ev('page_view',{page_location:'https://www.zyciepw.pl/aplikacja/'+path,page_title:title})}
+window.addEventListener('appinstalled',function(){ev('app_instalacja')});
 
 /* ---------- motyw ---------- */
 function theme(){if(S.theme==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',S.theme);document.querySelectorAll('#theme button').forEach(function(b){b.classList.toggle('on',b.dataset.t===S.theme)});document.querySelectorAll('#fsz button').forEach(function(b){b.classList.toggle('on',+b.dataset.f===S.fs)});document.documentElement.style.setProperty('--fs',S.fs+'px')}
@@ -420,7 +431,7 @@ function pytanie(){
   A.querySelectorAll('.opts button').forEach(function(b){b.onclick=function(){
    var i=+b.dataset.i,g=$('pd-g').value;A.querySelectorAll('.opts button').forEach(function(x){x.disabled=true});
    if(PREVIEW){d.suma[i]++;d.razem++;S.votes[d.id]=i;save();wyniki(d,i);toast('Podgląd: głos nie został wysłany');return}
-   fetch(API+'/zr/v1/pytanie',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,o:i,g:g})}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){if(x[0]){S.votes[d.id]=i;save();wyniki(x[1].opcje?x[1]:d,i);toast('Dziękujemy za głos!')}else{toast(x[1].message||'Nie udało się zapisać głosu');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})}}).catch(function(){toast('Brak połączenia – spróbuj za chwilę');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})});
+   fetch(API+'/zr/v1/pytanie',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,o:i,g:g})}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){if(x[0]){ev('app_glos',{pytanie_id:d.id,gmina:g});S.votes[d.id]=i;save();wyniki(x[1].opcje?x[1]:d,i);toast('Dziękujemy za głos!')}else{toast(x[1].message||'Nie udało się zapisać głosu');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})}}).catch(function(){toast('Brak połączenia – spróbuj za chwilę');A.querySelectorAll('.opts button').forEach(function(y){y.disabled=false})});
   }});
  }).catch(function(){A.innerHTML='<div class="k">Pytanie dnia</div><h3>Nie udało się pobrać pytania.</h3>'});
 }
@@ -479,7 +490,7 @@ function news(more){
  getJ(API+'/wp/v2/posts?per_page=15&page='+NF.page+'&'+nq()+'&'+F,k).then(function(a){keep(a);var h=a.map(item).join('');if(more)L.insertAdjacentHTML('beforeend',h);else L.innerHTML=h||'<div class="empty">Nic nie znaleźliśmy.</div>';bindItems(L);$('n-more').hidden=a.length<15||PREVIEW;if(NF.f==='all'&&NF.page===1&&!NF.q){S.seen=Date.now();save();$('cnt').hidden=true}}).catch(function(){if(!more)L.innerHTML='<div class="empty">Nie udało się pobrać wiadomości.</div>'});
 }
 $('n-more').onclick=function(){NF.page++;news(true)};
-var qt;$('q').oninput=function(){clearTimeout(qt);var v=this.value.trim();qt=setTimeout(function(){NF.q=v.length>2?v:'';NF.page=1;chips();news()},450)};
+var qt;$('q').oninput=function(){clearTimeout(qt);var v=this.value.trim();qt=setTimeout(function(){NF.q=v.length>2?v:'';if(NF.q)ev('search',{search_term:NF.q});NF.page=1;chips();news()},450)};
 
 /* ---------- CZYTNIK ---------- */
 var CUR=null;
@@ -504,7 +515,7 @@ function openArt(id,noPush){
  src.then(function(full){POSTS[id]=Object.assign({},POSTS[id]||{},full);var q=POSTS[id];
   var words=txt(q.content.rendered).split(' ').length,min=Math.max(1,Math.round(words/200));
   A.innerHTML=head(q).replace('<!--min-->',' · '+min+' min czytania')+'<div class="body">'+clean(q.content.rendered)+'</div><div class="rfoot"><button class="btn y w" id="rf-share">Udostępnij znajomym</button><a class="btn gh w" href="'+esc(q.link)+'" target="_blank" rel="noopener">Otwórz na zyciepw.pl</a></div><div class="rel" id="rel"></div>';
-  $('rf-share').onclick=share;related(q);
+  $('rf-share').onclick=share;related(q);pv('artykul/'+q.id,txt(q.title.rendered));ev('app_artykul',{post_id:q.id,czas_min:min});
  }).catch(function(){if(p)A.querySelector('.skel')&&(A.querySelector('.skel').outerHTML='<p class="note">Nie udało się pobrać pełnego tekstu. <a href="'+esc(p.link)+'" target="_blank" rel="noopener">Czytaj na zyciepw.pl</a></p>');else A.innerHTML='<p class="empty">Nie udało się otworzyć artykułu.</p>'});
 }
 function openBySlug(link){var slug=link.replace(/\/$/,'').split('/').pop();getJ(API+'/wp/v2/posts?slug='+encodeURIComponent(slug)+'&'+F,'s_'+slug).then(function(a){if(a&&a[0]){keep(a);openArt(a[0].id)}else window.open(link,'_blank')}).catch(function(){window.open(link,'_blank')})}
@@ -512,8 +523,8 @@ function related(q){var g=(q.categories||[]).filter(function(c){return GC[c]})[0
 function closeArt(){$('reader').classList.remove('on');document.body.style.overflow='';CUR=null}
 $('r-back').onclick=function(){if(history.state&&history.state.a)history.back();else{closeArt();location.hash=TAB||'dzis'}};
 $('r-fs').onclick=function(){S.fs=S.fs>=21?16:S.fs===16?18:21;save();theme()};
-$('r-save').onclick=function(){var p=POSTS[CUR];if(!p)return;var i=S.saved.findIndex(function(x){return x.id===CUR});if(i>-1){S.saved.splice(i,1);toast('Usunięto z zapisanych');this.textContent='🔖'}else{S.saved.unshift({id:p.id,date:p.date,link:p.link,title:p.title,excerpt:p.excerpt,content:p.content,categories:p.categories,_img:img(p,'zycie-square')});S.saved=S.saved.slice(0,40);toast('Zapisano – przeczytasz też bez internetu');this.textContent='✅'}save();zapisane()};
-function share(){var p=POSTS[CUR];if(!p)return;var t=txt(p.title.rendered);if(navigator.share){navigator.share({title:t,text:t+' – Życie Powiatu',url:p.link}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(p.link).then(function(){toast('Link skopiowany')},function(){toast(p.link)})}else toast(p.link)}
+$('r-save').onclick=function(){var p=POSTS[CUR];if(!p)return;var i=S.saved.findIndex(function(x){return x.id===CUR});if(i>-1){S.saved.splice(i,1);toast('Usunięto z zapisanych');this.textContent='🔖'}else{S.saved.unshift({id:p.id,date:p.date,link:p.link,title:p.title,excerpt:p.excerpt,content:p.content,categories:p.categories,_img:img(p,'zycie-square')});S.saved=S.saved.slice(0,40);ev('app_zapis',{post_id:p.id});toast('Zapisano – przeczytasz też bez internetu');this.textContent='✅'}save();zapisane()};
+function share(){var p=POSTS[CUR];if(!p)return;ev('share',{method:'aplikacja',content_type:'artykul',item_id:String(p.id)});var t=txt(p.title.rendered);if(navigator.share){navigator.share({title:t,text:t+' – Życie Powiatu',url:p.link}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(p.link).then(function(){toast('Link skopiowany')},function(){toast(p.link)})}else toast(p.link)}
 $('r-share').onclick=share;
 $('reader').addEventListener('scroll',function(){var r=this,h=r.scrollHeight-r.clientHeight;$('rprog').style.width=(h>0?Math.min(100,r.scrollTop/h*100):0)+'%'});
 window.addEventListener('popstate',function(){if(!/^#a\d+/.test(location.hash))closeArt();route(true)});
@@ -524,7 +535,7 @@ function zapisane(){var L=$('z-list');keep(S.saved);$('t-zap').textContent=S.sav
 /* ---------- GMINA ---------- */
 var selG='';
 function openG(){selG=S.g;$('gtiles').innerHTML=G.map(function(g){return '<button class="gt'+(g.s===selG?' on':'')+'" data-g="'+g.s+'">'+g.n+'</button>'}).join('');$('gtiles').querySelectorAll('.gt').forEach(function(b){b.onclick=function(){selG=b.dataset.g;$('gtiles').querySelectorAll('.gt').forEach(function(x){x.classList.toggle('on',x===b)})}});$('g-u').value=S.u||'';sheet('sh-g',true)}
-$('g-ok').onclick=function(){if(!selG){toast('Wybierz gminę');return}var ch=selG!==S.g||$('g-u').value.trim()!==S.u;S.g=selG;S.u=$('g-u').value.trim();save();sheet('sh-g',false);hello();if(ch){loadStart();NF.f='moja';NF.page=1;chips();if(TAB==='wiadomosci')news();if(MAP)dzLoad();zfG()}};
+$('g-ok').onclick=function(){if(!selG){toast('Wybierz gminę');return}var ch=selG!==S.g||$('g-u').value.trim()!==S.u;S.g=selG;S.u=$('g-u').value.trim();save();if(ch){ev('app_gmina',{gmina:S.g,ulica:S.u?1:0});if(GA)gtag('set','user_properties',{app_gmina:S.g})}sheet('sh-g',false);hello();if(ch){loadStart();NF.f='moja';NF.page=1;chips();if(TAB==='wiadomosci')news();if(MAP)dzLoad();zfG()}};
 $('gchip').onclick=openG;$('ok-edit').onclick=openG;$('m-gmina').onclick=openG;
 function sheet(id,on){$(id).classList.toggle('on',on);$('dim').classList.toggle('on',on);if(on)$(id).scrollTop=0}
 $('dim').onclick=function(){document.querySelectorAll('.sheet.on').forEach(function(s){s.classList.remove('on')});$('dim').classList.remove('on')};
@@ -572,7 +583,7 @@ $('dz-send').onclick=function(){
  if(PREVIEW){$('dz-msg').textContent='To podgląd – w aplikacji na telefonie zgłoszenie trafi na mapę zyciepw.pl.';return}
  b.disabled=true;$('dz-msg').textContent='Wysyłam…';
  var fd=new FormData();fd.append('lat',ll.lat);fd.append('lon',ll.lng);fd.append('ile',DZILE[DZ.ile]);fd.append('co',DZCO[DZ.co]);fd.append('kiedy',new Date().toISOString());fd.append('zrodlo','zyciepw');if(DZ.file)fd.append('plik',DZ.file.b,DZ.file.n);
- fetch(DZAPI,{method:'POST',body:fd}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){b.disabled=false;if(x[0]){sheet('sh-dz',false);ADD=false;if(PIN){MAP.removeLayer(PIN);PIN=null}toast(x[1].media_blad?'Dodano bez pliku: '+x[1].media_blad:DZ.file?'Dodano. Zdjęcie pojawi się po sprawdzeniu':'Dodano. Dziękujemy!');dzLoad();dzikiTile()}else $('dz-msg').textContent=x[1]&&x[1].message||'Nie udało się dodać.'}).catch(function(){b.disabled=false;$('dz-msg').textContent='Brak połączenia. Spróbuj ponownie.'});
+ fetch(DZAPI,{method:'POST',body:fd}).then(function(r){return r.json().then(function(j){return [r.ok,j]})}).then(function(x){b.disabled=false;if(x[0]){ev('app_dzik',{gmina:DZF||S.g||'',plik:DZ.file?1:0});sheet('sh-dz',false);ADD=false;if(PIN){MAP.removeLayer(PIN);PIN=null}toast(x[1].media_blad?'Dodano bez pliku: '+x[1].media_blad:DZ.file?'Dodano. Zdjęcie pojawi się po sprawdzeniu':'Dodano. Dziękujemy!');dzLoad();dzikiTile()}else $('dz-msg').textContent=x[1]&&x[1].message||'Nie udało się dodać.'}).catch(function(){b.disabled=false;$('dz-msg').textContent='Brak połączenia. Spróbuj ponownie.'});
 };
 
 /* ---------- DO REDAKCJI ---------- */
@@ -580,6 +591,7 @@ function zfG(){$('zf-g').innerHTML=G.map(function(g){return '<option value="'+g.
 var ZF=null;
 $('zf-f').onchange=function(){ZF=this.files[0]||null;$('zf-fn').textContent=ZF?'✓ '+ZF.name:'Dodaj zdjęcie'};
 $('zf').onsubmit=function(e){e.preventDefault();var g=gm($('zf-g').value),co=$('zf-co').value.trim();if(co.length<10){toast('Opisz sprawę w kilku słowach');$('zf-co').focus();return}
+ ev('app_do_redakcji',{gmina:g?g.s:'',zdjecie:ZF?1:0});
  var sub='Sygnał od czytelnika'+(g?' – '+g.n:''),body='Gmina: '+(g?g.n:'-')+'\nGdzie: '+$('zf-gdzie').value.trim()+'\n\n'+co+'\n\nKontakt: '+($('zf-k').value.trim()||'nie podano')+'\n\n(wysłane z aplikacji Życie Powiatu)';
  if(ZF&&navigator.canShare&&navigator.canShare({files:[ZF]})){navigator.share({title:sub,text:'Do: redakcja@zyciepw.pl\n'+body,files:[ZF]}).then(function(){toast('Dziękujemy! Wybierz pocztę i wyślij na redakcja@zyciepw.pl')}).catch(function(){});return}
  location.href='mailto:redakcja@zyciepw.pl?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body+(ZF?'\n\n[Dołącz zdjęcie w poczcie]':''));
@@ -601,6 +613,7 @@ function route(fromPop){
  if(h==='zapisane')zapisane();
  if(h==='wiecej')qr();
  window.scrollTo(0,0);
+ pv(h==='dzis'?'':h,'Aplikacja: '+({dzis:'Dziś',wiadomosci:'Wiadomości',dziki:'Mapa dzików',zglos:'Do redakcji',zapisane:'Zapisane',wiecej:'Więcej'})[h]);
 }
 document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
 window.addEventListener('hashchange',function(){route()});
@@ -610,7 +623,7 @@ var DP=null,standalone=matchMedia('(display-mode: standalone)').matches||navigat
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DP=e;if(!standalone)$('inst').classList.add('on')});
 if(!standalone&&!PREVIEW&&/iphone|ipad/i.test(navigator.userAgent)){$('inst').classList.add('on');$('inst-txt').textContent='Dotknij ⎋ Udostępnij, a potem „Do ekranu początkowego”.';$('inst-btn').hidden=true}
 $('inst-btn').onclick=function(){if(DP){DP.prompt();DP.userChoice.then(function(){$('inst').classList.remove('on');DP=null})}};
-$('m-share').onclick=function(){var u=APPURL;if(navigator.share)navigator.share({title:'Życie Powiatu – aplikacja',text:'Wiadomości z Twojej gminy, Pytanie dnia, mapa dzików. Bezpłatnie:',url:u}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast('Link skopiowany')},function(){toast(u)});else toast(u)};
+$('m-share').onclick=function(){ev('share',{method:'aplikacja',content_type:'aplikacja'});var u=APPURL;if(navigator.share)navigator.share({title:'Życie Powiatu – aplikacja',text:'Wiadomości z Twojej gminy, Pytanie dnia, mapa dzików. Bezpłatnie:',url:u}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){toast('Link skopiowany')},function(){toast(u)});else toast(u)};
 if('serviceWorker' in navigator&&!PREVIEW&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(function(){});
 
 /* ---------- start ---------- */
