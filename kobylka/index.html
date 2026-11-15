@@ -310,7 +310,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <div class="mut" id="o-rejon" style="margin-top:8px"></div><div class="mut" style="margin-top:8px">Mieszkasz w bloku? Wywóz z zabudowy wielolokalowej ma osobny harmonogram. Zapytaj zarządcę budynku albo sprawdź harmonogram na kobylka.pl.</div></div>
   <div id="o-terminy"></div>
   <h3>Gdzie to wyrzucić?</h3>
-  <div class="card"><input id="o-szukaj" placeholder="np. gazety, słoik, folia, liście"><p class="mut" style="margin:6px 0 0">Kolory pojemników według zasad ogólnopolskich, listy według kobylka.pl.</p><div id="o-wynik"></div></div>
+  <div class="card"><input id="o-szukaj" aria-label="Szukaj, gdzie wyrzucić" placeholder="np. gazety, słoik, folia, liście"><p class="mut" style="margin:6px 0 0">Kolory pojemników według zasad ogólnopolskich, listy według kobylka.pl.</p><div id="o-wynik"></div></div>
   <div class="card" id="o-pszok"></div>
 </section>
 
@@ -327,7 +327,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <h2>Kupuj od sąsiada</h2>
   <p class="mut">Firmy i usługi z Kobyłki. Zadzwoń, napisz, odwiedź.</p>
   <button class="card lok-teaser" data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span class="grow"><b>48 zł zamiast 14 zł</b><small>Tyle ze 100 zł zostaje w lokalnej gospodarce, gdy kupujesz u sąsiada, a nie w sieci</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
-  <input id="f-szukaj" placeholder="Szukaj: fryzjer, hydraulik, pizza…">
+  <input id="f-szukaj" aria-label="Szukaj firmy lub usługi" placeholder="Szukaj: fryzjer, hydraulik, pizza…">
   <div class="flex-wrap" id="f-branze" style="margin:8px 0"></div>
   <div id="f-lista"></div>
   <div class="card night"><b>Prowadzisz firmę w Kobyłce?</b><p class="mut">Dodaj ją do katalogu firm lokalnych. Wpis jest bezpłatny.</p><a class="btn sm gold" href="https://www.zyciepw.pl/dla-firm">Dodaj swoją firmę</a></div>
@@ -357,7 +357,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <h3>Niebo nad Kobyłką</h3>
   <div class="card dark" style="text-align:center"><b style="font-size:20px">Niebo w Twoim dniu</b>
    <p class="mut">Urodziny, ślub, narodziny dziecka, pierwszy dzień w Kobyłce. Zobacz, jak wyglądały gwiazdy nad naszym miastem.</p>
-   <div class="flex-wrap" style="justify-content:center"><input type="date" id="my-d" value="2000-01-01" min="1900-01-01" max="2100-12-31" style="width:auto"><input type="time" id="my-t" value="21:00" style="width:auto"></div>
+   <div class="flex-wrap" style="justify-content:center"><input type="date" id="my-d" aria-label="Data" value="2000-01-01" min="1900-01-01" max="2100-12-31" style="width:auto"><input type="time" id="my-t" aria-label="Godzina" value="21:00" style="width:auto"></div>
    <canvas id="mysky" style="width:min(380px,84vw);height:min(380px,84vw);margin-top:10px"></canvas><div class="mut" id="my-info"></div>
    <div class="flex-wrap" style="justify-content:center;margin-top:8px"><button class="btn sm gold" id="my-save">Zapisz jako obrazek</button><button class="btn sm" id="my-share" style="background:rgba(255,255,255,.12)">Udostępnij</button></div></div>
   
@@ -371,15 +371,15 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <button class="card lok-teaser" data-go="dziki"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="4.5" ry="3.6"/><circle cx="5.5" cy="11" r="1.8"/><circle cx="9.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18.5" cy="11" r="1.8"/></svg></span><span class="grow"><b>Widzisz dziki?</b><small>Zgłoś obserwację w pół minuty</small></span><span class="chev"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
   <div class="cats" id="z-cats"></div>
   <div id="z-szybko"></div>
-  <label>Co się dzieje albo czego potrzeba?</label><textarea id="z-opis" placeholder="Np. Od tygodnia nie świeci latarnia przy przejściu dla pieszych. Wieczorem jest tu bardzo ciemno."></textarea>
-  <label>Miejsce</label><input id="z-miejsce" placeholder="ulica, numer, punkt orientacyjny">
+  <label for="z-opis">Co się dzieje albo czego potrzeba?</label><textarea id="z-opis" placeholder="Np. Od tygodnia nie świeci latarnia przy przejściu dla pieszych. Wieczorem jest tu bardzo ciemno."></textarea>
+  <label for="z-miejsce">Miejsce</label><input id="z-miejsce" placeholder="ulica, numer, punkt orientacyjny">
   <canvas id="map"></canvas><div class="mut" id="z-pin">Dotknij mapy, żeby zaznaczyć dokładne miejsce.</div>
-  <label>Zdjęcie (nieobowiązkowe)</label><input type="file" id="z-foto" accept="image/*"><img id="z-foto-p" class="photo" alt="" hidden>
+  <label for="z-foto">Zdjęcie (nieobowiązkowe)</label><input type="file" id="z-foto" accept="image/*"><img id="z-foto-p" class="photo" alt="" hidden>
   <div class="card zgpub"><label class="sw" style="margin:0"><input type="checkbox" id="z-pub" checked> <span><b>Pokaż na wspólnej mapie zgłoszeń</b><small>Anonimowo: kategoria i miejsce. Sąsiedzi zobaczą, że sprawa czeka, i dołożą swój głos.</small></span></label>
    <div id="z-pub-x"><label for="z-pub-opis">Krótki opis na mapę (nieobowiązkowo, bez danych osobowych)</label><input id="z-pub-opis" maxlength="160" placeholder="np. głęboka dziura na pasie w stronę Wołomina">
    <label class="sw" id="z-pub-f" hidden><input type="checkbox" id="z-pub-foto" checked> <span>Dołącz zdjęcie (pokaże się po sprawdzeniu)</span></label>
    <button class="btn line wide" id="z-tylko" style="margin-top:10px">Tylko dodaj na mapę, bez pisma</button></div></div>
-  <label>Rodzaj pisma</label>
+  <label for="z-typ">Rodzaj pisma</label>
   <select id="z-typ">
     <option value="wniosek">Wniosek do Urzędu (art. 241 KPA, odpowiedź do 1 miesiąca)</option>
     <option value="udip">Wniosek o informację publiczną (odpowiedź do 14 dni)</option>
@@ -388,9 +388,9 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   </select>
   <h3>Twoje dane do pisma</h3>
   <p class="mut">Zostają w Twoim telefonie i na Twoim koncie. Urząd potrzebuje imienia, nazwiska i adresu, żeby odpowiedzieć.</p>
-  <label>Imię i nazwisko</label><input id="z-imie" autocomplete="name">
-  <label>Adres do korespondencji</label><input id="z-adres" autocomplete="street-address">
-  <label>E-mail lub telefon</label><input id="z-kontakt" autocomplete="email">
+  <label for="z-imie">Imię i nazwisko</label><input id="z-imie" autocomplete="name">
+  <label for="z-adres">Adres do korespondencji</label><input id="z-adres" autocomplete="street-address">
+  <label for="z-kontakt">E-mail lub telefon</label><input id="z-kontakt" autocomplete="email">
   <button class="btn wide" id="z-gotowe" style="margin-top:14px">Przygotuj pismo</button>
 </section>
 
@@ -398,7 +398,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <section class="view" id="v-sprawy">
   <h2>Moje sprawy</h2>
   <div id="sp-lista"></div>
-  <div id="sp-radna" hidden><h3>Panel radnego</h3><div class="card"><label>Jestem radną / radnym</label><select id="sp-ja"></select><p class="mut">Widzisz sprawy, które mieszkańcy przekazali Tobie.</p></div><div id="sp-radna-lista"></div></div>
+  <div id="sp-radna" hidden><h3>Panel radnego</h3><div class="card"><label for="sp-ja">Jestem radną / radnym</label><select id="sp-ja"></select><p class="mut">Widzisz sprawy, które mieszkańcy przekazali Tobie.</p></div><div id="sp-radna-lista"></div></div>
 </section>
 
 <section class="view" id="v-dziki">
@@ -764,13 +764,15 @@ const nrm=s=>String(s==null?'':s).toLowerCase().normalize('NFD').replace(/[̀-ͯ
 let ULICE=null,UGEO=null;
 function ulice(){if(ULICE)return ULICE;ULICE=[];if(!DANE||!DANE.odpady)return ULICE;DANE.odpady.rejony.forEach(r=>{(r.ulice||[]).forEach(u=>ULICE.push({u,r,n:nrm(u)}));(r.ulice_sasiedztwo||[]).forEach(u=>ULICE.push({u,r,n:nrm(u),sas:1}));});ULICE.sort((a,b)=>a.u.localeCompare(b.u,'pl'));return ULICE;}
 function rejonUlicy(u){const n=nrm(u);if(!n)return null;return ulice().find(x=>x.n===n)||null;}
+function lev(a,b){if(a===b)return 0;const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
 function podpowiedzi(){const q=nrm($('#o-ulica').value).replace(/^(ul|ulica|al|aleja|os|osiedle)\s+/,'').replace(/\s*\d+[a-z]?(\/\d+)?\s*$/,'').trim();$('#o-x').style.display=q?'block':'none';const box=$('#o-pod');
  if(!q){box.style.display='none';return;}
  const L=ulice(),a=[],b=[],c=[];L.forEach(x=>{if(x.n.startsWith(q))a.push(x);else if(x.n.split(' ').some(w=>w.startsWith(q)))b.push(x);else if(q.length>2&&x.n.includes(q))c.push(x);});
- const hit=a.concat(b,c).slice(0,7);
+ let hit=a.concat(b,c).slice(0,7),podob=false;
+ if(!hit.length&&q.length>=3){const d=L.map(x=>{const w=x.n.split(' ');const best=Math.min(lev(q,x.n.slice(0,q.length+1)),lev(q,x.n.slice(0,q.length)),...w.map(t=>lev(q,t.slice(0,q.length))));return [best,x];}).filter(z=>z[0]<=Math.max(1,Math.floor(q.length/4))).sort((u,v)=>u[0]-v[0]);hit=d.slice(0,5).map(z=>z[1]);podob=hit.length>0;}
  if(!hit.length){box.innerHTML='<div class="mut" style="padding:13px 14px">Nie ma takiej ulicy w harmonogramie Kobyłki. Sprawdź pisownię albo użyj „Zlokalizuj mnie”.</div>';box.style.display='block';return;}
  const hl=u=>{const n=nrm(u),i=n.indexOf(q);return i<0?u:u.slice(0,i)+'<mark>'+u.slice(i,i+q.length)+'</mark>'+u.slice(i+q.length);};
- box.innerHTML=hit.map((x,i)=>`<button data-i="${i}" role="option"><span>${hl(x.u)}</span><small>${x.r.nazwa}</small></button>`).join('');box.style.display='block';
+ box.innerHTML=(podob?'<div class="mut" style="padding:10px 14px 4px;font-size:13px">Czy chodziło o:</div>':'')+hit.map((x,i)=>`<button data-i="${i}" role="option"><span>${podob?esc(x.u):hl(x.u)}</span><small>${x.r.nazwa}</small></button>`).join('');box.style.display='block';
  box.querySelectorAll('button').forEach(bt=>bt.onmousedown=bt.ontouchstart=ev=>{ev.preventDefault();wybierzUlice(hit[+bt.dataset.i].u);});}
 function wybierzUlice(u,info){$('#o-ulica').value=u;$('#o-pod').style.display='none';$('#o-ulica').blur();store('ulica',u);store('ulica_info',info||null);odpady();agenda();if(window._onb){window._onb=0;go('start');toast('Gotowe. Pokazuję terminy dla ulicy '+u+'.');}}
 $('#o-ulica').addEventListener('input',podpowiedzi);$('#o-ulica').addEventListener('focus',podpowiedzi);

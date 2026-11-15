@@ -49,8 +49,9 @@ const zoomBtns=id=>`<div class="mz"><button data-z="${id}" data-k=".7" aria-labe
    ===================================================================== */
 const KOL=['#0E7C6B','#C2410C','#2563EB','#9333EA','#B45309','#BE185D','#0891B2','#4D7C0F'];
 let K=null,KS={linia:null,kier:0,przyst:null,dzien:dzienTyp(),stacja:null,tryb:'na',pieszo:3,mapaL:null},kMapa=null;
-function kPrzyjazdy(l,ki,i,dzien){const k=l.kierunki[ki];if(!k||!k.minuty||k.minuty[i]==null)return[];return((k.odjazdy||{})[dzien]||[]).map(t=>t2m(t)+k.minuty[i]);}
-function kStacje(){const s=new Set();if(K.pociagi&&K.pociagi.stacje)Object.keys(K.pociagi.stacje).forEach(x=>s.add(x));return[...s];}
+function kPrzyjazdy(l,ki,i,dzien){const k=l.kierunki[ki];if(!k)return[];if(k.czasy&&k.czasy[i]&&k.czasy[i][dzien])return k.czasy[i][dzien].map(t2m);if(!k.minuty||k.minuty[i]==null)return[];return((k.odjazdy||{})[dzien]||[]).map(t=>t2m(t)+k.minuty[i]);}
+const maPociagi=()=>!!(K.pociagi&&K.pociagi.stacje&&Object.values(K.pociagi.stacje).some(s=>Object.values(s.do_warszawy||{}).some(a=>a.length)));
+function kStacje(){const s=new Set();if(maPociagi())Object.keys(K.pociagi.stacje).forEach(x=>s.add(x));K.linie.forEach(l=>l.kierunki.forEach(k=>(k.stacje||[]).forEach(x=>s.add(x.stacja))));return[...s];}
 function kPunkty(stacja){const o=[];K.linie.forEach((l,li)=>l.kierunki.forEach((k,ki)=>(k.stacje||[]).forEach(s=>{if(s.stacja===stacja)o.push({l,li,ki,i:s.i});})));return o;}
 function kOcena(czek,p){return czek<p?['zle','nie zdążysz']:czek<=p+1?['styk','na styk']:czek<=12?['ok','wygodnie']:czek<=20?['dlugo','długo']:['bdlugo','bardzo długo'];}
 function kPrzesiadki(){
@@ -81,11 +82,11 @@ function kRenderRozklad(){
  const l=K.linie.find(x=>x.id===KS.linia)||K.linie[0];if(!l)return;KS.linia=l.id;if(KS.kier>=l.kierunki.length)KS.kier=0;const k=l.kierunki[KS.kier];
  Q('#k-kier').innerHTML=l.kierunki.map((x,i)=>`<button data-kk="${i}" class="${i===KS.kier?'on':''}">→ ${E(x.do)}</button>`).join('');
  const idx=Math.min(KS.przyst==null?0:KS.przyst,k.przystanki.length-1);KS.przyst=idx;
- Q('#k-przyst').innerHTML=k.przystanki.map((p,i)=>`<option value="${i}"${i===idx?' selected':''}>${E(p.nazwa)}${k.minuty&&k.minuty[i]!=null?' (+'+k.minuty[i]+' min)':''}</option>`).join('');
+ Q('#k-przyst').innerHTML=k.przystanki.map((p,i)=>`<option value="${i}"${i===idx?' selected':''}>${E(p.nazwa)}${p.slupek?' '+E(p.slupek):''}${k.minuty&&k.minuty[i]!=null?' (+'+k.minuty[i]+' min)':''}</option>`).join('');
  const T=kPrzyjazdy(l,KS.kier,idx,KS.dzien),g={};T.forEach(m=>{const h=Math.floor(m/60)%24;(g[h]=g[h]||[]).push(String(m%60).padStart(2,'0'));});
  const now=teraz(),dzis=KS.dzien===dzienTyp(),hN=Math.floor(now/60);
  Q('#k-tab').innerHTML=T.length?Object.keys(g).map(Number).sort((a,b)=>a-b).map(h=>`<div class="kh${dzis&&h===hN?' now':''}"><b>${h}</b><span>${g[h].map(x=>dzis&&h*60+ +x>=now&&h*60+ +x<now+60?'<u>'+x+'</u>':x).join(' ')}</span></div>`).join(''):'<p class="empty">W tym dniu linia nie kursuje.</p>';
- Q('#k-tab-info').innerHTML=(l.uwagi?E(l.uwagi)+' ':'')+(l.wazny_od?'Rozkład ważny od '+E(l.wazny_od)+'. ':'')+(l.url?`<a href="${E(l.url)}" target="_blank" rel="noopener">Oficjalny rozkład</a>`:'');
+ const dok=k.czasy&&k.czasy[idx];Q('#k-tab-info').innerHTML=(dok||idx===0?'Godziny z rozkładu dla tego przystanku. ':'Godziny wyliczone z czasu przejazdu od pierwszego przystanku, mogą różnić się o 1–2 minuty. ')+(l.uwagi?E(l.uwagi)+' ':'')+(k.wazny_od?'Rozkład ważny od '+E(k.wazny_od)+'. ':'')+(l.url?`<a href="${E(l.url)}" target="_blank" rel="noopener">Oficjalny rozkład</a>`:'');
 }
 function kNajblizsze(){
  const box=Q('#k-nast');if(!box)return;const st=KS.stacja,d=dzienTyp(),now=teraz(),o=[];
@@ -93,18 +94,18 @@ function kNajblizsze(){
  if(P){((P.do_warszawy||{})[d]||[]).forEach(x=>o.push({m:t2m(x.g),t:'Pociąg',do:x.do,c:'#14315a'}));((P.z_warszawy||{})[d]||[]).forEach(x=>o.push({m:t2m(x.g),t:'Pociąg',do:x.do,c:'#14315a'}));}
  kPunkty(st).forEach(p=>{const k=p.l.kierunki[p.ki];if(p.i===k.przystanki.length-1)return;kPrzyjazdy(p.l,p.ki,p.i,d).forEach(m=>o.push({m,t:p.l.id,do:k.do,c:KOL[p.li%KOL.length]}));});
  const n=o.filter(x=>x.m>=now).sort((a,b)=>a.m-b.m).slice(0,6);
- box.innerHTML=n.length?n.map(x=>`<div class="kn"><i style="background:${x.c}">${E(x.t)}</i><span>${E(x.do)}</span><b>${x.m-now<1?'teraz':x.m-now<60?'za '+(x.m-now)+' min':m2t(x.m)}</b><small>${m2t(x.m)}</small></div>`).join(''):'<p class="mut" style="margin:0">Dziś nie ma już odjazdów z tej stacji.</p>';
+ box.innerHTML=n.length?n.map(x=>`<div class="kn"><i style="background:${x.c}">${E(x.t)}</i><span>${E(x.do)}</span><b>${x.m-now<1?'teraz':x.m-now<60?'za '+(x.m-now)+' min':m2t(x.m)}</b><small>${x.m-now<60?m2t(x.m):''}</small></div>`).join(''):'<p class="mut" style="margin:0">Dziś nie ma już odjazdów z tej stacji.</p>';
 }
 function kPozycje(k){ /* współrzędne przystanków w metrach; brakujące uzupełniamy między sąsiadami */
  const P=k.przystanki.map(p=>p.lat&&p.lon?EN(p.lat,p.lon):null);
  for(let i=0;i<P.length;i++){if(P[i])continue;let a=i-1,b=i+1;while(a>=0&&!P[a])a--;while(b<P.length&&!P[b])b++;if(a>=0&&b<P.length){const f=(i-a)/(b-a);P[i]=[P[a][0]+(P[b][0]-P[a][0])*f,P[a][1]+(P[b][1]-P[a][1])*f];P[i].przybl=1;}}
  return P;
 }
-function kRysuj(c,X,Y,v,dk,w,h){
+function kRysuj(c,X,Y,v,dk,w,h){const byl={};
  K.linie.forEach((l,li)=>{if(KS.mapaL&&KS.mapaL!==l.id)return;const k=l.kierunki[0];if(!k)return;const P=l._p||(l._p=kPozycje(k));const col=KOL[li%KOL.length];
   c.strokeStyle=col;c.lineWidth=KS.mapaL?5:3.5;c.globalAlpha=.9;c.beginPath();let st=false;P.forEach(p=>{if(!p)return;if(!st){c.moveTo(X(p[0]),Y(p[1]));st=true;}else c.lineTo(X(p[0]),Y(p[1]));});c.stroke();c.globalAlpha=1;
   P.forEach((p,i)=>{if(!p)return;const st=(k.stacje||[]).some(s=>s.i===i);c.beginPath();c.arc(X(p[0]),Y(p[1]),st?7:4,0,7);c.fillStyle=st?'#14315a':(dk?'#0d131d':'#fff');c.fill();c.lineWidth=2;c.strokeStyle=col;c.stroke();
-   if(v.w<4200||st){c.font=(st?'700 ':'')+'11px system-ui';c.fillStyle=dk?'#e5e9f0':'#14213d';c.strokeStyle=dk?'#0d131d':'#fff';c.lineWidth=3;const t=k.przystanki[i].nazwa;c.strokeText(t,X(p[0])+8,Y(p[1])+4);c.fillText(t,X(p[0])+8,Y(p[1])+4);}});});
+   const nz=k.przystanki[i].nazwa;if((v.w<4200||st)&&!byl[nz]){byl[nz]=1;c.font=(st?'700 ':'')+'11px system-ui';c.fillStyle=dk?'#e5e9f0':'#14213d';c.strokeStyle=dk?'#0d131d':'#fff';c.lineWidth=3;const t=nz;c.strokeText(t,X(p[0])+8,Y(p[1])+4);c.fillText(t,X(p[0])+8,Y(p[1])+4);}});});
  if(K.linie.every(l=>!(l._p||[]).some(Boolean))){c.fillStyle=dk?'#e5e9f0':'#14213d';c.font='13px system-ui';c.fillText('Brak współrzędnych przystanków w danych.',12,22);}
 }
 async function komInit(){
@@ -116,10 +117,10 @@ async function komInit(){
   <h3>Pociągi</h3><div class="card"><b>Stacje Kobyłka i Kobyłka Ossów</b><p class="mut" style="margin:4px 0 10px">Koleje Mazowieckie, linia Warszawa Wileńska – Tłuszcz.${K.pociagi&&K.pociagi.wazny?' Rozkład ważny: '+E(K.pociagi.wazny)+'.':''}</p><div class="flex-wrap"><a class="btn sm" href="https://portalpasazera.pl" target="_blank" rel="noopener">Odjazdy na żywo</a>${K.pociagi&&K.pociagi.zrodlo?`<a class="btn sm line" href="${E(K.pociagi.zrodlo)}" target="_blank" rel="noopener">Rozkład KM</a>`:''}</div></div>
   <div class="card" style="background:var(--warnbg);box-shadow:none"><b>Czasy przesiadek: w przygotowaniu</b><p class="mut" style="color:var(--ink);margin:4px 0 0">Tu pokażemy, ile minut według rozkładu jest na przesiadkę z autobusu L do pociągu i z powrotem, razem z mapą linii.</p></div>`;return;}
  if(box.dataset.ok){kNajblizsze();kRenderPrzes();kRenderRozklad();return;}box.dataset.ok=1;
- const S=kStacje();KS.stacja=LS('kom_stacja')||S[0]||null;if(S.indexOf(KS.stacja)<0)KS.stacja=S[0]||null;KS.linia=K.linie[0]&&K.linie[0].id;
+ const S=kStacje();KS.stacja=LS('kom_stacja')||S[0]||null;if(S.indexOf(KS.stacja)<0)KS.stacja=S[0]||null;KS.linia=(K.linie.find(l=>l.kierunki.some(k=>((k.odjazdy||{})[KS.dzien]||[]).length))||K.linie[0]||{}).id;
  const dzSeg=id=>`<div class="seg" id="${id}">${Object.keys(DN).map(d=>`<button data-d="${d}" class="${d===KS.dzien?'on':''}">${DN[d]}</button>`).join('')}</div>`;
  box.innerHTML=`<h2>Komunikacja</h2>
- <p class="mut">Autobusy L, pociągi i przesiadki w Kobyłce, według oficjalnych rozkładów${K.stan?' (stan na '+E(K.stan)+')':''}.</p>
+ <p class="mut">Autobusy L${maPociagi()?', pociągi i przesiadki':''} w Kobyłce według rozkładów ZTM${K.stan?' (stan na '+E(K.stan)+')':''}.</p>
  ${S.length>1?`<div class="seg k2" id="k-st">${S.map(s=>`<button data-s="${E(s)}" class="${s===KS.stacja?'on':''}">Stacja ${E(s)}</button>`).join('')}</div>`:''}
  <div class="sec"><h3>Najbliższe odjazdy</h3><span class="mut" id="k-zegar"></span></div>
  <div class="card" id="k-nast"></div>
@@ -144,7 +145,7 @@ async function komInit(){
  chips('#k-lchips',1);chips('#k-linie',0);
  kMapa=Mapa(Q('#k-map'),kRysuj);
  const pts=[];K.linie.forEach(l=>{l._p=kPozycje(l.kierunki[0]||{przystanki:[]});l._p.forEach(p=>p&&pts.push(p));});
- if(pts.length){const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);kMapa.cel((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,Math.max(3000,(Math.max(...xs)-Math.min(...xs))*1.25,(Math.max(...ys)-Math.min(...ys))*1.6));}else kMapa.draw();
+ const sp=[];K.linie.forEach(l=>l.kierunki.forEach(k=>(k.stacje||[]).forEach(x=>{const P=kPozycje(k)[x.i];if(P)sp.push(P);})));const cc=sp.length?sp:pts;if(cc.length){const xs=cc.map(p=>p[0]),ys=cc.map(p=>p[1]);kMapa.cel((Math.min(...xs)+Math.max(...xs))/2,(Math.min(...ys)+Math.max(...ys))/2,6500);}else kMapa.draw();
  box.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.dataset.s){KS.stacja=b.dataset.s;LS('kom_stacja',KS.stacja);QA('#k-st button').forEach(x=>x.classList.toggle('on',x===b));kNajblizsze();kRenderPrzes();}
   else if(b.dataset.t){KS.tryb=b.dataset.t;QA('#k-tryb button').forEach(x=>x.classList.toggle('on',x===b));kRenderPrzes();}
@@ -156,7 +157,8 @@ async function komInit(){
   else if(b.dataset.l!==undefined&&b.parentNode.id==='k-linie'){KS.linia=b.dataset.l;KS.kier=0;KS.przyst=0;chips('#k-linie',0);kRenderRozklad();}
   else if(b.id==='k-radni')kDoRadnych();});
  Q('#k-przyst').onchange=e=>{KS.przyst=+e.target.value;kRenderRozklad();};
- kNajblizsze();kRenderPrzes();kRenderRozklad();
+ if(!maPociagi()){const pc=Q('#k-prz').closest('.card');pc.innerHTML='<b>Przesiadki na pociąg: wkrótce</b><p class="mut" style="margin:4px 0 0">Rozkłady autobusów L są już w aplikacji. Gdy dodamy godziny pociągów Kolei Mazowieckich, pokażemy tu, ile minut według rozkładu jest na przesiadkę na stacjach Kobyłka i Kobyłka Ossów.</p>';}
+ kNajblizsze();if(maPociagi())kRenderPrzes();kRenderRozklad();
  const tick=()=>{const z=Q('#k-zegar');if(z)z.textContent=new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});};tick();setInterval(()=>{if(Q('#v-kom.on')){tick();kNajblizsze();}},30000);
 }
 function kDoRadnych(){
