@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zwierzęta w Kobyłce – moduł aplikacji mieszkańca</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16233A;--muted:#5B6474;--line:#E4E1DA;--bg:#FAF7F2;--card:#FFFFFF;--acc:#D9643A;--acc2:#FBE7DD;--ok:#0B6E63;--ok2:#E3F2EE;--warn:#8A4B00;--warn2:#FFF1D6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Inter,system-ui,sans-serif;color:var(--ink);line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-.01em}
+h1{font-size:30px;line-height:1.1}
+h2{font-size:21px}
+h3{font-size:17px}
+p{margin:0}
+.top{display:flex;flex-direction:column;gap:6px}
+.kicker{font-size:13px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.08em}
+.alert{background:var(--warn2);border:1px solid #F3D29A;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.alert b{color:var(--warn)}
+.count{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--warn)}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+nav button{flex:none;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+nav button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{display:none;flex-direction:column;gap:12px}
+.panel.on{display:flex}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.card ul,.card ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--ok2);color:var(--ok)}
+.tag.a{background:var(--acc2);color:var(--acc)}
+.btn{display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 16px;border-radius:14px;background:var(--ink);color:#fff;text-decoration:none;font-weight:600}
+.btn.l{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.tel{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tel:first-of-type{border-top:0}
+.tel a{flex:none;font-weight:700;color:var(--ok);text-decoration:none;font-size:16px;min-height:44px;display:flex;align-items:center}
+.small{font-size:13px;color:var(--muted)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar .row{display:flex;justify-content:space-between;font-size:14px;gap:8px}
+.bar .t{height:10px;border-radius:99px;background:#EFEBE4;overflow:hidden;margin-top:4px}
+.bar .t i{display:block;height:10px;background:var(--acc)}
+.src{font-size:12px;color:var(--muted);word-break:break-word}
+.src a{color:var(--muted)}
+footer{display:flex;flex-direction:column;gap:6px}
+</style>
+</head>
+<body>
+<main class="wrap">
+<p style="margin:0 0 8px"><a href="./#miasto" style="font-weight:600;text-decoration:none">← Stacja Kobyłka</a></p>
+
+<div class="top">
+<div class="kicker">Aplikacja mieszkańca Kobyłki</div>
+<h1>Zwierzęta w gminie</h1>
+<p class="small">Według programu opieki nad zwierzętami na 2026 r. (uchwała nr XXVII/277/2026 z 25 czerwca 2026 r.) i stron Urzędu Miasta.</p>
+</div>
+
+<div class="alert" role="status">
+<b>Bezpłatne czipowanie: wnioski do 30 listopada 2026</b>
+<div class="count" id="dni">—</div>
+<p class="small" style="color:var(--warn)">Miasto płaci za czip dla psów i kotów mieszkańców, bez limitu sztuk, w kolejności wniosków, do wyczerpania środków.</p>
+</div>
+
+<nav role="tablist" aria-label="Tematy">
+<button role="tab" aria-selected="true" data-p="pomoc">Zwierzę w potrzebie</button>
+<button role="tab" aria-selected="false" data-p="kastr">Kastracja</button>
+<button role="tab" aria-selected="false" data-p="czip">Czipowanie</button>
+<button role="tab" aria-selected="false" data-p="koty">Koty wolno żyjące</button>
+<button role="tab" aria-selected="false" data-p="adop">Adopcje</button>
+<button role="tab" aria-selected="false" data-p="prog">Program w liczbach</button>
+<button role="tab" aria-selected="false" data-p="prawo">Zmiany w prawie</button>
+</nav>
+
+<section class="panel on" id="pomoc" role="tabpanel" aria-label="Zwierzę w potrzebie">
+<div class="card">
+<h2>Błąkające się, porzucone lub potrącone zwierzę</h2>
+<div class="tel"><div><b>W godzinach pracy urzędu</b><div class="small">Wydział Ochrony Środowiska</div></div><a href="tel:+48227607016">22 760 70 16</a></div>
+<div class="tel"><div><b>Po godzinach i w dni wolne</b><div class="small">Komisariat Policji w Kobyłce</div></div><a href="tel:+48477247846">47 724 78 46</a></div>
+<div class="tel"><div><b>Po godzinach, zamiennie</b><div class="small">Powiatowe Centrum Zarządzania Kryzysowego</div></div><a href="tel:+48227760300">22 776 03 00</a></div>
+<div class="tel"><div><b>Zagrożenie życia, znęcanie się</b><div class="small">Numer alarmowy</div></div><a href="tel:112">112</a></div>
+</div>
+<div class="card">
+<h3>Kto pomaga na miejscu</h3>
+<ul>
+<li><b>Całodobowa opieka weterynaryjna przy zdarzeniach drogowych:</b> VikiWet, al. Niepodległości 2/52, Wołomin. Wzywa ją urząd lub policja.</li>
+<li><b>Odłowienie i transport:</b> Agnieszka Kaplewska, ul. Jałowcowa 16, Zagościniec. Tam też jest punkt czasowego przetrzymywania zwierząt.</li>
+<li><b>Zwierzęta gospodarskie:</b> gospodarstwo rolne, ul. Długa 9, Duczki.</li>
+</ul>
+<p class="small">Kobyłka nie ma straży miejskiej. Zgłoszenia przyjmuje urząd, a po godzinach policja.</p>
+</div>
+</section>
+
+<section class="panel" id="kastr" role="tabpanel" aria-label="Kastracja i sterylizacja">
+<div class="card">
+<span class="tag">Miasto płaci za zabieg</span>
+<h2>Sterylizacja i kastracja psów i kotów</h2>
+<ul>
+<li>Dla mieszkańców Kobyłki, maksymalnie <b>2 zwierzęta rocznie</b> na właściciela.</li>
+<li>Zwierzę musi mieć czip. Wniosek o czipowanie można złożyć razem z wnioskiem o zabieg.</li>
+<li>Zabieg wykonuje VikiWet w Wołominie.</li>
+<li>Badania przed zabiegiem i inne dodatkowe koszty pokrywa właściciel.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Jak złożyć wniosek</h3>
+<ol>
+<li>Wypełnij wniosek.</li>
+<li>Dołącz kopię książeczki zdrowia, dowód czipa, a dla psa potwierdzenie szczepienia przeciw wściekliźnie.</li>
+<li>Złóż w kancelarii urzędu (ul. Wołomińska 1, pok. 5) albo przez e-Doręczenia: AE:PL-64521-19305-ISIFJ-23.</li>
+</ol>
+<a class="btn" href="https://www.kobylka.pl/Common/pobierzPlik/id/1967/module_short/port/obj_id/3537/culture/pl/version/pub.html">Pobierz wniosek o zabieg <span aria-hidden="true">↓</span></a>
+<div class="tel"><div><b>Pytania</b><div class="small">Sabina Strzępka, Wydział Ochrony Środowiska, sabina.strzepka@kobylka.pl</div></div><a href="tel:+48227607016">22 760 70 16</a></div>
+</div>
+</section>
+
+<section class="panel" id="czip" role="tabpanel" aria-label="Czipowanie">
+<div class="card">
+<span class="tag a">Wnioski do 30.11.2026</span>
+<h2>Bezpłatne czipowanie</h2>
+<ul>
+<li>Dla psów i kotów mieszkańców Kobyłki, bez limitu liczby zwierząt.</li>
+<li>Decyduje kolejność wniosków, do wyczerpania środków.</li>
+<li>Gabinet wszczepia 15-cyfrowy czip i wpisuje zwierzę do bazy, np. SAFE-ANIMAL.</li>
+<li>Do wniosku dołącz kopię książeczki zdrowia, a dla psa potwierdzenie szczepienia przeciw wściekliźnie.</li>
+</ul>
+<a class="btn" href="https://kobylka.pl/Common/pobierzPlik/id/1966/module_short/port/obj_id/3538/culture/pl/version/pub.html">Pobierz wniosek o czipowanie <span aria-hidden="true">↓</span></a>
+</div>
+<div class="card">
+<h3>Dlaczego warto</h3>
+<p>Zaczipowane zwierzę szybciej wraca do domu, gdy się zgubi. Czip jest też warunkiem bezpłatnej kastracji. Za około dwa lata czipowanie psów będzie obowiązkowe w całym kraju.</p>
+</div>
+</section>
+
+<section class="panel" id="koty" role="tabpanel" aria-label="Koty wolno żyjące">
+<div class="card">
+<h2>Opiekujesz się kotami wolno żyjącymi?</h2>
+<ul>
+<li><b>Zarejestruj się jako opiekun</b> w urzędzie. Musisz być pełnoletni. Urząd może przyjść na wizję lokalną.</li>
+<li><b>Karma od miasta</b> jest wydawana na parkingu przy urzędzie, ul. Wołomińska 1. Osobom starszym i z niepełnosprawnością urząd może ją dowieźć.</li>
+<li><b>Ocieplane budki</b> można dostać na pisemny wniosek.</li>
+<li><b>Ranne koty i osierocone kocięta</b> zgłaszaj w urzędzie pod numerem 22 760 70 16.</li>
+</ul>
+<p class="small">Odłowione koty są czipowane, szczepione, sterylizowane i wracają tam, gdzie żyły.</p>
+</div>
+</section>
+
+<section class="panel" id="adop" role="tabpanel" aria-label="Adopcje">
+<div class="card">
+<h2>Szukasz zwierzęcia albo zgubiłeś swoje?</h2>
+<ul>
+<li><b>Schronisko:</b> Przedsiębiorstwo Wielobranżowe „PERRO”, Małe Boże 7a.</li>
+<li><b>Punkt czasowego przetrzymywania:</b> ul. Jałowcowa 16, Zagościniec. Ogłasza zwierzęta do adopcji i szuka właścicieli w internecie.</li>
+<li><b>Urząd Miasta</b> publikuje ogłoszenia o adopcji na swojej stronie i w mediach społecznościowych.</li>
+</ul>
+</div>
+</section>
+
+<section class="panel" id="prog" role="tabpanel" aria-label="Program w liczbach">
+<div class="card">
+<h2>682 005 zł na zwierzęta w 2026 r.</h2>
+<p class="small">Tak rozkłada się budżet programu opieki nad zwierzętami.</p>
+<div class="bars" id="bars"></div>
+</div>
+<div class="card">
+<h3>Warto wiedzieć</h3>
+<ul>
+<li>Na zabiegi i czipy dla zwierząt mieszkańców idzie 49 420 zł, czyli 7% programu.</li>
+<li>Ustawa wymaga uchwalenia programu do 31 marca. W 2026 r. rada uchwaliła go 25 czerwca.</li>
+<li>Sprawozdanie z wykonania programu burmistrz przedstawia w I kwartale 2027 r.</li>
+</ul>
+</div>
+</section>
+
+<section class="panel" id="prawo" role="tabpanel" aria-label="Zmiany w prawie">
+<div class="card">
+<span class="tag a">Około lata 2027 r.</span>
+<h2>Koniec psów na łańcuchach</h2>
+<p>Ustawa z 3 lipca 2026 r. została podpisana 24 lipca 2026 r. i wchodzi w życie 12 miesięcy po ogłoszeniu. Psy mają mieć solidny kojec, ocieploną drewnianą budę i regularny ruch poza kojcem. Wymiary kojców określi rozporządzenie. Dokładną datę podamy po jej potwierdzeniu.</p>
+<p class="small">Do tego czasu obowiązują obecne przepisy, w tym zakaz trzymania psa na uwięzi dłużej niż 12 godzin na dobę.</p>
+</div>
+<div class="card">
+<span class="tag a">Około 2028 r.</span>
+<h2>Krajowy rejestr psów i kotów</h2>
+<p>Ustawa o Krajowym Rejestrze Oznakowanych Psów i Kotów (Dz.U. 2026 poz. 755) wchodzi w życie 2 lata po ogłoszeniu. Wtedy psa trzeba będzie zaczipować i zarejestrować przed pierwszym szczepieniem na wściekliznę. Dziś takiego obowiązku jeszcze nie ma.</p>
+</div>
+</section>
+
+<footer>
+<div class="src"><b>Źródła:</b>
+<a href="https://kobylka.bipgmina.pl/wiadomosci/4950/wiadomosc/891621/uchwala_nr_xxvii2772026_rady_miasta_kobylka_z_dnia_25_czerwca_20">uchwała XXVII/277/2026 (BIP)</a> ·
+<a href="https://bip-v1-files.idcom-jst.pl/sites/46729/wiadomosci/891621/files/xxvii_277_2026_program_opieki_nad_zwierzetami.pdf">program (PDF)</a> ·
+<a href="https://www.kobylka.pl/strona-3537-sterylizacja_kastracja_zwierzat.html">sterylizacja i kastracja</a> ·
+<a href="https://kobylka.pl/strona-3538-elektroniczne_znakowanie_zwierzat.html">czipowanie</a> ·
+<a href="https://standardyprawa.pl/akt/275/art/35089">art. 11a ustawy o ochronie zwierząt</a> ·
+<a href="https://www.infor.pl/akt-prawny/DZU.2026.161.0000755,ustawa-o-krajowym-rejestrze-oznakowanych-psow-i-kotow.html">ustawa o rejestrze psów i kotów</a></div>
+<div class="src">Stan na 17 listopada 2026 r.</div>
+</footer>
+</main>
+<script>
+(function(){
+  var tabs=document.querySelectorAll('nav button');
+  tabs.forEach(function(b){b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected','false')});
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('on',p.id===b.dataset.p)});
+  })});
+  var end=new Date(2026,10,30,23,59,59), now=new Date();
+  var d=Math.ceil((end-now)/86400000), el=document.getElementById('dni');
+  el.textContent = d>1 ? 'Zostało '+d+' dni' : d===1 ? 'Został 1 dzień' : 'Nabór zakończony';
+  var B=[['Całodobowa opieka weterynaryjna, szukanie właścicieli, ślepe mioty',414325],['Odławianie zwierząt',154440],['Sterylizacja, kastracja i czipowanie zwierząt mieszkańców',49420],['Miejsca w schronisku',41820],['Edukacja i adopcje',10000],['Karma dla kotów wolno żyjących',8000],['Sterylizacja w schronisku',2000],['Gospodarstwo rolne',2000]];
+  var tot=682005, h='';
+  B.forEach(function(x){var p=Math.round(x[1]/tot*100);
+    h+='<div class="bar"><div class="row"><span>'+x[0]+'</span><b>'+x[1].toLocaleString('pl-PL')+' zł</b></div><div class="t" role="img" aria-label="'+p+' procent budżetu"><i style="width:'+Math.max(p,1)+'%"></i></div></div>'});
+  document.getElementById('bars').innerHTML=h;
+})();
+</script>
+</body>
+</html>

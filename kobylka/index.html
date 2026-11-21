@@ -185,6 +185,7 @@ html.big body{zoom:1.15}
 .how{background:var(--acc2);box-shadow:none}.how-t{font-size:19px;font-weight:800;letter-spacing:-.01em;display:block}
 .how-s{display:grid;gap:8px;margin-top:10px}.how-s span{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
 .how-s i{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800;flex:none}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;background:var(--soft);border-radius:999px;padding:3px 10px;margin:6px 4px 0 0}
 .stat{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}.stat span{font-size:12.5px;font-weight:600;background:var(--soft);border-radius:999px;padding:3px 9px;white-space:nowrap}.stat span b{font-size:13.5px}
 .stat span.z{color:var(--mut);font-weight:500}
 #r-sort{grid-template-columns:1fr 1fr;margin:8px 0}
@@ -457,6 +458,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <button data-go="firmy"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 11.5V20h13v-8.5M10 20v-5h4v5"/></svg></span><span><b>Firmy sąsiadów</b><small>usługi i sklepy z Kobyłki</small></span></button>
    <button data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span><b>Twoje pieniądze</b><small>zakupy lokalne i PIT</small></span></button>
    <button data-go="dziki"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="4.5" ry="3.6"/><circle cx="5.5" cy="11" r="1.8"/><circle cx="9.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18.5" cy="11" r="1.8"/></svg></span><span><b>Dziki</b><small>zgłoś obserwację</small></span></button>
+   <button onclick="location.href='zwierzeta.html'"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M8 17c0-2.5 1.8-4.5 4-4.5s4 2 4 4.5c0 1.5-1.2 2.5-2.5 2.5-.8 0-1-.5-1.5-.5s-.7.5-1.5.5C9.2 19.5 8 18.5 8 17z"/></svg></span><span><b>Zwierzęta</b><small>czip, kastracja, adopcje</small></span></button>
    <button data-go="odkryj"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span><b>Odkrywaj</b><small>mapy, historia, niebo</small></span></button>
   </div>
 </section>
@@ -516,12 +518,14 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <h3>Dyżury i budżet obywatelski</h3>
   <div class="card" id="r-bo"></div>
   <div class="flex-wrap"><button class="btn sm" data-go="bo">Budżet obywatelski: mapa i kreator</button><button class="btn sm line" data-go="budzet">Budżet miasta</button></div>
+  <div class="card" style="border:2px dashed var(--line)"><b>Jesteś radnym? Pokaż mieszkańcom swoją pracę</b><p class="mut" style="margin:6px 0">Każdy radny Rady Miasta Kobyłka, niezależnie od klubu, może mieć tu bezpłatnie własną stronę: czym się zajmuje, interpelacje i ich efekty, dyżury i kontakt. Zaczynamy od danych publicznych z BIP, a radny sam decyduje, co na niej jest, i może z niej zrezygnować w każdej chwili.</p><a class="btn sm" href="mailto:edyta.zbiec@kobylka.pl?subject=Strona%20radnego%20w%20Stacji%20Koby%C5%82ka">Chcę swoją stronę</a><p class="mut" style="margin:6px 0 0">Zgłoszenia: edyta.zbiec@kobylka.pl</p></div>
   <h3>Wszyscy radni</h3>
   <div id="r-akt-info"></div>
   <div class="seg" id="r-sort" hidden><button data-rs="okr" class="on">Według okręgów</button><button data-rs="akt">Według aktywności</button></div>
   <div id="r-lista"></div>
 </section>
 
+<section class="view" id="v-radny"><div id="rp"></div></section>
 <section class="view" id="v-lokalnie">
   <h2>Twoje pieniądze w Kobyłce</h2>
   <p class="mut">Każda złotówka wydana u sąsiada może zarobić dla miasta kilka razy: na pensję dla mieszkańca, u lokalnego dostawcy, w podatkach na drogi i szkoły.</p>
@@ -621,10 +625,10 @@ function skyTick(){const t=Date.now();const m=moon(t);if($('#v-start').classList
 
 /* ===== nawigacja ===== */
 let _pop=false;window.addEventListener('popstate',e=>{_pop=true;go((e.state&&e.state.v)||'start');_pop=false;});
-function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(window.modGo)modGo(v);if(v==='dziki')dzikiInit();if(DANE){if(v==='start')agenda();if(v==='rada')renderRada();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
+function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(window.modGo)modGo(v);if(v==='dziki')dzikiInit();if(DANE){if(v==='start')agenda();if(v==='rada')renderRada();if(v==='radny')renderRadny();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
  if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go);if(b.dataset.scroll){const t=document.getElementById(b.dataset.scroll);if(t)setTimeout(()=>t.scrollIntoView({block:'start'}),30);}}});
-const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',dziki:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto',mapazgl:'zglos',kom:'miasto',budzet:'miasto',wniosekb:'miasto',bo:'miasto'};
+const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',dziki:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto',radny:'miasto',mapazgl:'zglos',kom:'miasto',budzet:'miasto',wniosekb:'miasto',bo:'miasto'};
 window.addEventListener('scroll',()=>{const h=document.querySelector('header.app');if(h)h.classList.toggle('sc',scrollY>4);},{passive:true});
 (()=>{const d=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});const e=document.getElementById('hdate');if(e)e.textContent=d.charAt(0).toUpperCase()+d.slice(1);})();
 
@@ -676,10 +680,20 @@ let OKR=null,OKR_U=null,AKT=null,RSORT='okr';
 function aktOf(r){const a=AKT&&AKT.radni&&AKT.radni[r.id];if(!a)return null;const i=a.interpelacje,z=a.zapytania;return{i,z,l:(i||0)+(z||0),o:a.ostatnia};}
 const pl=(n,a,b,c)=>n===1?a:(n%10>=2&&n%10<=4&&(n%100<12||n%100>14))?b:c;
 function aktHtml(r){const a=aktOf(r);if(!a)return'';const p=[];if(a.i)p.push(`<span><b>${a.i}</b> ${pl(a.i,'interpelacja','interpelacje','interpelacji')}</span>`);if(a.z)p.push(`<span><b>${a.z}</b> ${pl(a.z,'zapytanie','zapytania','zapytań')}</span>`);if(!p.length)p.push('<span class="z">brak imiennych interpelacji i zapytań</span>');if(a.o)p.push(`<span class="z">ostatnie: ${new Date(a.o+'T12:00').toLocaleDateString('pl-PL',{month:'short',year:'numeric'})}</span>`);return `<div class="stat">${p.join('')}</div>`;}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rp]');if(b){store('rp',b.dataset.rp);go('radny');}});
+function renderRadny(){const R=(DANE&&DANE.radni)||RADNI||[];const r=R.find(x=>x.id===store('rp'))||R.find(x=>x.profil);const el=$('#rp');if(!r||!r.profil){el.innerHTML='<div class="card mut">Ten radny nie ma jeszcze swojej strony.</div>';return;}
+ const p=r.profil,a=aktOf(r),ini=r.imie.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('');
+ el.innerHTML=`<div class="card"><div class="radny" style="border:0"><div class="av">${ini}</div><div class="grow"><b>${esc(r.imie)}</b><div class="mut">${esc(p.rola||'Radny')} Rady Miasta Kobyłka · okręg nr ${r.okreg}</div>${aktHtml(r)}</div></div>${(p.funkcje||[]).map(f=>`<span class="tag">${esc(f)}</span>`).join(' ')}</div>
+ ${p.opis?`<div class="card"><p style="margin:0">${esc(p.opis)}</p></div>`:''}
+ ${p.tematy?`<h3>Czym się zajmuje</h3><div class="card">${p.tematy.map(t=>`<div class="step"><b>${esc(t[0])}</b><span class="mut">${esc(t[1])}</span></div>`).join('')}</div>`:''}
+ ${p.ostatnie?`<h3>Ostatnie interpelacje</h3><div class="card">${p.ostatnie.map(t=>`<div class="step"><b>${esc(t[0])}</b><span class="mut">${esc(t[1])}</span></div>`).join('')}<p class="mut" style="margin:8px 0 0">Treści i odpowiedzi Urzędu: <a href="${AKT&&AKT.zrodlo||'https://kobylka.bipgmina.pl/wiadomosci/dzial/4449'}" target="_blank" rel="noopener">BIP – interpelacje i zapytania radnych</a>.</p></div>`:''}
+ <h3>Kontakt</h3><div class="card">${r.email?`<div>E‑mail: <b>${esc(r.email)}</b></div>`:''}${p.dyzur?`<div class="mut" style="margin-top:4px">${esc(p.dyzur)}</div>`:''}<div class="flex-wrap" style="margin-top:10px">${r.email?`<a class="btn sm" href="mailto:${r.email}">Napisz</a>`:''}<button class="btn sm line" data-go="zglos">Przekaż sprawę</button><button class="btn sm line" data-go="rada">Wszyscy radni</button></div></div>
+ ${p.stan?`<p class="mut">Stan na ${esc(p.stan)}. Treść strony zatwierdza radny.</p>`:''}`;
+ $$('#rp [data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));}
 function renderRada(){const R=(DANE&&DANE.radni&&DANE.radni.length?DANE.radni:(window.RADNI||[]));const nums=[...new Set(R.map(r=>r.okreg))].sort((a,b)=>a-b);
  const auto=okregUlicy();const cu=store('ulica')||'';if(OKR_U!==cu){OKR=null;OKR_U=cu;}if(OKR===null)OKR=auto||(okregDzielony()?null:store('okreg'))||null;
  const ini=n=>n.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('');
- const RB=(DANE&&DANE.rada)||{};const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'okręg nr '+r.okreg}</div>${aktHtml(r)}</div>${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:RB.biuro_email?`<a class="btn sm line" href="mailto:${RB.biuro_email}?subject=${encodeURIComponent('Prośba o kontakt z radnym: '+r.imie)}">Napisz</a>`:''}</div>`;
+ const RB=(DANE&&DANE.rada)||{};const card=r=>`<div class="radny"><div class="av">${ini(r.imie)}</div><div class="grow"><b>${r.imie}</b><div class="mut">${r.funkcja&&r.funkcja!=='BRAK'?r.funkcja:'okręg nr '+r.okreg}</div>${aktHtml(r)}</div>${r.profil?`<button class="btn sm" data-rp="${r.id}">Strona</button> `:''}${r.email?`<a class="btn sm line" href="mailto:${r.email}">Napisz</a>`:r.kontakt?`<a class="btn sm line" href="${r.kontakt}" target="_blank" rel="noopener">Kontakt</a>`:RB.biuro_email?`<a class="btn sm line" href="mailto:${RB.biuro_email}?subject=${encodeURIComponent('Prośba o kontakt z radnym: '+r.imie)}">Napisz</a>`:''}</div>`;
  const pick=`<div class="okr">${nums.map(n=>`<button data-ok="${n}" class="${n===OKR?'on':''}">Okręg ${n}</button>`).join('')}</div>`;
  const twoi=OKR?R.filter(r=>r.okreg===OKR):[];
  const dz=okregDzielony(),src=DANE&&DANE.rada&&DANE.rada.okregi_zrodlo;
@@ -1065,7 +1079,7 @@ async function init(){
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  {const v=store('sprawy');SPRAWY=Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&x.id&&typeof x.opis==='string'):[];if(typeof store('ulica')!=='string')store('ulica',null);}renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
- if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto','dziki','kom','budzet','wniosekb','bo','mapazgl'].includes(h))go(h);
+ if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto','dziki','radny','kom','budzet','wniosekb','bo','mapazgl'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=Array.isArray(store('sprawy'))?store('sprawy'):[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);

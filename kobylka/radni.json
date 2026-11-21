@@ -117,7 +117,61 @@
   "okreg": 3,
   "funkcja": "BRAK",
   "email": "edyta.zbiec@kobylka.pl",
-  "kontakt": "https://facebook.com/edytazbiecwdp"
+  "kontakt": "https://facebook.com/edytazbiecwdp",
+  "profil": {
+   "rola": "Radna",
+   "stan": "21 listopada 2026",
+   "funkcje": [
+    "Wiceprzewodnicząca Komisji Infrastruktury i Ochrony Środowiska",
+    "Protokolantka Komisji Rozwoju i Gospodarki Przestrzennej"
+   ],
+   "opis": "Pilnuje, żeby mieszkańcy wiedzieli, na co Miasto wydaje pieniądze i jak zarządza majątkiem. Z jej inicjatywy powstała Stacja Kobyłka – niezależna aplikacja otwarta dla wszystkich radnych.",
+   "tematy": [
+    [
+     "Jawność wydatków",
+     "Umowy Miasta z firmami zewnętrznymi, w tym umowa doradcza z PwC, koszty obsługi prawnej, wynagrodzenia osób pełniących funkcje publiczne."
+    ],
+    [
+     "Majątek Miasta",
+     "Sprzedaż działki przy ul. Osiedlowej, przebudowa i koszty budynku przy Al. Jana Pawła II 4, nieruchomości zbywane i kupowane przez Miasto."
+    ],
+    [
+     "Odpady i środowisko",
+     "Koszty gospodarki odpadami, olejomat i lekomat w porównaniu z innymi gminami, zakup mobilnej stacji uzdatniania wody, dziki w mieście."
+    ],
+    [
+     "Rozwój miasta",
+     "Plan ogólny przewiduje miejsce dla 17 271 nowych mieszkańców – pytania o drogi, szkoły i pieniądze na nie."
+    ],
+    [
+     "Dostępność i jawność",
+     "Czytelne dokumenty w BIP, dostępność Urzędu i szkół dla osób ze szczególnymi potrzebami, propozycja jawnego rejestru wniosków i interpelacji."
+    ],
+    [
+     "Dziki",
+     "Zbiera zgłoszenia mieszkańców z mapy w aplikacji i przekazuje je Urzędowi Miasta, żeby było widać skalę problemu."
+    ]
+   ],
+   "ostatnie": [
+    [
+     "5 listopada 2026",
+     "Plan ogólny a infrastruktura; dostępność w Urzędzie i PSZOK; dostępność w szkołach, przedszkolach, OPS i MOK."
+    ],
+    [
+     "30 października 2026",
+     "Umowa Miasta z PwC – dlaczego Urząd zmieniał stanowisko w sprawie jej udostępnienia."
+    ],
+    [
+     "28 października 2026",
+     "Jawny rejestr wniosków i interpelacji; sprzedaż działki przy ul. Osiedlowej."
+    ],
+    [
+     "27 października 2026",
+     "Przebudowa i koszty budynku przy Al. Jana Pawła II 4; gospodarka odpadami."
+    ]
+   ],
+   "dyzur": "Dyżur: poniedziałki 17:00–18:00 według harmonogramu Rady, Biuro Rady Miasta, ul. Wołomińska 1b. Umówienie spotkania: tel. 22 760 70 60, brm@kobylka.pl."
+  }
  },
  {
   "id": "marcin-zdunek",
