@@ -283,6 +283,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 <!-- START -->
 <section class="view on" id="v-start">
   <div id="hero"></div>
+  <button class="card lok-teaser" id="sr-teaser" data-go="srodowisko" hidden style="box-shadow:none"></button>
   <button class="card lok-teaser" id="dz-alert" data-go="dziki" hidden style="background:var(--warnbg);box-shadow:none"></button>
   <div class="card" id="s-waste"></div>
   <div class="qa4">
@@ -459,6 +460,7 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
    <button data-go="lokalnie"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="6" ry="2.6"/><path d="M3 7v4c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6V7"/><path d="M3 11v4c0 1.4 2.7 2.6 6 2.6 1 0 1.9-.1 2.7-.3"/><circle cx="17" cy="16" r="4"/></svg></span><span><b>Twoje pieniądze</b><small>zakupy lokalne i PIT</small></span></button>
    <button data-go="dziki"><span class="ico c3"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="4.5" ry="3.6"/><circle cx="5.5" cy="11" r="1.8"/><circle cx="9.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18.5" cy="11" r="1.8"/></svg></span><span><b>Dziki</b><small>zgłoś obserwację</small></span></button>
    <button onclick="location.href='zwierzeta.html'"><span class="ico c1"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="10" r="1.8"/><circle cx="10" cy="6" r="1.8"/><circle cx="14" cy="6" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M8 17c0-2.5 1.8-4.5 4-4.5s4 2 4 4.5c0 1.5-1.2 2.5-2.5 2.5-.8 0-1-.5-1.5-.5s-.7.5-1.5.5C9.2 19.5 8 18.5 8 17z"/></svg></span><span><b>Zwierzęta</b><small>czip, kastracja, adopcje</small></span></button>
+   <button data-go="srodowisko"><span class="ico c2"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span><b>Powietrze i prąd</b><small>smog, wyłączenia prądu</small></span></button>
    <button data-go="odkryj"><span class="ico c6"><svg class="i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span><b>Odkrywaj</b><small>mapy, historia, niebo</small></span></button>
   </div>
 </section>
@@ -526,6 +528,13 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
 </section>
 
 <section class="view" id="v-radny"><div id="rp"></div></section>
+<section class="view" id="v-srodowisko">
+  <h2>Powietrze i prąd</h2>
+  <h3>Jakość powietrza</h3>
+  <div id="sr-pow"><div class="card mut">Wczytuję…</div></div>
+  <h3>Planowane wyłączenia prądu</h3>
+  <div id="sr-prad"><div class="card mut">Wczytuję…</div></div>
+</section>
 <section class="view" id="v-lokalnie">
   <h2>Twoje pieniądze w Kobyłce</h2>
   <p class="mut">Każda złotówka wydana u sąsiada może zarobić dla miasta kilka razy: na pensję dla mieszkańca, u lokalnego dostawcy, w podatkach na drogi i szkoły.</p>
@@ -625,10 +634,10 @@ function skyTick(){const t=Date.now();const m=moon(t);if($('#v-start').classList
 
 /* ===== nawigacja ===== */
 let _pop=false;window.addEventListener('popstate',e=>{_pop=true;go((e.state&&e.state.v)||'start');_pop=false;});
-function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(window.modGo)modGo(v);if(v==='dziki')dzikiInit();if(DANE){if(v==='start')agenda();if(v==='rada')renderRada();if(v==='radny')renderRadny();if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
+function go(v){if(!_pop&&history.state?.v!==v)history.pushState({v},'',location.pathname+location.search+'#'+v);$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('nav.bar button').forEach(b=>b.classList.toggle('on',b.dataset.go===(TAB[v]||v)));{const hd=document.querySelector('header.app');if(hd)hd.classList.toggle('sub',!['start','odpady','zglos','miasto','menu'].includes(v));}window.scrollTo(0,0);if(window.modGo)modGo(v);if(v==='dziki')dzikiInit();if(DANE){if(v==='start'){agenda();srodowisko(false);}if(v==='rada')renderRada();if(v==='radny')renderRadny();if(v==='srodowisko')srodowisko(true);if(v==='urzad')renderUrzad();if(v==='menu')adresMenu();}
  if(v==='zglos')drawMap(); if(v==='wiecej'||v==='start')skyTick(); if(v==='odkryj'){mine();baSize();}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.preventDefault();go(b.dataset.go);if(b.dataset.scroll){const t=document.getElementById(b.dataset.scroll);if(t)setTimeout(()=>t.scrollIntoView({block:'start'}),30);}}});
-const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',dziki:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto',radny:'miasto',mapazgl:'zglos',kom:'miasto',budzet:'miasto',wniosekb:'miasto',bo:'miasto'};
+const TAB={start:'start',odpady:'odpady',zglos:'zglos',miasto:'miasto',menu:'menu',sprawy:'menu',kal:'miasto',firmy:'miasto',wiecej:'miasto',odkryj:'miasto',dziki:'miasto',urzad:'miasto',rada:'miasto',lokalnie:'miasto',radny:'miasto',srodowisko:'miasto',mapazgl:'zglos',kom:'miasto',budzet:'miasto',wniosekb:'miasto',bo:'miasto'};
 window.addEventListener('scroll',()=>{const h=document.querySelector('header.app');if(h)h.classList.toggle('sc',scrollY>4);},{passive:true});
 (()=>{const d=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});const e=document.getElementById('hdate');if(e)e.textContent=d.charAt(0).toUpperCase()+d.slice(1);})();
 
@@ -731,6 +740,25 @@ function agenda(){const u=store('ulica'),x=u&&rejonUlicy(u),H=$('#hero'),A=$('#a
  A.innerHTML=days.length?days.map(d=>`<div class="aday"><div class="aday-h">${kiedy(d)}</div><div class="card acard">${E.filter(e=>e.d===d).map(e=>`<button class="arow" data-go="${e.go}"><span class="ico ${IK[e.k][0]}">${IK[e.k][1]}</span><span class="grow"><b>${esc(e.t)}</b>${e.dots?`<span class="wtags">${e.dots.map(p=>`<span class="wtag"><i style="background:${p.c}"></i></span>`).join('')}</span>`:''}${e.s?`<small>${esc(e.s)}</small>`:''}</span></button>`).join('')}</div></div>`).join(''):'<div class="card mut">Na najbliższe dni nie mam nic w kalendarzu.</div>';}
 
 
+/* ===== powietrze i prąd (dane: zyciepw.pl – GIOŚ i operatorzy sieci) ===== */
+const SR_POW='https://www.zyciepw.pl/wp-json/zr/v1/powietrze',SR_PRAD='https://www.zyciepw.pl/wp-json/zdr/v1/wylaczenia?gmina=Koby%C5%82ka';let SR=null,SR_T=0;
+const SR_IDX=[['Bardzo dobry','#1a9850','Dobry dzień na spacer i przewietrzenie domu.'],['Dobry','#66bd63','Możesz normalnie spędzać czas na zewnątrz.'],['Umiarkowany','#d9a400','Osoby wrażliwe: ogranicz długi wysiłek na zewnątrz.'],['Dostateczny','#f46d43','Ogranicz wysiłek na zewnątrz, szczególnie dzieci, seniorzy i osoby z astmą.'],['Zły','#d73027','Unikaj wysiłku na zewnątrz i nie wietrz długo mieszkania.'],['Bardzo zły','#7a0177','Zostań w domu, jeśli możesz. Osoby chore: miej pod ręką leki.']];
+async function srodowisko(full){if(!SR||Date.now()-SR_T>15*60e3){const [a,b]=await Promise.all([fetch(SR_POW).then(r=>r.ok?r.json():null).catch(()=>null),fetch(SR_PRAD).then(r=>r.ok?r.json():null).catch(()=>null)]);if(a||b){SR={a,b};SR_T=Date.now();}}
+ const a=SR&&SR.a&&SR.a.gminy&&SR.a.gminy.kobylka&&SR.a.gminy.kobylka.w,b=SR&&SR.b,W=(b&&b.wylaczenia)||[],u=(store('ulica')||'').toLowerCase();
+ const moje=o=>u&&((o.ulice||'')+' '+(o.miejsc||'')).toLowerCase().includes(u.replace(/^(ul\.|al\.)\s*/,''));
+ const fd=(x,o)=>new Date(x.replace(' ','T')).toLocaleString('pl-PL',o||{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+ const blisko=W.filter(o=>!o.odwolane&&new Date(o.od.replace(' ','T'))-Date.now()<7*864e5);
+ const t=$('#sr-teaser');if(t){const ix=a&&a.aktualne&&a.idx!=null?SR_IDX[a.idx]:null,mj=blisko.filter(moje);
+  if(mj.length||(ix&&a.idx>=3)||blisko.length){t.hidden=false;t.innerHTML=`<span class="ico c2">⚡</span><span class="grow"><b>${mj.length?'Wyłączenie prądu na Twojej ulicy: '+fd(mj[0].od):blisko.length?blisko.length+' '+pl(blisko.length,'planowane wyłączenie','planowane wyłączenia','planowanych wyłączeń')+' prądu w 7 dni':'Powietrze: '+ix[0].toLowerCase()}</b><small>${ix?'Jakość powietrza: '+ix[0].toLowerCase():''}</small></span>`;}else t.hidden=true;}
+ if(!full)return;
+ const P=$('#sr-pow');if(!a)P.innerHTML='<div class="card mut">Nie udało się pobrać danych o powietrzu. Spróbuj później.</div>';else{const ix=a.idx!=null?SR_IDX[a.idx]:null;
+  P.innerHTML=`<div class="card"><div style="display:flex;align-items:center;gap:12px"><div style="width:56px;height:56px;border-radius:50%;background:${ix?ix[1]:'#9aa3b2'};flex:none"></div><div><b style="font-size:20px">${ix?ix[0]:'Brak indeksu'}</b><div class="mut">${a.aktualne?'pomiar z '+fd(a.t,{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):'dane nieaktualne'}</div></div></div>${ix?`<p style="margin:10px 0 0">${ix[2]}</p>`:''}
+  <div class="stat" style="margin-top:10px">${a.pm10?`<span>PM10 <b>${Math.round(a.pm10.v)}</b> µg/m³</span>`:''}${a.pm25?`<span>PM2,5 <b>${Math.round(a.pm25.v)}</b> µg/m³</span>`:''}${a.pm10&&a.pm10.avg24!=null?`<span class="z">PM10 średnio 24 h: ${Math.round(a.pm10.avg24)} (norma 50)</span>`:''}</div>
+  <p class="mut" style="margin:8px 0 0">Najbliższa stacja Głównego Inspektoratu Ochrony Środowiska: ${esc(a.stacja)}, ok. ${String(a.km).replace('.',',')} km od Kobyłki. W Kobyłce nie ma państwowej stacji pomiarowej, więc odczyt pokazuje tło dla okolicy, nie Twoją ulicę.</p></div>`;}
+ const D=$('#sr-prad');if(!b)D.innerHTML='<div class="card mut">Nie udało się pobrać wyłączeń prądu. Spróbuj później.</div>';else{
+  const L=W.slice().sort((x,y)=>moje(y)-moje(x)||(x.od<y.od?-1:1));
+  D.innerHTML=(L.length?L.map(o=>`<div class="card"${moje(o)?' style="border:2px solid var(--gold,#d9a400)"':''}><b>${fd(o.od)} – ${fd(o.do,{hour:'2-digit',minute:'2-digit'})}</b>${o.odwolane?' <span class="tag">odwołane</span>':''}${moje(o)?' <span class="tag">Twoja ulica</span>':''}<div>${esc(o.miejsc||'Kobyłka')}</div>${o.ulice?`<div class="mut">${esc(o.ulice)}</div>`:''}<div class="mut" style="margin-top:4px">Operator: ${esc((o.op||'').toUpperCase())}</div></div>`).join(''):`<div class="card">W Kobyłce nie ma zaplanowanych wyłączeń prądu.${u?'':' <span class="mut">Ustaw swoją ulicę w zakładce Odpady, a zaznaczę wyłączenia, które Cię dotyczą.</span>'}</div>`)+
+  `<p class="mut">Źródło: komunikaty operatorów sieci (PGE Dystrybucja i inni), zbierane codziennie przez <a href="${b.url}" target="_blank" rel="noopener">zyciepw.pl</a>${b.aktualizacja?', aktualizacja '+fd(b.aktualizacja,{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}):''}. Awarie zgłaszaj pod numerem 991.</p>`;}}
 /* ===== dziki ===== */
 function dzikiKontakt(){const a=(DANE&&DANE.awarie||[]).find(x=>/dzik/i.test(x.kategoria||''))||{};return{tel:a.telefon||'22 760 70 16',uw:a.uwagi||''};}
 function dzikiLista(){const L=(Array.isArray(store('dziki'))?store('dziki'):[]);$('#dz-lista').innerHTML=L.length?'<div class="card">'+L.slice(0,20).map((o,i)=>`<div class="dzr"><div class="grow"><b>${esc(o.gdzie)}</b><div class="mut">${new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})} · ${esc(o.ile)}, ${esc(o.co)}${o.wyslano?' · wysłano do Urzędu':''}</div></div><button class="btn sm line" data-dzx="${i}" aria-label="Usuń obserwację">Usuń</button></div>`).join('')+(L.length>=3?`<p class="mut" style="margin:8px 0 0">Masz ${L.length} obserwacje. Powtarzające się wizyty dzików w jednym miejscu to dobry powód, by przekazać sprawę radnemu.</p><button class="btn sm" data-go="zglos" style="margin-top:8px">Przygotuj sprawę</button>`:'')+'</div>':'<div class="card mut">Nie masz jeszcze zapisanych obserwacji.</div>';
@@ -1079,7 +1107,7 @@ async function init(){
  const zap=store('dane');if(zap){$('#z-imie').value=zap.imie||'';$('#z-adres').value=zap.adres||'';$('#z-kontakt').value=zap.kontakt||'';}
  {const v=store('sprawy');SPRAWY=Array.isArray(v)?v.filter(x=>x&&typeof x==='object'&&x.id&&typeof x.opis==='string'):[];if(typeof store('ulica')!=='string')store('ulica',null);}renderSprawy();
  const h=(location.hash||'').slice(1);const md=store('mojdzien');if(md){$('#my-d').value=md[0];$('#my-t').value=md[1];}
- if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto','dziki','radny','kom','budzet','wniosekb','bo','mapazgl'].includes(h))go(h);
+ if(['start','odpady','kal','firmy','odkryj','zglos','sprawy','wiecej','menu','urzad','rada','lokalnie','miasto','dziki','radny','srodowisko','kom','budzet','wniosekb','bo','mapazgl'].includes(h))go(h);
  // konto i baza (gdy dostępne)
  try{db=await window.claude?.use?.('db');const u=await window.claude?.use?.('user');uid=u?await u.id():null;isOwner=u?await u.isOwner():false;}catch(_){db=null;}
  if(db&&uid){const local=Array.isArray(store('sprawy'))?store('sprawy'):[];db.collection('data/users/'+uid).onSnapshot(sn=>{SPRAWY=sn.docs.map(x=>x.data()).sort((a,b)=>a.id<b.id?1:-1);
