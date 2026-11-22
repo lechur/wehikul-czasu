@@ -1,12 +1,8 @@
 {
-"pobrano": "2026-11-15T21:30Z",
+"pobrano": "2026-11-22T21:00Z",
 "zrodlo": "Oficjalne kalendarze Google wywozu odpadów Urzędu Miasta Kobyłka",
 "rejony": {
 "Rejon I": [
-{
-"data": "2026-11-16",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-23",
 "frakcja": "Bioodpady"
@@ -38,10 +34,6 @@
 ],
 "Rejon II": [
 {
-"data": "2026-11-16",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-23",
 "frakcja": "Bioodpady"
 },
@@ -71,14 +63,6 @@
 }
 ],
 "Rejon III": [
-{
-"data": "2026-11-17",
-"frakcja": "Bioodpady"
-},
-{
-"data": "2026-11-18",
-"frakcja": "Zmieszane (niesegregowane)"
-},
 {
 "data": "2026-11-24",
 "frakcja": "Bioodpady"
@@ -110,14 +94,6 @@
 ],
 "Rejon IV": [
 {
-"data": "2026-11-17",
-"frakcja": "Bioodpady"
-},
-{
-"data": "2026-11-18",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
 "data": "2026-11-24",
 "frakcja": "Bioodpady"
 },
@@ -147,10 +123,6 @@
 }
 ],
 "Rejon V": [
-{
-"data": "2026-11-18",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-23",
 "frakcja": "Zmieszane (niesegregowane)"
@@ -182,14 +154,6 @@
 ],
 "Rejon VI": [
 {
-"data": "2026-11-16",
-"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
-},
-{
-"data": "2026-11-18",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-23",
 "frakcja": "Zmieszane (niesegregowane)"
 },
@@ -219,18 +183,6 @@
 }
 ],
 "Rejon VII": [
-{
-"data": "2026-11-16",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
-"data": "2026-11-17",
-"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
-},
-{
-"data": "2026-11-19",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-26",
 "frakcja": "Bioodpady"
@@ -262,18 +214,6 @@
 ],
 "Rejon VIII": [
 {
-"data": "2026-11-16",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
-"data": "2026-11-19",
-"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
-},
-{
-"data": "2026-11-19",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-26",
 "frakcja": "Bioodpady"
 },
@@ -303,14 +243,6 @@
 }
 ],
 "Rejon IX": [
-{
-"data": "2026-11-19",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
-"data": "2026-11-20",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-23",
 "frakcja": "Segregowane: tworzywa i metale, papier, szkło"
@@ -346,14 +278,6 @@
 ],
 "Rejon X": [
 {
-"data": "2026-11-19",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
-"data": "2026-11-20",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-24",
 "frakcja": "Segregowane: tworzywa i metale, papier, szkło"
 },
@@ -388,10 +312,6 @@
 ],
 "Rejon XI": [
 {
-"data": "2026-11-18",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-25",
 "frakcja": "Bioodpady"
 },
@@ -425,10 +345,6 @@
 }
 ],
 "Rejon XII": [
-{
-"data": "2026-11-18",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-25",
 "frakcja": "Bioodpady"
