@@ -77,6 +77,7 @@ nav.bar button.on{color:var(--gold)}
 .dot{width:14px;height:14px;border-radius:50%;flex:none}
 details summary{cursor:pointer}
 .photo{max-width:100%;border-radius:10px;margin-top:6px}
+.dzg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.dzg figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}.dzg img,.dzg video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#000}.dzg figcaption{font-size:12.5px;padding:6px 8px;color:var(--mut,#667)}
 .empty{text-align:center;color:var(--mut);padding:20px}
 
 /* ===== UX/UI 2026-11 ===== */
@@ -408,7 +409,8 @@ html.big .cats{grid-template-columns:repeat(2,1fr)}html.big canvas{max-width:100
   <h2>Dziki w mieście</h2>
   <div class="card" style="background:var(--warnbg);box-shadow:none"><b>Dziki blisko ludzi, ranne albo agresywne?</b><p class="mut" style="color:var(--ink);margin:4px 0 10px">Nie podchodź. Zadzwoń od razu.</p><div class="flex-wrap" id="dz-tel"></div></div>
   <div id="dz-wspolna" hidden><div class="sec"><h3>Mapa obserwacji</h3><a href="https://www.zyciepw.pl/dziki/kobylka/" target="_blank" rel="noopener">Duża mapa</a></div>
-  <div class="card" style="padding:10px"><b id="dz-sum" style="display:block;margin:4px 6px 8px"></b><canvas id="dz-map" style="width:100%;height:300px;border-radius:12px;display:block"></canvas><p class="mut" style="margin:8px 6px 2px">Zgłoszenia mieszkańców z ostatnich 14 dni, niezweryfikowane. Im jaśniejszy punkt, tym starsza obserwacja.</p></div></div>
+  <div class="card" style="padding:10px"><b id="dz-sum" style="display:block;margin:4px 6px 8px"></b><canvas id="dz-map" style="width:100%;height:300px;border-radius:12px;display:block"></canvas><p class="mut" style="margin:8px 6px 2px">Zgłoszenia mieszkańców z ostatnich 14 dni, niezweryfikowane. Im jaśniejszy punkt, tym starsza obserwacja.</p></div>
+  <div id="dz-media" hidden><div class="sec"><h3>Zdjęcia i filmy mieszkańców</h3></div><div class="dzg" id="dz-galeria"></div><p class="mut" style="margin:8px 2px 0">Pokazujemy je po sprawdzeniu przez moderatora. Twarze i tablice rejestracyjne zamazujemy albo nie publikujemy takiego materiału. Bez danych osób zgłaszających.</p></div></div>
   <h3>Zgłoś obserwację</h3>
   <div class="card">
    <div class="dzk"><i>1</i><b>Gdzie są dziki?</b></div>
@@ -772,7 +774,10 @@ function dzMapa(){const cv=$('#dz-map');if(!cv||!MAPA||!DZ)return;const dpr=wind
  MAPA._r.forEach((cl,i)=>{c.lineWidth=W[i];c.globalAlpha=i>=4?.45:.9;c.beginPath();cl.forEach(p=>{c.moveTo(X(p[0]),Y(p[1]));for(let k=2;k<p.length;k+=2)c.lineTo(X(p[k]),Y(p[k+1]));});c.stroke();});
  const now=Date.now();DZ.slice().reverse().forEach(o=>{const [E,N]=fwd(o.lon,o.lat),wiek=(now-new Date(o.kiedy))/864e5;c.globalAlpha=Math.max(.25,1-wiek/14*.75);c.fillStyle='#C2410C';c.strokeStyle='#fff';c.lineWidth=1.5;c.beginPath();c.arc(X(E),Y(N),wiek<1?8:6,0,7);c.fill();c.stroke();});c.globalAlpha=1;}
 async function dzWczytaj(){try{const r=await fetch(DZ_API+'&gmina=kobylka',{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();DZ=d.obserwacje||[];$('#dz-wspolna').hidden=false;const t=DZ.filter(o=>Date.now()-new Date(o.kiedy)<7*864e5).length;
-  $('#dz-sum').textContent=DZ.length?`${t} ${pl(t,'obserwacja','obserwacje','obserwacji')} w ostatnich 7 dniach, ${DZ.length} w ostatnich 14`:'W ostatnich 14 dniach nikt nie zgłosił dzików';dzMapa();dzAlert();}catch(e){DZ=null;}}
+  $('#dz-sum').textContent=DZ.length?`${t} ${pl(t,'obserwacja','obserwacje','obserwacji')} w ostatnich 7 dniach, ${DZ.length} w ostatnich 14`:'W ostatnich 14 dniach nikt nie zgłosił dzików';dzMapa();dzAlert();dzGaleria();}catch(e){DZ=null;}}
+function dzGaleria(){const box=$('#dz-media');if(!box||!DZ)return;const M=DZ.filter(o=>o.plik&&(o.media==='foto'||o.media==='film')).slice(0,12);box.hidden=!M.length;
+ $('#dz-galeria').innerHTML=M.map(o=>{const u=DZ_API+'&plik='+encodeURIComponent(o.plik),k=new Date(o.kiedy).toLocaleString('pl-PL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  return `<figure>${o.media==='film'?`<video src="${esc(u)}" controls playsinline preload="metadata"></video>`:`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" loading="lazy" alt="Dziki: ${esc(o.ile)}, ${esc(o.co)}"></a>`}<figcaption>${esc(k)} · ${esc(o.ile)}, ${esc(o.co)}</figcaption></figure>`;}).join('');}
 function dzAlert(){const el=$('#dz-alert');if(!el)return;el.hidden=true;const u=store('ulica');if(!DZ||!u||!UGEO||!UGEO.ulice[u])return;const P=UGEO.ulice[u],O=UGEO.origin10m;
  const blisko=DZ.filter(o=>Date.now()-new Date(o.kiedy)<864e5).filter(o=>{const [E,N]=fwd(o.lon,o.lat),x=E/10-O[0],y=N/10-O[1];return P.some(p=>(p[0]-x)**2+(p[1]-y)**2<60*60);});
  if(blisko.length){el.hidden=false;el.innerHTML=`<span class="ico c3" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;font-weight:800">!</span><span class="grow"><b>Dziki w pobliżu ulicy ${esc(u)}</b><small>${blisko.length} ${pl(blisko.length,'obserwacja','obserwacje','obserwacji')} w ostatnich 24 godzinach. Zobacz mapę</small></span>`;}}
