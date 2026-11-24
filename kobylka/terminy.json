@@ -4,10 +4,6 @@
 "rejony": {
 "Rejon I": [
 {
-"data": "2026-11-23",
-"frakcja": "Bioodpady"
-},
-{
 "data": "2026-11-25",
 "frakcja": "Zmieszane (niesegregowane)"
 },
@@ -33,10 +29,6 @@
 }
 ],
 "Rejon II": [
-{
-"data": "2026-11-23",
-"frakcja": "Bioodpady"
-},
 {
 "data": "2026-11-25",
 "frakcja": "Zmieszane (niesegregowane)"
@@ -124,10 +116,6 @@
 ],
 "Rejon V": [
 {
-"data": "2026-11-23",
-"frakcja": "Zmieszane (niesegregowane)"
-},
-{
 "data": "2026-11-25",
 "frakcja": "Bioodpady"
 },
@@ -153,10 +141,6 @@
 }
 ],
 "Rejon VI": [
-{
-"data": "2026-11-23",
-"frakcja": "Zmieszane (niesegregowane)"
-},
 {
 "data": "2026-11-25",
 "frakcja": "Bioodpady"
@@ -243,10 +227,6 @@
 }
 ],
 "Rejon IX": [
-{
-"data": "2026-11-23",
-"frakcja": "Segregowane: tworzywa i metale, papier, szkło"
-},
 {
 "data": "2026-11-27",
 "frakcja": "Bioodpady"
