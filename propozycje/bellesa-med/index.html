@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Bellesa-Med: dentysta w Kobyłce i w Markach (projekt strony)</title>
+<meta name="description" content="Projekt nowej strony Bellesa-Med: stomatologia w Kobyłce i w Markach. Jedna ścieżka umawiania wizyty dla obu placówek.">
+<link rel="icon" href="https://www.bellesa-med.pl/wp-content/uploads/2026/08/cropped-Favicon-Bellesa-Med-270x270.png">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --ink:#25252A; --ink-2:#3A3A41; --stone:#6B6B74; --line:#E6DEDF;
+  --rose:#A4465B; --rose-d:#8A3549; --petal:#E7C5CB; --blush:#F8EFF0; --paper:#FCFAF9; --white:#fff;
+  --ok:#1D7550; --ok-bg:#E3F3EC; --warn:#8A5A12;
+  --serif:'Gelasio',Georgia,'Times New Roman',serif; --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --w:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;font-family:var(--sans);font-size:17px;line-height:1.55;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(2rem,4.2vw,3.1rem)}
+h3{font-size:1.4rem;line-height:1.2}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 24px}
+.lead{font-size:1.15rem;color:var(--ink-2);max-width:56ch}
+.muted{color:var(--stone)}
+.small{font-size:.875rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* pasek pokazowy */
+.demo{background:var(--rose-d);color:#fff;font-size:.875rem}
+.demo .wrap{display:flex;gap:8px 20px;justify-content:space-between;align-items:center;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+.demo a{font-weight:600;text-underline-offset:3px}
+
+/* nagłówek */
+.top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:22px;height:72px}
+.logo img{height:46px;width:auto}
+.nav{display:flex;gap:22px;margin-left:auto;font-size:.95rem}
+.nav a{text-decoration:none;padding:6px 0;border-bottom:2px solid transparent}
+.nav a:hover{border-color:var(--petal)}
+.tel{font-weight:600;text-decoration:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:1.5px solid var(--rose);background:var(--rose);color:#fff;font-weight:600;text-decoration:none;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--rose-d);border-color:var(--rose-d)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.light{background:#fff;color:var(--ink);border-color:#fff}
+.btn.light:hover{background:var(--blush);border-color:var(--blush)}
+.btn.line-light{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
+.btn.line-light:hover{background:rgba(255,255,255,.12)}
+
+/* przełącznik placówek */
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25)}
+.seg button{border:0;background:transparent;color:#fff;min-height:40px;padding:0 20px;border-radius:999px;cursor:pointer;font-weight:600}
+.seg button[aria-pressed=true]{background:#fff;color:var(--ink)}
+.seg.on-light{background:var(--blush);border-color:var(--line)}
+.seg.on-light button{color:var(--ink)}
+.seg.on-light button[aria-pressed=true]{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 78% 30%,rgba(231,197,203,.16),transparent 70%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:end;padding-top:64px}
+.hero-copy{padding-bottom:72px}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);margin:26px 0 22px}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--petal)}
+.hero .lead{color:#E4E0E2}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.status{display:flex;gap:10px 26px;flex-wrap:wrap;margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.95rem;color:#E4E0E2}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#59D39B;margin-right:8px;vertical-align:1px}
+.dot.off{background:#E3A6B0}
+.hero-vis{position:relative;align-self:end}
+.arch{border-radius:320px 320px 0 0;overflow:hidden;aspect-ratio:4/4.7;background:#3a3a41;margin-left:70px}
+.arch img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+
+/* karta terminów */
+.slots{position:absolute;left:0;bottom:36px;width:min(330px,82%);background:#fff;color:var(--ink);border-radius:18px;padding:18px 18px 16px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.slots h2{font-family:var(--sans);font-size:1rem;font-weight:700;letter-spacing:0;line-height:1.3}
+.slots .where{color:var(--stone);font-size:.875rem;margin-top:2px}
+.days{display:flex;gap:6px;margin:14px 0 12px}
+.days button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 0 6px;cursor:pointer;font-size:.8rem;line-height:1.2;color:var(--stone)}
+.days button b{display:block;font-size:1.05rem;color:var(--ink)}
+.days button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#D9D5D7}
+.days button[aria-pressed=true] b{color:#fff}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.times button{border:1px solid var(--petal);background:var(--blush);border-radius:10px;min-height:42px;cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums}
+.times button:hover{background:var(--rose);border-color:var(--rose);color:#fff}
+.slots .note{margin-top:12px;font-size:.78rem;color:var(--stone);line-height:1.4}
+
+section{padding:96px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.head p{margin-top:14px}
+
+/* z czym przychodzisz */
+.needs{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:start}
+.need-list{display:grid;gap:8px}
+.need-list button{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:16px 20px;cursor:pointer;font-family:var(--serif);font-size:1.3rem}
+.need-list button span{font-family:var(--sans);font-size:.85rem;color:var(--stone)}
+.need-list button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.need-list button[aria-selected=true] span{color:var(--petal)}
+.need-panel{background:var(--blush);border-radius:22px;padding:34px;min-height:100%}
+.need-panel h3{font-size:1.9rem}
+.need-panel p.txt{margin-top:12px;max-width:54ch}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;margin:26px 0;padding:22px 0;border-top:1px solid var(--petal);border-bottom:1px solid var(--petal)}
+.facts dt{font-size:.85rem;color:var(--stone);margin-bottom:6px}
+.facts dd{margin:0}
+.facts ul{list-style:none;margin:0;padding:0}
+.facts li{display:flex;justify-content:space-between;gap:14px;padding:3px 0}
+.facts li b{white-space:nowrap;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600;background:#fff;border:1px solid var(--petal)}
+.tag.nfz{background:var(--ok-bg);border-color:#BFE3D2;color:var(--ok)}
+
+/* placówki */
+.places{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.place-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.place{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+.place.current{border-color:var(--rose);box-shadow:0 0 0 3px var(--blush)}
+.place .ph{aspect-ratio:16/10;overflow:hidden;background:var(--blush)}
+.place .ph img{width:100%;height:100%;object-fit:cover}
+.place .body{padding:28px;display:flex;flex-direction:column;gap:16px;flex:1}
+.place h3{font-size:2rem}
+.rows{display:grid;gap:10px;margin:4px 0}
+.rows div{display:grid;grid-template-columns:104px 1fr;gap:12px;padding-top:10px;border-top:1px solid var(--line)}
+.rows dt,.rows span.k{color:var(--stone);font-size:.9rem}
+.place .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.place .acts .btn{min-height:44px;padding:0 18px;font-size:.95rem}
+
+/* bez stresu */
+.calm{background:var(--ink);color:#fff}
+.calm-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:start}
+.calm .lead{color:#E4E0E2}
+.calm ul{list-style:none;margin:0;padding:0;border-top:1px solid rgba(255,255,255,.2)}
+.calm li{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.2);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px}
+.calm li b{font-family:var(--serif);font-weight:500;font-size:1.3rem;line-height:1.2}
+.calm li span{color:#D9D5D7}
+
+/* zespół */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.doc .pic{aspect-ratio:4/5;border-radius:160px 160px 14px 14px;overflow:hidden;background:var(--blush)}
+.doc .pic img{width:100%;height:100%;object-fit:cover;object-position:50% 15%}
+.doc h3{margin-top:16px;font-size:1.3rem}
+.doc p{margin-top:4px;color:var(--ink-2);font-size:.95rem}
+.doc .tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.doc[hidden],.more li[hidden]{display:none}
+.more{margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+.more ul{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px}
+.more li b{display:block}
+.more li span{color:var(--stone);font-size:.92rem}
+
+/* cennik */
+.prices{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.price-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.search{width:100%;min-height:54px;border:1.5px solid var(--ink);border-radius:999px;padding:0 22px;background:#fff;margin-top:24px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chips button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.chips button:hover{border-color:var(--rose)}
+.plist{list-style:none;margin:0;padding:0}
+.plist li{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:14px 0;border-bottom:1px solid var(--line)}
+.plist li small{grid-column:1/-1;color:var(--stone);font-size:.82rem;order:-1}
+.plist li b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.empty{padding:22px;background:var(--blush);border-radius:14px}
+
+/* opinie */
+.rate-grid{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:24px;align-items:stretch}
+.rate{border:1px solid var(--line);border-radius:22px;padding:30px;background:#fff}
+.rate .n{font-family:var(--serif);font-size:4.4rem;line-height:1}
+.rate .n small{font-size:1.4rem;color:var(--stone)}
+.rate a{font-weight:600;text-underline-offset:3px}
+.rate.note{background:var(--blush);border-color:var(--petal)}
+
+/* pytania */
+.faq{max-width:820px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;font-family:var(--serif);font-size:1.3rem;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:16px;font-family:var(--sans);font-size:1.6rem;color:var(--rose)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 22px;max-width:66ch;color:var(--ink-2)}
+
+/* umów */
+.book{background:var(--blush)}
+.book-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:48px;align-items:start}
+.form{background:#fff;border-radius:22px;padding:34px;border:1px solid var(--petal)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label,.field legend{font-weight:600;font-size:.95rem}
+.field input[type=text],.field input[type=tel],.field select{min-height:50px;border:1.5px solid #CFC6C8;border-radius:12px;padding:0 14px;background:#fff;width:100%}
+.field input:focus,.field select:focus{border-color:var(--rose)}
+.err{color:#A12626;font-size:.875rem;min-height:1.2em}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;margin:6px 0 10px}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--rose);flex:none}
+.picked{display:none;background:var(--ok-bg);color:var(--ok);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-weight:600}
+.picked.on{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.picked button{border:0;background:transparent;text-decoration:underline;cursor:pointer;color:inherit}
+.done{display:none}
+.done.on{display:block}
+.done h3{font-size:1.9rem;margin-bottom:12px}
+.done .demo-note{margin-top:18px;padding:14px 16px;border-radius:12px;background:var(--blush);font-size:.92rem}
+.ways{display:grid;gap:14px;margin-top:28px}
+.ways a{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#fff;border:1px solid var(--petal);border-radius:14px;padding:16px 20px;text-decoration:none}
+.ways a b{font-size:1.2rem;font-variant-numeric:tabular-nums}
+
+/* stopka */
+footer{background:var(--ink);color:#D9D5D7;padding:64px 0 110px;font-size:.95rem}
+.foot{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:32px}
+footer h2{font-family:var(--sans);font-size:.95rem;font-weight:700;color:#fff;letter-spacing:0;margin-bottom:12px;line-height:1.4}
+footer a{text-underline-offset:3px}
+footer .mark{width:74px;height:74px;border-radius:14px;margin-bottom:14px}
+.fine{margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.85rem;color:#B9B4B7;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* pasek na telefonie */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);border-top:1px solid var(--line)}
+.bar .btn{flex:1;min-height:50px;padding:0 10px}
+
+/* zgody */
+.consent{position:fixed;left:18px;bottom:18px;z-index:60;width:min(400px,calc(100% - 36px));background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 18px 50px rgba(37,37,42,.22);font-size:.92rem}
+.consent[hidden]{display:none}
+.consent b{display:block;margin-bottom:4px;font-size:1rem}
+.consent .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.consent .btn{min-height:46px;padding:0 10px;background:#fff;color:var(--ink);border-color:var(--ink)}
+.consent .btn:hover{background:var(--ink);color:#fff}
+
+@media (max-width:980px){
+  section{padding:68px 0}
+  .nav{display:none}.top .tel{margin-left:auto}
+  .hero .wrap{grid-template-columns:1fr;gap:36px;padding-top:44px}
+  .hero-copy{padding-bottom:0}
+  .arch{margin-left:0;aspect-ratio:4/4.2}
+  .slots{position:relative;left:auto;bottom:auto;width:auto;margin:-90px 14px 0;box-shadow:0 18px 44px rgba(0,0,0,.35)}
+  .hero-vis{padding-bottom:36px}
+  .needs,.place-grid,.calm-grid,.price-grid,.book-grid{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr 1fr}
+  .more ul{grid-template-columns:1fr 1fr}
+  .rate-grid{grid-template-columns:1fr 1fr}.rate.note{grid-column:1/-1}
+  .foot{grid-template-columns:1fr 1fr}
+  .bar{display:flex}
+  .consent{bottom:84px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .top .wrap{height:62px;gap:12px}.logo img{height:36px}.top .btn{display:none}
+  .facts,.f2,.calm li,.more ul,.rate-grid,.foot{grid-template-columns:1fr}
+  .need-panel,.form{padding:24px}
+  .rows div{grid-template-columns:88px 1fr}
+  .seg button{padding:0 16px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">
+  <span>Projekt pokazowy przygotowany dla Bellesa-Med. Zgłoszenia z tej strony nie są nigdzie wysyłane.</span>
+  <a href="propozycja.html">Co ten projekt zmienia i ile kosztuje</a>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#start" aria-label="Bellesa-Med, strona główna"><img src="https://www.bellesa-med.pl/wp-content/uploads/2021/04/logo_pl_long_big.png" alt="Bellesa Med. Stomatologia, Strefa Urody" width="566" height="170" referrerpolicy="no-referrer"></a>
+  <nav class="nav" aria-label="Główna">
+    <a href="#potrzeba">Leczenie</a><a href="#placowki">Placówki</a><a href="#zespol">Zespół</a><a href="#cennik">Cennik</a><a href="#pytania">Pytania</a>
+  </nav>
+  <a class="tel" href="tel:+48221189201">22 118 92 01</a>
+  <a class="btn" href="#umow">Umów wizytę</a>
+</div></header>
+
+<main id="start">
+<div class="hero"><div class="wrap">
+  <div class="hero-copy">
+    <div class="seg" role="group" aria-label="Wybierz placówkę">
+      <button type="button" data-loc="kobylka" aria-pressed="true">Kobyłka</button>
+      <button type="button" data-loc="marki" aria-pressed="false">Marki</button>
+    </div>
+    <h1>Dentysta dla całej rodziny, <em>sześć dni w tygodniu</em></h1>
+    <p class="lead" id="heroLead"></p>
+    <div class="cta">
+      <a class="btn light" href="#umow">Umów wizytę</a>
+      <a class="btn line-light" href="tel:+48221189201">Zadzwoń: 22 118 92 01</a>
+    </div>
+    <div class="status" aria-live="polite">
+      <span id="openNow"></span>
+      <span id="heroAddr"></span>
+      <span id="heroPay"></span>
+    </div>
+  </div>
+  <div class="hero-vis">
+    <div class="arch"><img src="https://www.bellesa-med.pl/wp-content/uploads/2026/06/Stomatologia-Bellesa-Med.jpg" alt="Uśmiechnięta pracowniczka Bellesa-Med przy ścianie z logo placówki" width="1440" height="1800" referrerpolicy="no-referrer" fetchpriority="high"></div>
+    <div class="slots" aria-labelledby="slotsH">
+      <h2 id="slotsH">Najbliższe wolne terminy</h2>
+      <div class="where" id="slotsWhere"></div>
+      <div class="days" id="days" role="group" aria-label="Dzień"></div>
+      <div class="times" id="times"></div>
+      <p class="note">Godziny przykładowe. W działającej stronie pochodzą z kalendarza placówki, a zwolniony termin wraca tu od razu.</p>
+    </div>
+  </div>
+</div></div>
+
+<section id="potrzeba"><div class="wrap">
+  <div class="head"><div>
+    <h2>Z czym przychodzisz?</h2>
+    <p class="lead">Wybierz sytuację. Zobaczysz, kto się nią zajmuje, w której placówce i ile kosztuje pierwszy krok.</p>
+  </div></div>
+  <div class="needs">
+    <div class="need-list" role="tablist" aria-label="Powód wizyty" id="needList"></div>
+    <div class="need-panel" role="tabpanel" id="needPanel" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<section class="places" id="placowki"><div class="wrap">
+  <div class="head"><div>
+    <h2>Dwie placówki, jeden numer i te same godziny</h2>
+    <p class="lead">Leczenie można prowadzić w obu miejscach. Różni je sposób płatności: w Kobyłce część świadczeń jest na NFZ, w Markach przyjmujemy prywatnie.</p>
+  </div></div>
+  <div class="place-grid" id="placeGrid"></div>
+</div></section>
+
+<section class="calm"><div class="wrap calm-grid">
+  <div>
+    <h2>Jeśli wizyta u dentysty to stres</h2>
+    <p class="lead" style="margin-top:18px">Powiedz o tym przy umawianiu. Zaplanujemy dłuższą wizytę i dobierzemy znieczulenie do zabiegu.</p>
+    <div class="cta"><a class="btn light" href="#umow" data-need="strach">Umów spokojną pierwszą wizytę</a></div>
+  </div>
+  <ul>
+    <li><b>Znieczulenie komputerowe The Wand</b><span>Podawane powoli i precyzyjnie, bez tradycyjnej strzykawki. Stosujemy je także u dzieci.</span></li>
+    <li><b>Sedacja wziewna</b><span>Tak zwany gaz rozweselający: pacjent pozostaje przytomny i spokojniejszy.</span></li>
+    <li><b>Znieczulenie ogólne</b><span>Przy rozległym leczeniu, z udziałem anestezjologa.</span></li>
+    <li><b>Diagnostyka na miejscu</b><span>Tomograf CBCT, pantomograf i RTG cyfrowe. Plan leczenia z wyceną dostajesz przed jego rozpoczęciem.</span></li>
+    <li><b>Dzieci</b><span>Pierwsza wizyta to poznanie gabinetu, bez leczenia. W Kobyłce czeka kącik zabaw.</span></li>
+  </ul>
+</div></section>
+
+<section id="zespol"><div class="wrap">
+  <div class="head">
+    <div><h2>Zespół</h2><p class="lead" id="teamLead"></p></div>
+    <div class="seg on-light" role="group" aria-label="Pokaż zespół placówki">
+      <button type="button" data-loc="kobylka" aria-pressed="true">Kobyłka</button>
+      <button type="button" data-loc="marki" aria-pressed="false">Marki</button>
+    </div>
+  </div>
+  <div class="team" id="team"></div>
+  <div class="more"><h3>Przyjmują także</h3><ul id="teamMore"></ul></div>
+</div></section>
+
+<section class="prices" id="cennik"><div class="wrap price-grid">
+  <div>
+    <h2>Cennik, w którym da się coś znaleźć</h2>
+    <p class="lead" style="margin-top:16px">Wpisz zabieg albo problem. Ostateczną wycenę podajemy po badaniu, przed rozpoczęciem leczenia.</p>
+    <label class="sr" for="q">Szukaj w cenniku</label>
+    <input class="search" id="q" type="search" placeholder="np. skaling, kanałowe, aparat" autocomplete="off">
+    <div class="chips" id="chips"></div>
+    <p class="small muted" style="margin-top:22px">Wybrane pozycje z cennika placówki z 20.11.2026. Pełny cennik ma 293 pozycje w 15 kategoriach i trafi tu w całości.</p>
+  </div>
+  <div>
+    <ul class="plist" id="plist"></ul>
+    <div class="empty" id="pempty" hidden>Nie ma takiej pozycji w tym wyborze. Zadzwoń pod <a href="tel:+48221189201">22 118 92 01</a>, recepcja poda cenę.</div>
+  </div>
+</div></section>
+
+<section id="opinie"><div class="wrap">
+  <div class="head"><div><h2>Oceny pacjentów w Google</h2></div></div>
+  <div class="rate-grid">
+    <div class="rate"><div class="n">4,5<small> / 5</small></div><p style="margin:10px 0 14px"><b>Kobyłka</b><br><span class="muted">221 opinii, stan na 23.11.2026</span></p><a href="https://www.google.com/maps/search/?api=1&query=Bellesa-Med+Napoleona+20+Koby%C5%82ka" target="_blank" rel="noopener">Czytaj opinie w Google</a></div>
+    <div class="rate"><div class="n">5,0<small> / 5</small></div><p style="margin:10px 0 14px"><b>Marki</b><br><span class="muted">23 opinie, stan na 23.11.2026</span></p><a href="https://www.google.com/maps/search/?api=1&query=Bellesa-Med+Weso%C5%82a+95C+Marki" target="_blank" rel="noopener">Czytaj opinie w Google</a></div>
+    <div class="rate note"><h3>Byłeś u nas?</h3><p style="margin:10px 0 16px">Opinia zajmuje minutę i pomaga innym pacjentom wybrać gabinet. Po wizycie wyślemy SMS z linkiem.</p><p class="small muted">Pokazujemy oceny ze źródła, bez wybranych cytatów.</p></div>
+  </div>
+</div></section>
+
+<section id="pytania" style="padding-top:0"><div class="wrap">
+  <div class="head"><div><h2>Częste pytania</h2></div></div>
+  <div class="faq" id="faq"></div>
+</div></section>
+
+<section class="book" id="umow"><div class="wrap book-grid">
+  <div>
+    <h2>Umów wizytę</h2>
+    <p class="lead" style="margin-top:16px">Jeden formularz dla Kobyłki i Marek. Recepcja oddzwania z potwierdzeniem terminu.</p>
+    <p style="margin-top:14px" id="callback"></p>
+    <div class="ways">
+      <a href="tel:+48221189201"><span>Telefon do rejestracji<br><span class="small muted">obie placówki</span></span><b>22 118 92 01</b></a>
+      <a href="sms:+48572034488"><span>SMS<br><span class="small muted">dla tych, którzy wolą pisać</span></span><b>572 034 488</b></a>
+      <a href="https://estomedregistration.azurewebsites.net/1451904075/Scheduler/Show?departmentName=Bellesa-Med+Marki" target="_blank" rel="noopener"><span>Rezerwacja online<br><span class="small muted">placówka w Markach</span></span><b>Otwórz kalendarz</b></a>
+    </div>
+  </div>
+  <div class="form">
+    <form id="form" novalidate>
+      <div class="picked" id="picked"><span id="pickedTxt"></span><button type="button" id="pickedX">Usuń</button></div>
+      <div class="f2">
+        <div class="field"><label for="fLoc">Placówka</label><select id="fLoc"><option value="kobylka">Kobyłka, ul. Napoleona 20</option><option value="marki">Marki, ul. Wesoła 95C</option></select></div>
+        <div class="field"><label for="fNeed">Powód wizyty</label><select id="fNeed"></select></div>
+      </div>
+      <div class="f2">
+        <div class="field"><label for="fWho">Dla kogo</label><select id="fWho"><option>Dorosły</option><option>Dziecko do 18 lat</option></select></div>
+        <div class="field"><label for="fWhen">Pora dnia</label><select id="fWhen"><option>Dowolna</option><option>Rano, 9:00–12:00</option><option>Po południu, 12:00–16:00</option><option>Wieczorem, 16:00–20:00</option><option>Sobota</option></select></div>
+      </div>
+      <div class="f2">
+        <div class="field"><label for="fName">Imię</label><input id="fName" type="text" autocomplete="given-name" aria-describedby="eName"><span class="err" id="eName"></span></div>
+        <div class="field"><label for="fTel">Numer telefonu</label><input id="fTel" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="eTel"><span class="err" id="eTel"></span></div>
+      </div>
+      <label class="check"><input type="checkbox" id="fEarly"><span>Dajcie znać, jeśli zwolni się wcześniejszy termin.</span></label>
+      <label class="check"><input type="checkbox" id="fOk" aria-describedby="eOk"><span>Zgadzam się na kontakt telefoniczny w sprawie wizyty. Administratorem danych jest Bellesa-Med.</span></label>
+      <span class="err" id="eOk"></span>
+      <button class="btn" type="submit" style="width:100%;margin-top:6px">Wyślij prośbę o termin</button>
+      <p class="small muted" style="margin-top:12px">Nie pytamy tu o stan zdrowia. O szczegółach porozmawiasz z recepcją i lekarzem.</p>
+    </form>
+    <div class="done" id="done" tabindex="-1">
+      <h3>Prośba o termin przyjęta</h3>
+      <p id="doneTxt"></p>
+      <div class="demo-note"><b>To wersja pokazowa:</b> zgłoszenie nie zostało wysłane ani zapisane. W działającej stronie recepcja dostaje je e-mailem i SMS-em, a pacjent potwierdzenie i przypomnienie dzień przed wizytą, z linkiem do zmiany terminu.</div>
+      <button class="btn ghost" type="button" id="again" style="margin-top:18px">Wypełnij jeszcze raz</button>
+    </div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div><img class="mark" src="https://www.bellesa-med.pl/wp-content/uploads/2026/08/cropped-Favicon-Bellesa-Med-270x270.png" alt="" width="74" height="74" referrerpolicy="no-referrer"><p>Bellesa-Med<br>Stomatologia. Strefa Urody.<br>W Kobyłce od 2016 roku.</p></div>
+    <div><h2>Kobyłka</h2><p>ul. Napoleona 20<br>05-230 Kobyłka<br><span class="fHours"></span><br>NFZ i prywatnie</p></div>
+    <div><h2>Marki</h2><p>ul. Wesoła 95C<br>05-270 Marki<br><span class="fHours"></span><br>prywatnie</p></div>
+    <div><h2>Rejestracja</h2><p><a href="tel:+48221189201">22 118 92 01</a><br>SMS: <a href="sms:+48572034488">572 034 488</a><br><a href="mailto:klinika@bellesa-med.pl">klinika@bellesa-med.pl</a></p></div>
+  </div>
+  <div class="fine"><span>Projekt pokazowy z 28.11.2026. Zdjęcia i logo należą do Bellesa-Med i są wyświetlane z serwera bellesa-med.pl.</span><a href="propozycja.html">Propozycja dla Bellesa-Med</a></div>
+</div></footer>
+
+<div class="bar"><a class="btn ghost" href="tel:+48221189201">Zadzwoń</a><a class="btn" href="#umow">Umów wizytę</a></div>
+
+<div class="consent" id="consent" hidden role="dialog" aria-label="Pliki cookies">
+  <b>Statystyki tylko za Twoją zgodą</b>
+  Strona działa bez plików cookies. Jeśli się zgodzisz, policzymy anonimowo odwiedziny, żeby ją poprawiać.
+  <div class="two"><button class="btn" type="button" data-c="no">Odmawiam</button><button class="btn" type="button" data-c="yes">Zgadzam się</button></div>
+</div>
+
+<script type="application/ld+json">
+[{"@context":"https://schema.org","@type":"Dentist","name":"Bellesa-Med Kobyłka","telephone":"+48221189201","email":"klinika@bellesa-med.pl","address":{"@type":"PostalAddress","streetAddress":"ul. Napoleona 20","postalCode":"05-230","addressLocality":"Kobyłka","addressCountry":"PL"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"20:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"15:00"}]},
+{"@context":"https://schema.org","@type":"Dentist","name":"Bellesa-Med Marki","telephone":"+48221189201","email":"klinika@bellesa-med.pl","address":{"@type":"PostalAddress","streetAddress":"ul. Wesoła 95C","postalCode":"05-270","addressLocality":"Marki","addressCountry":"PL"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"20:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"15:00"}]}]
+</script>
+
+<script>
+(function(){
+var IMG='https://www.bellesa-med.pl/wp-content/uploads/';
+/* Jedno źródło godzin dla całej strony: nagłówek, placówki, stopka, pytania, status „otwarte teraz”. */
+var HOURS={1:[9,20],2:[9,20],3:[9,20],4:[9,20],5:[9,20],6:[9,15]};
+var HOURS_TXT='pon.–pt. 9:00–20:00, sob. 9:00–15:00';
+var LOC={
+  kobylka:{name:'Kobyłka',inName:'w Kobyłce',addr:'ul. Napoleona 20, 05-230 Kobyłka',pay:'NFZ i prywatnie',
+    lead:'Stomatologia dla dzieci i dorosłych przy ul. Napoleona 20 w Kobyłce. Dzieci i młodzież do 18 lat leczymy także na NFZ.',
+    img:'2026/06/Dentysta-Kobylka-Bellesa-Med-Zespol.jpg',alt:'Zespół Bellesa-Med w placówce w Kobyłce',
+    nfz:'Na NFZ: dzieci i młodzież do 18 lat, chirurgia stomatologiczna i periodontologia. Pozostałe zabiegi prywatnie.',
+    way:'Bezpłatny parking przy placówce. Blisko stacji kolejowej Kobyłka. Dostępny schodołaz.',
+    book:'Telefon, SMS albo formularz. Recepcja oddzwania z terminem.',
+    extra:'Także medycyna estetyczna (konsultacje).',
+    route:'https://www.google.com/maps/dir/?api=1&destination=Bellesa-Med+Napoleona+20+Koby%C5%82ka'},
+  marki:{name:'Marki',inName:'w Markach',addr:'ul. Wesoła 95C, 05-270 Marki',pay:'prywatnie',
+    lead:'Gabinet przy ul. Wesołej 95C w Markach: od przeglądu po ortodoncję, chirurgię i leczenie dzieci. Termin zarezerwujesz też online.',
+    img:'2026/07/Bellesa-Med-Marki-Wizyta.webp',alt:'Lekarka Bellesa-Med bada pacjentkę w gabinecie w Markach',
+    nfz:'Wizyty wyłącznie prywatne. Świadczenia na NFZ realizuje placówka w Kobyłce.',
+    way:'Miejsca parkingowe przy placówce, dojazd od al. Piłsudskiego. Gabinety na parterze, wejście bez barier. Autobusy ZTM, druga strefa.',
+    book:'Rezerwacja online, telefon, SMS albo formularz.',
+    extra:'RTG cyfrowe i tomografia CBCT na miejscu.',
+    route:'https://www.google.com/maps/dir/?api=1&destination=Bellesa-Med+Weso%C5%82a+95C+Marki'}
+};
+var DOCS=[
+  {n:'lek. dent. Anna Bielecka',s:'Stomatologia dziecięca i zachowawcza, sedacja wziewna',l:['kobylka','marki'],p:'2026/07/Stomatolog-Anna-Bielecka.webp'},
+  {n:'lek. dent. Bogumił Baczewski',s:'Leczenie kanałowe pod mikroskopem, leczenie zachowawcze',l:['kobylka'],p:'2026/11/Stomatolog-Bogumil-Baczewski-Kobylka.webp'},
+  {n:'lek. dent. Zofia Chudzik-Żach',s:'Leczenie kanałowe i protetyka: korony, mosty, protezy',l:['kobylka'],p:'2026/11/Stomatolog-Zofia-Chudzik-Zach-Kobylka.webp'},
+  {n:'lek. dent. Magdalena Duda',s:'Chirurgia stomatologiczna, implanty, protetyka',l:['marki'],p:'2026/07/chirurg-stomatolog-Magdalena-Duda.webp'},
+  {n:'lek. dent. Alicja Zygmunt',s:'Stomatologia dziecięca i zachowawcza',l:['kobylka']},
+  {n:'lek. dent. Anna Melnyk',s:'Leczenie kanałowe pod mikroskopem',l:['kobylka']},
+  {n:'lek. dent. Vitalii Kostiushko',s:'Leczenie zachowawcze i odbudowy estetyczne',l:['kobylka']},
+  {n:'lek. dent. Alicja Borczyńska',s:'Stomatologia zachowawcza dzieci i dorosłych',l:['marki']},
+  {n:'Daria Leszczuk',s:'Higienistka stomatologiczna',l:['kobylka']},
+  {n:'Agnieszka Groszek',s:'Higienistka stomatologiczna',l:['kobylka']}
+];
+var NEEDS=[
+  {id:'bol',t:'Boli mnie ząb',k:'leczenie zachowawcze i kanałowe',h:'Ból zęba',
+   x:'Zadzwoń, przy bólu najszybciej znajdziemy termin przez telefon. Lekarz zbada ząb, zrobi zdjęcie RTG i powie, czy wystarczy wypełnienie, czy potrzebne jest leczenie kanałowe.',
+   pr:[['Wizyta pierwszorazowa','100 zł'],['Wypełnienie kompozytowe, 1 powierzchnia','300 zł'],['Leczenie kanałowe, 1 kanał','700 zł']],
+   who:{kobylka:'lek. dent. Bogumił Baczewski, lek. dent. Anna Melnyk',marki:'lek. dent. Alicja Borczyńska'},call:true},
+  {id:'przeglad',t:'Przegląd i higienizacja',k:'profilaktyka',h:'Przegląd i higienizacja',
+   x:'Kontrola co pół roku i usunięcie kamienia pozwalają wychwycić próchnicę, zanim zacznie boleć. Pakiet obejmuje skaling, piaskowanie, polishing i fluoryzację.',
+   pr:[['Wizyta pierwszorazowa','100 zł'],['Skaling, usunięcie kamienia','150 zł'],['Pakiet: skaling, piaskowanie, polishing, fluoryzacja','350 zł']],
+   who:{kobylka:'Daria Leszczuk, Agnieszka Groszek',marki:'zespół placówki w Markach'}},
+  {id:'dziecko',t:'Dziecko do dentysty',k:'stomatologia dziecięca',h:'Wizyta z dzieckiem',
+   x:'Zaczynamy od wizyty adaptacyjnej: dziecko poznaje gabinet i lekarza, bez leczenia. W Kobyłce dzieci i młodzież do 18 lat przyjmujemy także na NFZ.',
+   pr:[['Wizyta adaptacyjna','100 zł'],['Lakowanie, 1 ząb','100 zł'],['Fluoryzacja','90 zł']],
+   who:{kobylka:'lek. dent. Anna Bielecka, lek. dent. Alicja Zygmunt',marki:'lek. dent. Anna Bielecka, lek. dent. Alicja Borczyńska'},nfz:true},
+  {id:'strach',t:'Boję się dentysty',k:'znieczulenie i sedacja',h:'Leczenie, gdy towarzyszy mu lęk',
+   x:'Powiedz o tym przy umawianiu. Zarezerwujemy więcej czasu, a lekarz dobierze znieczulenie: komputerowe The Wand, sedację wziewną, a przy rozległym leczeniu znieczulenie ogólne z anestezjologiem.',
+   pr:[['Wizyta pierwszorazowa','100 zł'],['Znieczulenie i sedacja','wg cennika']],
+   who:{kobylka:'lek. dent. Anna Bielecka (sedacja wziewna)',marki:'lek. dent. Anna Bielecka (sedacja wziewna)'}},
+  {id:'brak',t:'Brakuje mi zęba',k:'implanty i protetyka',h:'Uzupełnienie braku zęba',
+   x:'Na konsultacji lekarz oceni kość na podstawie tomografii CBCT i przedstawi możliwości: implant, most albo protezę, razem z kosztami każdej z nich.',
+   pr:[['Konsultacja implantologiczna','200 zł'],['Wszczepienie implantu Mis Seven','2500 zł'],['Wszczepienie implantu Mis C1','2900 zł']],
+   who:{kobylka:'lek. dent. Zofia Chudzik-Żach (protetyka)',marki:'lek. dent. Magdalena Duda'}},
+  {id:'aparat',t:'Krzywe zęby, aparat',k:'ortodoncja',h:'Leczenie ortodontyczne',
+   x:'Leczymy dzieci, młodzież i dorosłych. Konsultacja kończy się planem leczenia z czasem trwania i kosztami.',
+   pr:[['Konsultacja ortodontyczna','200 zł'],['Aparat stały, jeden łuk, zamki metalowe','2000 zł'],['Kontrola, jeden łuk, zamki metalowe','200 zł']],
+   who:{kobylka:'ortodonta placówki w Kobyłce',marki:'ortodonta placówki w Markach'}}
+];
+var PRICES=[
+  ['Konsultacje i wizyty','Wizyta pierwszorazowa','100 zł','przegląd kontrola ból'],
+  ['Konsultacje i wizyty','Wizyta kontrolna (po pierwszorazowej)','80 zł','przegląd'],
+  ['Konsultacje i wizyty','Konsultacja ortodontyczna','200 zł','aparat'],
+  ['Stomatologia zachowawcza','Wypełnienie kompozytowe, 1 powierzchnia','300 zł','plomba próchnica ubytek ból'],
+  ['Stomatologia zachowawcza','Wypełnienie kompozytowe, 2 powierzchnie (ząb trzonowy)','350 zł','plomba próchnica ubytek'],
+  ['Higienizacja zębów','Skaling, usunięcie kamienia','150 zł','kamień czyszczenie'],
+  ['Higienizacja zębów','Pakiet: skaling, piaskowanie, polishing, fluoryzacja','350 zł','kamień czyszczenie higienizacja'],
+  ['Leczenie kanałowe','Leczenie, 1 kanał','700 zł','endodoncja kanałowe ból'],
+  ['Leczenie kanałowe','Leczenie, 2 kanały','900 zł','endodoncja kanałowe'],
+  ['Wybielanie zębów','Wybielanie nakładkowe (4 strzykawki)','1100 zł',''],
+  ['Wybielanie zębów','Wybielanie, 1 ząb','170 zł',''],
+  ['Implanty zębów','Konsultacja implantologiczna','200 zł','brak zęba'],
+  ['Implanty zębów','Wszczepienie implantu Mis Seven','2500 zł','brak zęba implant'],
+  ['Implanty zębów','Wszczepienie implantu Mis C1','2900 zł','brak zęba implant'],
+  ['Ortodoncja','Aparat stały, jeden łuk, zamki metalowe','2000 zł','krzywe zęby'],
+  ['Ortodoncja','Kontrola, jeden łuk, zamki metalowe','200 zł','aparat'],
+  ['Stomatologia dziecięca','Wizyta adaptacyjna','100 zł','dziecko dzieci'],
+  ['Stomatologia dziecięca','Lakowanie, 1 ząb','100 zł','dziecko dzieci'],
+  ['Stomatologia dziecięca','Fluoryzacja','90 zł','dziecko dzieci'],
+  ['Diagnostyka','RTG','50 zł','zdjęcie rentgen']
+];
+var FAQ=[
+  ['Czy przyjmujecie na NFZ?','W Kobyłce tak: dzieci i młodzież do 18 lat, chirurgię stomatologiczną i periodontologię. Pozostałe zabiegi są prywatne. W Markach przyjmujemy wyłącznie prywatnie. Zakres i dostępność terminów na NFZ potwierdza recepcja.'],
+  ['W jakich godzinach pracujecie?','Obie placówki: '+HOURS_TXT+'. W niedziele nieczynne.'],
+  ['Jak umówić wizytę?','Telefonicznie pod numerem 22 118 92 01, SMS-em pod 572 034 488 albo formularzem na tej stronie. W Markach działa też rezerwacja online.'],
+  ['Ile kosztuje pierwsza wizyta?','Wizyta pierwszorazowa kosztuje 100 zł. Plan leczenia z wyceną dostajesz przed rozpoczęciem leczenia.'],
+  ['Od jakiego wieku przyjmujecie dzieci?','Od najmłodszych lat. Pierwsza wizyta jest adaptacyjna: dziecko poznaje gabinet, bez leczenia.'],
+  ['Czy potrzebne jest skierowanie?','Nie, do dentysty nie potrzeba skierowania.'],
+  ['Czy jest parking?','Tak. W Kobyłce bezpłatny parking przy placówce, w Markach miejsca parkingowe przy budynku.'],
+  ['Jak mogę zapłacić?','Gotówką lub kartą. O płatność w ratach zapytaj w recepcji.']
+];
+var DN=['niedz.','pon.','wt.','śr.','czw.','pt.','sob.'], DL=['niedzielę','poniedziałek','wtorek','środę','czwartek','piątek','sobotę'], MN=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var state={loc:'kobylka',need:'bol',slot:null,day:0};
+
+/* czas w Polsce, niezależnie od ustawień urządzenia */
+function nowPL(){var p={};new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false,year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
+  var wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday);return {wd:wd,h:+p.hour%24,m:+p.minute,date:new Date(+p.year,+p.month-1,+p.day)}}
+function openInfo(){var n=nowPL(),t=n.h+n.m/60,h=HOURS[n.wd];
+  if(h&&t>=h[0]&&t<h[1])return {open:true,txt:'Rejestracja czynna do '+h[1]+':00'};
+  var d=n.wd,add=0; if(!(h&&t<h[0])){do{d=(d+1)%7;add++}while(!HOURS[d])}
+  return {open:false,txt:'Teraz zamknięte. Otwieramy '+(add===0?'dziś':add===1?'jutro':'w '+DL[d])+' o '+HOURS[d][0]+':00'}}
+/* przykładowe terminy: zawsze w przyszłości, w godzinach pracy */
+function days(){var n=nowPL(),out=[],d=new Date(n.date),i=0;
+  while(out.length<4&&i<12){i++;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);if(HOURS[d.getDay()])out.push(new Date(d))}return out}
+function times(d,loc){var h=HOURS[d.getDay()],seed=d.getDate()*7+d.getMonth()*13+(loc==='marki'?5:0),pool=[],x;
+  for(x=h[0];x<h[1];x+=.5)pool.push(x);
+  var out=[],k=d.getDay()===6?3:6,step=Math.max(1,Math.floor(pool.length/k));
+  for(var i=0;i<k;i++){var v=pool[(i*step+seed%step)%pool.length];if(out.indexOf(v)<0)out.push(v)}
+  out.sort(function(a,b){return a-b});return out.map(function(v){return Math.floor(v)+':'+(v%1?'30':'00')})}
+function dLabel(d){return DN[d.getDay()]+' '+d.getDate()+' '+MN[d.getMonth()]}
+
+function renderSlots(){var ds=days();$('#slotsWhere').textContent='Placówka '+LOC[state.loc].inName;
+  $('#days').innerHTML=ds.map(function(d,i){return '<button type="button" aria-pressed="'+(i===state.day)+'" data-i="'+i+'">'+DN[d.getDay()]+'<b>'+d.getDate()+'</b></button>'}).join('');
+  var d=ds[state.day];$('#times').innerHTML=times(d,state.loc).map(function(t){return '<button type="button" data-t="'+t+'" aria-label="'+dLabel(d)+', godzina '+t+'">'+t+'</button>'}).join('')}
+function setLoc(l){state.loc=l;var L=LOC[l];
+  $$('[data-loc]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.loc===l)});
+  $('#heroLead').textContent=L.lead;$('#heroAddr').textContent=L.addr;$('#heroPay').textContent='Płatność: '+L.pay;
+  $('#fLoc').value=l;renderSlots();renderNeed();renderTeam();
+  $$('.place').forEach(function(p){p.classList.toggle('current',p.dataset.l===l)})}
+function renderNeed(){var n=NEEDS.filter(function(x){return x.id===state.need})[0],L=LOC[state.loc];
+  $$('#needList button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.id===n.id)});
+  $('#needPanel').innerHTML='<h3>'+esc(n.h)+'</h3><p class="txt">'+esc(n.x)+'</p>'+
+   '<dl class="facts"><div><dt>Ceny z cennika</dt><dd><ul>'+n.pr.map(function(p){return '<li><span>'+esc(p[0])+'</span><b>'+p[1]+'</b></li>'}).join('')+'</ul></dd></div>'+
+   '<div><dt>Kto przyjmuje '+L.inName+'</dt><dd>'+esc(n.who[state.loc])+'<div style="margin-top:10px">'+(n.nfz&&state.loc==='kobylka'?'<span class="tag nfz">do 18 lat także na NFZ</span>':'<span class="tag">'+(state.loc==='kobylka'?'Kobyłka i Marki':'Marki i Kobyłka')+'</span>')+'</div></dd></div></dl>'+
+   '<div class="cta" style="margin-top:0"><a class="btn" href="#umow" data-need="'+n.id+'">Umów: '+esc(n.t.toLowerCase())+'</a>'+(n.call?'<a class="btn ghost" href="tel:+48221189201">Zadzwoń teraz</a>':'')+'</div>'}
+function renderTeam(){var l=state.loc,c=0;
+  $$('#team .doc').forEach(function(d){var on=d.dataset.l.indexOf(l)>-1;d.hidden=!on});
+  $$('#teamMore li').forEach(function(d){var on=d.dataset.l.indexOf(l)>-1;d.hidden=!on;if(on)c++});
+  $('.more').hidden=!c;
+  $('#teamLead').textContent=l==='kobylka'?'Lekarze i higienistki przyjmujący w Kobyłce.':'Lekarze przyjmujący w Markach.'}
+function renderPrices(q){q=(q||'').toLowerCase().trim();var r=PRICES.filter(function(p){return !q||(p[0]+' '+p[1]+' '+p[3]).toLowerCase().indexOf(q)>-1});
+  $('#plist').innerHTML=r.map(function(p){return '<li><small>'+esc(p[0])+'</small><span>'+esc(p[1])+'</span><b>'+p[2]+'</b></li>'}).join('');$('#pempty').hidden=r.length>0}
+
+/* start */
+$('#needList').innerHTML=NEEDS.map(function(n){return '<button type="button" role="tab" data-id="'+n.id+'" aria-selected="false">'+esc(n.t)+'<span>'+esc(n.k)+'</span></button>'}).join('');
+$('#fNeed').innerHTML=NEEDS.map(function(n){return '<option value="'+n.id+'">'+esc(n.t)+'</option>'}).join('')+'<option value="inne">Inny powód</option>';
+$('#placeGrid').innerHTML=Object.keys(LOC).map(function(k){var L=LOC[k];return '<article class="place" data-l="'+k+'"><div class="ph"><img loading="lazy" referrerpolicy="no-referrer" src="'+IMG+L.img+'" alt="'+esc(L.alt)+'"></div><div class="body"><div><h3>'+L.name+'</h3><p class="muted">'+L.addr+'</p></div>'+
+  '<div class="rows"><div><span class="k">Godziny</span><span>'+HOURS_TXT+'</span></div><div><span class="k">Płatność</span><span>'+esc(L.nfz)+'</span></div><div><span class="k">Dojazd</span><span>'+esc(L.way)+'</span></div><div><span class="k">Umawianie</span><span>'+esc(L.book)+'</span></div><div><span class="k">Na miejscu</span><span>'+esc(L.extra)+'</span></div></div>'+
+  '<div class="acts"><a class="btn" href="#umow" data-setloc="'+k+'">Umów wizytę '+L.inName+'</a><a class="btn ghost" href="'+L.route+'" target="_blank" rel="noopener">Wyznacz trasę</a></div></div></article>'}).join('');
+$('#team').innerHTML=DOCS.filter(function(d){return d.p}).map(function(d){return '<article class="doc" data-l="'+d.l.join(' ')+'"><div class="pic"><img loading="lazy" referrerpolicy="no-referrer" src="'+IMG+d.p+'" alt="'+esc(d.n)+', portret w gabinecie"></div><h3>'+esc(d.n)+'</h3><p>'+esc(d.s)+'</p><div class="tags">'+d.l.map(function(l){return '<span class="tag">'+LOC[l].name+'</span>'}).join('')+'</div></article>'}).join('');
+$('#teamMore').innerHTML=DOCS.filter(function(d){return !d.p}).map(function(d){return '<li data-l="'+d.l.join(' ')+'"><b>'+esc(d.n)+'</b><span>'+esc(d.s)+'</span></li>'}).join('');
+$('#chips').innerHTML=['przegląd','ból','dziecko','kamień','implant','aparat'].map(function(c){return '<button type="button">'+c+'</button>'}).join('');
+$('#faq').innerHTML=FAQ.map(function(f){return '<details><summary>'+esc(f[0])+'</summary><p>'+esc(f[1])+'</p></details>'}).join('');
+$$('.fHours').forEach(function(e){e.textContent=HOURS_TXT});
+var oi=openInfo();$('#openNow').innerHTML='<span class="dot'+(oi.open?'':' off')+'"></span>'+oi.txt;
+$('#callback').textContent=oi.open?'Recepcja teraz pracuje i oddzwoni z propozycją terminu.':'Recepcja jest teraz nieczynna. Zostaw numer, oddzwonimy po otwarciu.';
+renderPrices('');setLoc('kobylka');
+
+document.addEventListener('click',function(e){var t=e.target.closest('button,a');if(!t)return;
+  if(t.dataset.loc){setLoc(t.dataset.loc);return}
+  if(t.dataset.i){state.day=+t.dataset.i;renderSlots();return}
+  if(t.dataset.id){state.need=t.dataset.id;renderNeed();return}
+  if(t.dataset.t){var d=days()[state.day];state.slot=dLabel(d)+', '+t.dataset.t;$('#pickedTxt').textContent='Wybrany termin: '+state.slot+' ('+LOC[state.loc].name+')';$('#picked').classList.add('on');$('#umow').scrollIntoView();setTimeout(function(){$('#fName').focus({preventScroll:true})},400);return}
+  if(t.dataset.need){$('#fNeed').value=t.dataset.need}
+  if(t.dataset.setloc){setLoc(t.dataset.setloc)}
+  if(t.parentNode&&t.parentNode.id==='chips'){$('#q').value=t.textContent;renderPrices(t.textContent)}
+  if(t.dataset.c){try{localStorage.setItem('bm-zgoda',t.dataset.c)}catch(x){}$('#consent').hidden=true}
+});
+$('#fLoc').addEventListener('change',function(){setLoc(this.value)});
+$('#q').addEventListener('input',function(){renderPrices(this.value)});
+$('#pickedX').addEventListener('click',function(){state.slot=null;$('#picked').classList.remove('on')});
+$('#form').addEventListener('submit',function(e){e.preventDefault();var ok=true,name=$('#fName').value.trim(),tel=$('#fTel').value.replace(/[^\d]/g,'').replace(/^48(?=\d{9}$)/,'');
+  $('#eName').textContent=name?'':'Wpisz imię, żeby recepcja wiedziała, do kogo dzwoni.';if(!name)ok=false;
+  $('#eTel').textContent=tel.length===9?'':'Wpisz 9 cyfr numeru telefonu.';if(tel.length!==9)ok=false;
+  $('#eOk').textContent=$('#fOk').checked?'':'Zaznacz zgodę na kontakt, bez niej nie możemy oddzwonić.';if(!$('#fOk').checked)ok=false;
+  if(!ok){var f=$('#form .err:not(:empty)');if(f){var i=f.id==='eOk'?$('#fOk'):$('#'+f.id.replace('e','f'));i&&i.focus()}return}
+  var o=openInfo();$('#doneTxt').textContent=name+', recepcja '+LOC[$('#fLoc').value].inName+' oddzwoni pod numer '+tel.replace(/(\d{3})(\d{3})(\d{3})/,'$1 $2 $3')+(o.open?' jeszcze dziś':' po otwarciu')+(state.slot?' i potwierdzi termin: '+state.slot:'')+'.'+($('#fEarly').checked?' Damy też znać, jeśli zwolni się wcześniejszy termin.':'');
+  this.hidden=true;$('#done').classList.add('on');$('#done').focus()});
+$('#again').addEventListener('click',function(){$('#form').hidden=false;$('#done').classList.remove('on')});
+var c=null;try{c=localStorage.getItem('bm-zgoda')}catch(x){}
+if(!c)setTimeout(function(){$('#consent').hidden=false},1800);
+})();
+</script>
+</body>
+</html>
